@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MarginLabs — Three points of margin, recovered or returned.</title>
+<meta name="description" content="A broker and commercial advisor for eCommerce & retail. We read your business like a lender does — then find the right capital, at the right price." />
+<style>
+  /* ===== CONFIG: the one link to change =====
+     Every "Start my Read" button points here. Once intake.getmarginlabs.com
+     is live, swap this value and re-upload. ============================ */
+  :root { --portal: "https://marginlabs-intake.vercel.app/"; }
+
+  :root {
+    --bone: #F4F0E8; --bone2: #ECE6D9; --paper: #FBF8F2;
+    --ink: #15140F; --ink2: #1C1B16; --inkSoft: #2A2822;
+    --stone1: #8A8678; --stone2: #B5B1A4; --stone3: #D6D1C2;
+    --ledger: #2E4A3A; --ledgerSoft: #4D6856; --clay: #B5856A;
+    --bad: #B14431;
+    --line: rgba(21,20,15,0.12); --lineS: rgba(21,20,15,0.06);
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bone); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; line-height: 1.5; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: var(--mono); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; border: none;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 15px 24px; background: var(--ink); color: var(--bone); transition: opacity 0.14s; }
+  .btn:hover { opacity: 0.88; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn.green { background: var(--ledger); color: var(--paper); }
+  .btn.sm { padding: 10px 16px; font-size: 10px; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 40; background: rgba(244,240,232,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  nav .logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 23px; letter-spacing: -0.01em; }
+  nav .logo em { font-style: italic; color: var(--ledger); }
+  nav .links { display: flex; align-items: center; gap: 30px; }
+  nav .links a.l { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--inkSoft); }
+  nav .links a.l:hover { color: var(--ink); }
+  @media (max-width: 760px) { nav .links a.l { display: none; } }
+
+  /* hero */
+  .hero { padding: 92px 0 72px; border-bottom: 1px solid var(--line); }
+  .hero .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: 76px; letter-spacing: -0.03em; line-height: 0.98; margin: 22px 0 0; max-width: 16ch; }
+  .hero h1 em { font-style: italic; color: var(--ledger); }
+  .hero .sub { font-size: 18px; line-height: 1.6; color: var(--inkSoft); max-width: 54ch; margin-top: 26px; }
+  .hero .cta-row { display: flex; gap: 14px; align-items: center; margin-top: 36px; flex-wrap: wrap; }
+  .hero .reassure { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--stone1); margin-top: 22px; display: flex; align-items: center; gap: 9px; }
+  @media (max-width: 760px) { .hero h1 { font-size: 48px; } .hero { padding: 56px 0 48px; } }
+
+  /* section scaffold */
+  .section { padding: 84px 0; border-bottom: 1px solid var(--line); }
+  .section.ink { background: var(--ink); color: var(--bone); }
+  .section.sand { background: var(--bone2); }
+  .seclabel { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
+  .ink .seclabel { color: var(--clay); }
+  .sechead { font-family: var(--serif); font-weight: 400; font-size: 46px; letter-spacing: -0.02em; line-height: 1.04; margin-top: 16px; max-width: 20ch; }
+  .sechead em { font-style: italic; color: var(--ledger); }
+  .ink .sechead em { color: var(--clay); }
+
+  /* pain checklist */
+  .pains { display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px; margin-top: 44px; }
+  .pain { display: grid; grid-template-columns: 26px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid rgba(244,240,232,0.12); align-items: start; }
+  .pain .ck { width: 22px; height: 22px; border: 1.5px solid rgba(244,240,232,0.35); display: grid; place-items: center; margin-top: 3px; }
+  .pain .q { font-family: var(--serif); font-size: 21px; letter-spacing: -0.01em; line-height: 1.3; }
+  .pain .q em { font-style: italic; color: var(--clay); }
+  .pain .t { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(244,240,232,0.45); margin-top: 8px; }
+  .pains-foot { margin-top: 36px; font-family: var(--serif); font-style: italic; font-size: 24px; line-height: 1.4; }
+  .pains-foot em { color: var(--clay); font-style: italic; }
+  @media (max-width: 760px) { .pains { grid-template-columns: 1fr; } .sechead { font-size: 34px; } }
+
+  /* cost calculator */
+  .calc { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; margin-top: 44px; align-items: center; }
+  .calc .lead { font-size: 15px; line-height: 1.6; color: var(--inkSoft); max-width: 46ch; margin-top: 14px; }
+  .chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .chip { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 14px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; transition: all 0.12s; }
+  .chip:hover { border-color: var(--ink); }
+  .chip.on { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+  .amt { font-family: var(--serif); font-size: 60px; letter-spacing: -0.03em; line-height: 1; margin-top: 30px; }
+  .amt .u { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); margin-left: 14px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 3px; background: var(--stone3); margin-top: 22px; cursor: pointer; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--ledger); border: 3px solid var(--bone); box-shadow: 0 0 0 1px var(--ledger); }
+  input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--ledger); border: 3px solid var(--bone); box-shadow: 0 0 0 1px var(--ledger); }
+  .rlabels { display: flex; justify-content: space-between; margin-top: 12px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--stone1); }
+  .calc-result { background: var(--ink); color: var(--bone); padding: 38px; }
+  .calc-result .rl { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(244,240,232,0.55); }
+  .calc-toggle { display: inline-flex; border: 1px solid rgba(244,240,232,0.25); margin: 16px 0 22px; }
+  .calc-toggle button { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 14px; background: transparent; color: rgba(244,240,232,0.6); border: none; cursor: pointer; }
+  .calc-toggle button.on { background: var(--clay); color: var(--ink); }
+  .bignum { font-family: var(--serif); font-size: 56px; letter-spacing: -0.025em; line-height: 1; }
+  .bignum .dash { color: rgba(244,240,232,0.4); }
+  .per { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); margin-top: 12px; }
+  .gradbar { height: 6px; background: linear-gradient(90deg, var(--ledgerSoft), var(--clay)); margin: 22px 0 10px; }
+  .gradlabels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: rgba(244,240,232,0.55); }
+  .calc-foot { margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(244,240,232,0.15); font-family: var(--serif); font-style: italic; font-size: 19px; line-height: 1.4; }
+  .calc-foot b { color: var(--clay); font-style: normal; font-weight: 400; }
+  @media (max-width: 760px) { .calc { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* staircase / how it works */
+  .stairs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 44px; border-top: 1px solid var(--line); }
+  .stair { padding: 28px 24px 28px 0; border-right: 1px solid var(--lineS); }
+  .stair:last-child { border-right: none; }
+  .stair .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--stone1); }
+  .stair h4 { font-family: var(--serif); font-size: 25px; font-weight: 400; margin: 14px 0 10px; letter-spacing: -0.01em; }
+  .stair p { font-size: 13.5px; color: var(--inkSoft); line-height: 1.55; }
+  .stair .price { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ledger); margin-top: 12px; }
+  @media (max-width: 760px) { .stairs { grid-template-columns: 1fr 1fr; } .stair { border-bottom: 1px solid var(--lineS); } }
+
+  /* versus */
+  .vs { margin-top: 44px; }
+  .vs-colhead { display: grid; grid-template-columns: 200px 1fr 1fr; padding-bottom: 14px; }
+  .vs-colhead .c { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 24px; }
+  .vs-colhead .c.them { color: var(--stone1); border-left: 1px solid var(--line); }
+  .vs-colhead .c.us { color: var(--ledger); border-left: 1px solid var(--ledger); }
+  .vs-row { display: grid; grid-template-columns: 200px 1fr 1fr; }
+  .vs-cell { padding: 20px 24px; border-top: 1px solid var(--lineS); font-size: 14px; line-height: 1.5; }
+  .vs-cell.k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); padding-left: 0; padding-top: 23px; }
+  .vs-cell.them { color: var(--stone1); border-left: 1px solid var(--line); }
+  .vs-cell.them s { text-decoration-color: rgba(177,68,49,0.45); }
+  .vs-cell.us { border-left: 1px solid var(--ledger); font-family: var(--serif); font-size: 17px; }
+  .vs-cell.us em { font-style: italic; color: var(--ledger); }
+  @media (max-width: 760px) { .vs-colhead, .vs-row { grid-template-columns: 1fr; } .vs-cell.k { padding-bottom: 0; } .vs-cell.them, .vs-cell.us { border-left: none; } }
+
+  /* final cta */
+  .final { padding: 96px 0; text-align: center; background: var(--ink); color: var(--bone); }
+  .final h2 { font-family: var(--serif); font-weight: 400; font-size: 60px; letter-spacing: -0.025em; line-height: 1.02; max-width: 18ch; margin: 0 auto; }
+  .final h2 em { font-style: italic; color: var(--clay); }
+  .final p { font-size: 16px; color: rgba(244,240,232,0.75); max-width: 50ch; margin: 22px auto 0; line-height: 1.6; }
+  .final .cta-row { display: flex; gap: 14px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+  .final .btn.ghost { color: var(--bone); border-color: rgba(244,240,232,0.3); }
+  @media (max-width: 760px) { .final h2 { font-size: 38px; } }
+
+  /* footer */
+  footer { padding: 44px 0; background: var(--ink); color: rgba(244,240,232,0.6); border-top: 1px solid rgba(244,240,232,0.12); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  footer .logo { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 19px; color: var(--bone); }
+  footer .logo em { font-style: italic; color: var(--clay); }
+  footer .meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .secure-ico { display: inline-block; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg width="22" height="19" viewBox="0 0 280 240" fill="none">
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#15140F" stroke-width="8"/>
+        <rect x="40" y="150" width="48" height="70" fill="#15140F"/>
+        <rect x="116" y="100" width="48" height="120" fill="#15140F"/>
+        <rect x="192" y="40" width="48" height="180" fill="#2E4A3A"/>
+      </svg>
+      Margin<em>Labs.</em>
+    </a>
+    <div class="links">
+      <a class="l" href="#how">How it works</a>
+      <a class="l" href="#why">Why us</a>
+      <a class="l" href="#cost">The cost</a>
+      <a class="btn sm js-start" href="#">Start my Read →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">Broker &amp; commercial advisor · eCommerce &amp; retail</span>
+    <h1>Three points of margin, <em>recovered or returned.</em></h1>
+    <p class="sub">We read your business the way a lender does — finances, bank data, store KPIs — then find the right capital, at the right price. If we can't, you don't pay for it.</p>
+    <div class="cta-row">
+      <a class="btn js-start" href="#">Start my free Read →</a>
+      <a class="btn ghost" href="#how">See how it works</a>
+    </div>
+    <div class="reassure">
+      <svg class="secure-ico" width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="5.5" width="9" height="6.5" stroke="#8A8678" stroke-width="1.2"/><path d="M3 5.5V3.5a2.5 2.5 0 015 0v2" stroke="#8A8678" stroke-width="1.2"/></svg>
+      Free Read-Lite · no bank access required · 5 business days
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEM -->
+<section class="section ink" id="problem">
+  <div class="wrap">
+    <span class="seclabel">For founders doing £2m–£40m</span>
+    <div class="sechead" style="color: var(--bone); max-width: 26ch;">Most founders take the <em>wrong capital</em>, at the <em>wrong price</em> — because no one ever read their business like a lender does.</div>
+
+    <div class="pains">
+      <div class="pain">
+        <span class="ck"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#F4F0E8" stroke-width="1.6" fill="none"/></svg></span>
+        <div><div class="q">"I applied for funding and got <em>declined</em> — and no one will tell me why."</div><div class="t">The black-box rejection</div></div>
+      </div>
+      <div class="pain">
+        <span class="ck"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#F4F0E8" stroke-width="1.6" fill="none"/></svg></span>
+        <div><div class="q">"A broker put me in an MCA that's now <em>strangling my cash flow.</em>"</div><div class="t">The wrong product, sold fast</div></div>
+      </div>
+      <div class="pain">
+        <span class="ck"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#F4F0E8" stroke-width="1.6" fill="none"/></svg></span>
+        <div><div class="q">"Three lenders, <em>three different numbers.</em> I can't tell who's right."</div><div class="t">No way to compare</div></div>
+      </div>
+      <div class="pain">
+        <span class="ck"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#F4F0E8" stroke-width="1.6" fill="none"/></svg></span>
+        <div><div class="q">"I need capital for Q4 stock — but is my business even <em>fundable yet?</em>"</div><div class="t">Asking blind</div></div>
+      </div>
+    </div>
+    <div class="pains-foot">If any of those is you, you don't have a funding problem.<br/>You have a <em>clarity problem</em> — and that's what we fix first.</div>
+  </div>
+</section>
+
+<!-- COST CALCULATOR -->
+<section class="section" id="cost">
+  <div class="wrap">
+    <span class="seclabel">The cost of the wrong capital</span>
+    <div class="calc">
+      <div>
+        <div class="sechead">You're not just paying interest. You're paying the <em>not-knowing.</em></div>
+        <p class="lead">A Band B business typically borrows at 200–400 basis points above what it would qualify for after a Read. Pick a scenario, or drag to your own number.</p>
+        <div class="chips">
+          <button class="chip" data-amt="250000">£250k · Q4 stock</button>
+          <button class="chip on" data-amt="500000">£500k · expansion</button>
+          <button class="chip" data-amt="1200000">£1.2m · MCA refinance</button>
+          <button class="chip" data-amt="2000000">£2m · acquisition</button>
+        </div>
+        <div class="amt"><span id="amt">£500,000</span><span class="u">borrowed</span></div>
+        <input type="range" id="range" min="50000" max="3000000" step="10000" value="500000" />
+        <div class="rlabels"><span>£50k</span><span>£3m</span></div>
+      </div>
+      <div class="calc-result">
+        <div class="rl">You're likely overpaying</div>
+        <div class="calc-toggle">
+          <button class="on" data-term="1">Per year</button>
+          <button data-term="3">Over 3 years</button>
+        </div>
+        <div class="bignum"><span id="low">£10,000</span> <span class="dash">–</span> <span id="high">£20,000</span></div>
+        <div class="per" id="per">per year, vs. what you'd qualify for</div>
+        <div class="gradbar"></div>
+        <div class="gradlabels"><span>+200 bps · best case</span><span>+400 bps · worst</span></div>
+        <div class="calc-foot">That's roughly <b id="mult">3.4×</b> the cost of a full Read — left on the table every year.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section sand" id="how">
+  <div class="wrap">
+    <span class="seclabel">How it works</span>
+    <div class="sechead">A staircase, not a <em>sales call.</em></div>
+    <div class="stairs">
+      <div class="stair">
+        <div class="n">01 · Free</div>
+        <h4>The Read-Lite</h4>
+        <p>Upload your financials and store data. We send back a funding-readiness score, one strength, and three fixes. No bank access, no payment.</p>
+        <div class="price">Free</div>
+      </div>
+      <div class="stair">
+        <div class="n">02 · One-off</div>
+        <h4>The full Read</h4>
+        <p>A 22-page lender-grade memo: cohort, margin and cash-cycle teardown, plus a credit pack and a five-week plan. Refunded if you take a retainer.</p>
+        <div class="price">£2,950 · refundable</div>
+      </div>
+      <div class="stair">
+        <div class="n">03 · Monthly</div>
+        <h4>The Sprint</h4>
+        <p>We sit inside your finance and operations for twelve weeks, working the plan until the margin moves and you're lender-ready.</p>
+        <div class="price">Retainer</div>
+      </div>
+      <div class="stair">
+        <div class="n">04 · On success</div>
+        <h4>The Brokerage</h4>
+        <p>We line up the right capital, structure it, and negotiate the rate — and we tell you when not to take it. You see our commission in writing.</p>
+        <div class="price">Disclosed commission</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section" id="why">
+  <div class="wrap">
+    <span class="seclabel">Why us, not a broker</span>
+    <div class="sechead">The difference is <em>who pays us.</em></div>
+    <div class="vs">
+      <div class="vs-colhead">
+        <div class="c"></div>
+        <div class="c them">A typical broker</div>
+        <div class="c us">MarginLabs</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell k">Paid by</div>
+        <div class="vs-cell them"><s>The lender — on volume. The more you borrow, the more they earn.</s></div>
+        <div class="vs-cell us">You. So our only job is the <em>right</em> answer — not the biggest one.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell k">Reads your business</div>
+        <div class="vs-cell them"><s>No. They forward your docs to whoever bites first.</s></div>
+        <div class="vs-cell us">For five days, like an underwriter would — <em>before</em> going to market.</div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell k">Tells you "don't"</div>
+        <div class="vs-cell them"><s>Never. A declined deal is a lost commission.</s></div>
+        <div class="vs-cell us">Often. We pass on bad capital and <em>show you why.</em></div>
+      </div>
+      <div class="vs-row">
+        <div class="vs-cell k">Commission</div>
+        <div class="vs-cell them"><s>Hidden in the rate you're quoted.</s></div>
+        <div class="vs-cell us">Disclosed to the penny, <em>in writing,</em> before you sign.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Find out what you'd <em>really</em> qualify for.</h2>
+    <p>Start with a free Read-Lite. No payment, no bank access, no obligation — just an honest read of where your business stands and what it's costing you.</p>
+    <div class="cta-row">
+      <a class="btn green js-start" href="#">Start my free Read →</a>
+      <a class="btn ghost" href="#how">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">
+      <svg width="20" height="17" viewBox="0 0 280 240" fill="none">
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#F4F0E8" stroke-width="8"/>
+        <rect x="40" y="150" width="48" height="70" fill="#F4F0E8"/>
+        <rect x="116" y="100" width="48" height="120" fill="#F4F0E8"/>
+        <rect x="192" y="40" width="48" height="180" fill="#B5856A"/>
+      </svg>
+      Margin<em>Labs.</em>
+    </div>
+    <div class="meta">© MMXXVI MarginLabs · eCommerce &amp; retail advisory · getmarginlabs.com</div>
+  </div>
+</footer>
+
+<script>
+  /* ---- the one link every CTA points to ---- */
+  var PORTAL_URL = "https://marginlabs-intake.vercel.app/";
+  document.querySelectorAll('.js-start').forEach(function(a){ a.setAttribute('href', PORTAL_URL); });
+
+  /* ---- cost calculator ---- */
+  (function () {
+    var READ = 2950, term = 1;
+    var range = document.getElementById('range');
+    var amtEl = document.getElementById('amt'), lowEl = document.getElementById('low'),
+        highEl = document.getElementById('high'), perEl = document.getElementById('per'),
+        multEl = document.getElementById('mult');
+    var chips = document.querySelectorAll('.chip'), termBtns = document.querySelectorAll('.calc-toggle button');
+    function fmt(n){ return '£' + Math.round(n).toLocaleString('en-GB'); }
+    function update(){
+      var amt = +range.value;
+      amtEl.textContent = fmt(amt);
+      var lo = amt*0.02, hi = amt*0.04;
+      lowEl.textContent = fmt(lo*term); highEl.textContent = fmt(hi*term);
+      perEl.textContent = (term===3 ? 'over a 3-year facility' : 'per year') + ", vs. what you'd qualify for";
+      var m = lo/READ; multEl.textContent = (m>=10?Math.round(m):m.toFixed(1)) + '×';
+      chips.forEach(function(c){ c.classList.toggle('on', +c.dataset.amt===amt); });
+    }
+    range.addEventListener('input', update);
+    chips.forEach(function(c){ c.addEventListener('click', function(){ range.value = c.dataset.amt; update(); }); });
+    termBtns.forEach(function(b){ b.addEventListener('click', function(){ term = +b.dataset.term; termBtns.forEach(function(x){ x.classList.toggle('on', x===b); }); update(); }); });
+    update();
+  })();
+
+  /* ---- load webfonts after first paint (never block render) ---- */
+  (function(){ var l=document.createElement('link'); l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap';
+    document.head.appendChild(l); })();
+</script>
+</body>
+</html>
