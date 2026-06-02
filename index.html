@@ -9,7 +9,7 @@
   /* ===== CONFIG: the one link to change =====
      Every "Start my Read" button points here. Once intake.getmarginlabs.com
      is live, swap this value and re-upload. ============================ */
-  :root { --portal: "https://marginlabs-intake.vercel.app/"; }
+  :root { --portal: "https://intake.getmarginlabs.com/"; }
 
   :root {
     --bone: #F4F0E8; --bone2: #ECE6D9; --paper: #FBF8F2;
@@ -349,7 +349,7 @@
 
 <script>
   /* ---- the one link every CTA points to ---- */
-  var PORTAL_URL = "https://marginlabs-intake.vercel.app/";
+  var PORTAL_URL = "https://intake.getmarginlabs.com/";
   document.querySelectorAll('.js-start').forEach(function(a){ a.setAttribute('href', PORTAL_URL); });
 
   /* ---- cost calculator ---- */
