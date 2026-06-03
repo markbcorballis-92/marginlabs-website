@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- ============================================================
+     MarginLabs · Data Rights (access / deletion / DSAR)
+     Replace [BRACKETED] placeholders; solicitor review before live.
+     ============================================================ -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Data Rights — MarginLabs</title>
+<meta name="description" content="Request a copy of your data, correct it, or ask us to delete it." />
+<link rel="stylesheet" href="legal.css" />
+<style>
+  /* request form */
+  .req { border: 1px solid var(--line); background: var(--paper); padding: 30px; margin: 28px 0; }
+  .req .field { margin-bottom: 18px; }
+  .req label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); margin-bottom: 8px; }
+  .req input, .req select, .req textarea { width: 100%; padding: 12px 14px; background: var(--bone); border: 1px solid var(--line); color: var(--ink); font-family: var(--sans); font-size: 15px; outline: none; }
+  .req input:focus, .req select:focus, .req textarea:focus { border-color: var(--ledger); }
+  .req textarea { min-height: 90px; resize: vertical; }
+  .req .btn { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; border: none; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 22px; background: var(--ink); color: var(--bone); }
+  .req .btn:hover { opacity: 0.9; }
+  .rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .rcard { border: 1px solid var(--line); padding: 18px; background: var(--paper); }
+  .rcard .rt { font-family: var(--serif); font-size: 19px; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .rcard .rd { font-size: 13px; color: var(--inkSoft); line-height: 1.5; }
+  @media (max-width: 620px) { .rights-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="https://www.getmarginlabs.com">
+      <svg width="22" height="19" viewBox="0 0 280 240" fill="none">
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#15140F" stroke-width="8"/>
+        <rect x="40" y="150" width="48" height="70" fill="#15140F"/>
+        <rect x="116" y="100" width="48" height="120" fill="#15140F"/>
+        <rect x="192" y="40" width="48" height="180" fill="#2E4A3A"/>
+      </svg>
+      Margin<em>Labs.</em>
+    </a>
+    <a class="back" href="https://www.getmarginlabs.com">← Back to site</a>
+  </div>
+</nav>
+
+<main class="doc">
+  <span class="kicker">Your data, your call</span>
+  <h1>Data <em>Rights.</em></h1>
+  <div class="updated">Last updated <span class="fill">[DATE]</span> · Version 1.0</div>
+
+  <p class="lead">Your data belongs to you. Use this page to get a copy of what we hold, correct it, or ask us to delete it entirely. We act on every request within one month, free of charge.</p>
+
+  <h2 class="sec" id="rights">What you can ask for</h2>
+  <div class="rights-grid">
+    <div class="rcard"><div class="rt">Access</div><div class="rd">A copy of all the personal and business data we hold about you.</div></div>
+    <div class="rcard"><div class="rt">Correction</div><div class="rd">Fix anything inaccurate or incomplete.</div></div>
+    <div class="rcard"><div class="rt">Deletion</div><div class="rd">Erase your data — including every document you uploaded.</div></div>
+    <div class="rcard"><div class="rt">Restriction / objection</div><div class="rd">Pause or stop us using your data in certain ways.</div></div>
+    <div class="rcard"><div class="rt">Portability</div><div class="rd">Receive your data in a portable, machine-readable format.</div></div>
+    <div class="rcard"><div class="rt">Withdraw consent</div><div class="rd">Revoke any permission you previously gave — e.g. to approach a lender.</div></div>
+  </div>
+
+  <h2 class="sec" id="delete">How deletion works</h2>
+  <p>When you ask us to delete your data, we:</p>
+  <ol>
+    <li>Verify it's really you (to protect your data from someone impersonating you).</li>
+    <li>Permanently remove your uploaded documents from our encrypted storage.</li>
+    <li>Delete your account and associated records from our database.</li>
+    <li>Instruct our sub-processors to do the same where applicable.</li>
+    <li>Confirm to you in writing once it's done.</li>
+  </ol>
+  <div class="note">
+    <div class="nh">One honest exception</div>
+    If we've already entered a working engagement, a limited amount of information may need to be retained to meet legal, tax or regulatory duties (for example, anti-money-laundering records). We'll tell you exactly what, why, and for how long — and delete the rest.
+  </div>
+
+  <h2 class="sec" id="request">Make a request</h2>
+  <p>Submit the form below, or simply email <a href="mailto:privacy@getmarginlabs.com">privacy@getmarginlabs.com</a> from the address you signed up with.</p>
+
+  <form class="req" action="mailto:privacy@getmarginlabs.com" method="post" enctype="text/plain">
+    <div class="field">
+      <label for="name">Your name</label>
+      <input type="text" id="name" name="Name" placeholder="Jane Doe" required />
+    </div>
+    <div class="field">
+      <label for="email">Email you signed up with</label>
+      <input type="email" id="email" name="Email" placeholder="you@yourcompany.com" required />
+    </div>
+    <div class="field">
+      <label for="entity">Business / legal entity</label>
+      <input type="text" id="entity" name="Entity" placeholder="Carrow &amp; Bell Ltd" />
+    </div>
+    <div class="field">
+      <label for="type">What would you like us to do?</label>
+      <select id="type" name="Request type">
+        <option>Send me a copy of my data (access)</option>
+        <option>Correct my data</option>
+        <option>Delete my data entirely</option>
+        <option>Restrict or object to processing</option>
+        <option>Export my data (portability)</option>
+        <option>Withdraw my consent</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="detail">Anything else we should know? (optional)</label>
+      <textarea id="detail" name="Details" placeholder="Add any detail that helps us act on your request."></textarea>
+    </div>
+    <button class="btn" type="submit">Submit request →</button>
+  </form>
+
+  <div class="note">
+    <div class="nh">Note for the site owner</div>
+    This form opens the visitor's email app pre-filled (no server needed). For a smoother experience later, wire it to a form service or a Supabase function. <span class="fill">[Remove this note before publishing.]</span>
+  </div>
+
+  <h2 class="sec" id="timing">How long it takes</h2>
+  <p>We confirm receipt quickly and complete your request within <strong>one calendar month</strong>, as UK GDPR requires. If a request is especially complex we may extend by up to two further months — and we'll always tell you if so.</p>
+
+  <div class="contact">
+    <div class="ch">Prefer to email?</div>
+    <div class="row"><span class="k">Data requests</span><span class="v"><a href="mailto:privacy@getmarginlabs.com">privacy@getmarginlabs.com</a></span></div>
+    <div class="row"><span class="k">Response time</span><span class="v">Within one month</span></div>
+    <div class="row"><span class="k">Complaints</span><span class="v">Irish DPC (dataprotection.ie) · UK ICO · relevant US state authority</span></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="logo">
+      <svg width="20" height="17" viewBox="0 0 280 240" fill="none">
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#F4F0E8" stroke-width="8"/>
+        <rect x="40" y="150" width="48" height="70" fill="#F4F0E8"/>
+        <rect x="116" y="100" width="48" height="120" fill="#F4F0E8"/>
+        <rect x="192" y="40" width="48" height="180" fill="#B5856A"/>
+      </svg>
+      Margin<em>Labs.</em>
+    </div>
+    <div class="links">
+      <a href="https://www.getmarginlabs.com">Home</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="data-rights.html">Data rights</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

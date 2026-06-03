@@ -9,7 +9,7 @@
   /* ===== CONFIG: the one link to change =====
      Every "Start my Read" button points here. Once intake.getmarginlabs.com
      is live, swap this value and re-upload. ============================ */
-  :root { --portal: "https://intake.getmarginlabs.com/"; }
+  :root { --portal: "https://marginlabs-intake.vercel.app/"; }
 
   :root {
     --bone: #F4F0E8; --bone2: #ECE6D9; --paper: #FBF8F2;
@@ -145,7 +145,10 @@
   footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
   footer .logo { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 19px; color: var(--bone); }
   footer .logo em { font-style: italic; color: var(--clay); }
-  footer .meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  footer .flinks { display: flex; gap: 22px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  footer .flinks a { color: rgba(244,240,232,0.6); }
+  footer .flinks a:hover { color: var(--bone); }
+  footer .meta { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; width: 100%; padding-top: 18px; margin-top: 4px; border-top: 1px solid rgba(244,240,232,0.12); }
 
   .secure-ico { display: inline-block; vertical-align: middle; }
 </style>
@@ -342,6 +345,11 @@
         <rect x="192" y="40" width="48" height="180" fill="#B5856A"/>
       </svg>
       Margin<em>Labs.</em>
+    </div>
+    <div class="flinks">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/data-rights.html">Data rights</a>
+      <a href="/terms.html">Terms</a>
     </div>
     <div class="meta">© MMXXVI MarginLabs · eCommerce &amp; retail advisory · getmarginlabs.com</div>
   </div>

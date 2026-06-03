@@ -1,0 +1,87 @@
+/* MarginLabs — shared styles for legal / policy pages */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bone: #F4F0E8; --bone2: #ECE6D9; --paper: #FBF8F2;
+  --ink: #15140F; --ink2: #1C1B16; --inkSoft: #2A2822;
+  --stone1: #8A8678; --stone2: #B5B1A4; --stone3: #D6D1C2;
+  --ledger: #2E4A3A; --ledgerSoft: #4D6856; --clay: #B5856A;
+  --bad: #B14431;
+  --line: rgba(21,20,15,0.12); --lineS: rgba(21,20,15,0.06);
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bone); color: var(--ink); font-family: var(--sans); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+a { color: var(--ledger); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.mono { font-family: var(--mono); }
+
+/* nav */
+nav { position: sticky; top: 0; z-index: 40; background: rgba(244,240,232,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+nav .wrap { max-width: 860px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 62px; }
+nav .logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 22px; letter-spacing: -0.01em; color: var(--ink); }
+nav .logo em { font-style: italic; color: var(--ledger); }
+nav .back { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--inkSoft); }
+
+/* doc layout */
+.doc { max-width: 860px; margin: 0 auto; padding: 64px 28px 100px; }
+.doc .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
+.doc h1 { font-family: var(--serif); font-weight: 400; font-size: 56px; letter-spacing: -0.025em; line-height: 1; margin: 16px 0 14px; }
+.doc h1 em { font-style: italic; color: var(--ledger); }
+.doc .updated { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--stone1); padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.doc .lead { font-size: 17px; line-height: 1.65; color: var(--inkSoft); margin: 28px 0; }
+
+.doc h2 { font-family: var(--serif); font-weight: 400; font-size: 30px; letter-spacing: -0.015em; margin: 44px 0 14px; padding-top: 8px; }
+.doc h3 { font-family: var(--sans); font-weight: 600; font-size: 16px; margin: 26px 0 8px; }
+.doc p { font-size: 15px; color: var(--inkSoft); margin-bottom: 14px; }
+.doc ul, .doc ol { margin: 0 0 16px 22px; }
+.doc li { font-size: 15px; color: var(--inkSoft); margin-bottom: 8px; }
+.doc strong { color: var(--ink); font-weight: 600; }
+.doc .sec { scroll-margin-top: 80px; }
+
+/* table */
+.doc table { width: 100%; border-collapse: collapse; margin: 18px 0 24px; }
+.doc th, .doc td { text-align: left; padding: 12px 14px; border: 1px solid var(--line); font-size: 13.5px; vertical-align: top; }
+.doc th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone1); background: var(--bone2); font-weight: 400; }
+.doc td { color: var(--inkSoft); }
+
+/* callouts */
+.note { padding: 18px 20px; border: 1px solid var(--line); background: var(--paper); margin: 22px 0; font-size: 14px; line-height: 1.6; }
+.note .nh { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ledger); margin-bottom: 8px; }
+.note.warn { background: rgba(177,68,49,0.06); border-color: rgba(177,68,49,0.3); }
+.note.warn .nh { color: var(--bad); }
+
+/* placeholder marker for the owner to fill in */
+.fill { background: rgba(181,133,106,0.18); border-bottom: 1px solid var(--clay); padding: 0 4px; font-family: var(--mono); font-size: 0.85em; }
+
+/* TOC */
+.toc { border: 1px solid var(--line); background: var(--paper); padding: 20px 24px; margin: 28px 0 8px; }
+.toc .th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); margin-bottom: 12px; }
+.toc ol { margin: 0 0 0 18px; }
+.toc li { font-size: 14px; margin-bottom: 6px; }
+
+/* contact card */
+.contact { border: 1px solid var(--line); background: var(--ink); color: var(--bone); padding: 28px; margin: 32px 0; }
+.contact .ch { font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--clay); margin-bottom: 12px; }
+.contact .row { display: grid; grid-template-columns: 130px 1fr; gap: 6px 16px; font-size: 14px; padding: 7px 0; border-bottom: 1px solid rgba(244,240,232,0.12); }
+.contact .row:last-child { border-bottom: none; }
+.contact .row .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,240,232,0.55); padding-top: 2px; }
+.contact .row .v { color: var(--bone); }
+.contact .row .v a { color: var(--clay); }
+
+/* footer */
+footer { background: var(--ink); color: rgba(244,240,232,0.6); padding: 40px 0; border-top: 1px solid rgba(244,240,232,0.12); }
+footer .wrap { max-width: 860px; margin: 0 auto; padding: 0 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+footer .logo { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 18px; color: var(--bone); }
+footer .logo em { font-style: italic; color: var(--clay); }
+footer .links { display: flex; gap: 20px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+footer .links a { color: rgba(244,240,232,0.6); }
+footer .links a:hover { color: var(--bone); text-decoration: none; }
+
+@media (max-width: 620px) {
+  .doc h1 { font-size: 40px; }
+  .contact .row { grid-template-columns: 1fr; }
+}
