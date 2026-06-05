@@ -75,6 +75,17 @@
   .frow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:13.5px}
   .frow .ic{width:22px;height:22px;border-radius:6px;background:var(--accentSoft);display:grid;place-items:center;flex:none}
   .frow .lv{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--mut)}
+  /* fundability tile — RAG variants + crossfade between the 3 example outcomes */
+  #fcPill,#fcScore,#fcMeta,#fcRows{transition:opacity .4s ease}
+  .pcard .top .pill.g{color:#2F7D58;background:#E7F2EC}
+  .pcard .top .pill.a{color:#C98A2B;background:#FAF1DF}
+  .pcard .top .pill.r{color:#B14431;background:#FBEAE6}
+  .scorerow .num.g{color:#2F7D58}
+  .scorerow .num.a{color:#C98A2B}
+  .scorerow .num.r{color:#B14431}
+  .bar i.g{background:linear-gradient(90deg,#2F7D58,#5BB286)}
+  .bar i.a{background:linear-gradient(90deg,#C98A2B,#E0B768)}
+  .bar i.r{background:linear-gradient(90deg,#B14431,#D98E80)}
 
   /* trust strip */
   .strip{padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
@@ -147,7 +158,7 @@
   @media(max-width:820px){.secband{grid-template-columns:1fr 1fr}}
 
   /* staircase */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px}
   .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;transition:.16s}
   .step:hover{border-color:var(--accentLine);transform:translateY(-3px);box-shadow:0 16px 36px -22px rgba(47,125,88,.4)}
   .step .n{width:30px;height:30px;border-radius:8px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500}
@@ -250,7 +261,7 @@
     <a class="l" href="#solution">The fix</a>
     <a class="l" href="#how">How it works</a>
     <a class="l" href="#cost">The cost</a>
-    <a class="btn sm js-start" href="#">Start free Read</a>
+    <a class="btn sm" href="/triage/">Free Fundability Check</a>
   </div>
 </div></nav>
 
@@ -262,23 +273,26 @@
       <h1 class="he d2">Three points of margin, <span class="g">recovered or returned.</span></h1>
       <p class="sub he d3">We read your business the way a lender does — then find the right capital, at the right price.</p>
       <div class="cta he d4">
-        <a class="btn accent js-start" href="#">Start my free Read →</a>
-        <a class="btn ghost" href="#how">See how it works</a>
+        <a class="btn accent" href="/triage/">Free Fundability Check →</a>
+        <a class="btn ghost js-start" href="#">Start my free Read →</a>
       </div>
+      <div class="he d4" style="margin-top:14px"><a href="#how" style="font-size:14px;font-weight:520;color:var(--accent)">See how it works →</a></div>
       <div class="trust he d4">
-        <div class="t"><b data-count="5" data-suf=" min">0</b>to your Read</div>
+        <div class="t"><b data-count="90" data-suf=" sec">0</b>to your verdict</div>
         <div class="t"><b>£0</b>no bank access to start</div>
         <div class="t"><b>£25k–£10m+</b>financing we arrange</div>
       </div>
     </div>
-    <div class="pcard">
-      <div class="top"><span class="ttl">Your Read-Lite</span><span class="pill">Funding-ready</span></div>
+    <div class="pcard" id="fcCard">
+      <div class="top"><span class="ttl">Your Free Fundability Check</span><span class="pill g" id="fcPill">Fundable now</span></div>
       <div class="body">
-        <div class="scorerow"><span class="num" id="score">0</span><span class="meta">readiness score<b>↑ Band B → A in 90 days</b></span></div>
-        <div class="bar"><i id="scorebar"></i></div>
-        <div class="frow"><span class="ic"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Returning revenue strong (41%)<span class="lv">strength</span></div>
-        <div class="frow"><span class="ic"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 2v6M2 5h6" stroke="#2F7D58" stroke-width="1.6"/></svg></span>Gross margin softened 180bps<span class="lv">fix</span></div>
-        <div class="frow"><span class="ic"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 2v6M2 5h6" stroke="#2F7D58" stroke-width="1.6"/></svg></span>Supplier concentration 78%<span class="lv">fix</span></div>
+        <div class="scorerow"><span class="num g" id="fcScore">0</span><span class="meta">fundability score<b id="fcMeta">Indicative facility £120k–£190k</b></span></div>
+        <div class="bar"><i id="fcBar" class="g"></i></div>
+        <div id="fcRows">
+          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Strong cash buffer<span class="lv">strength</span></div>
+          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Comfortable serviceability<span class="lv">strength</span></div>
+          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Healthy margin<span class="lv">strength</span></div>
+        </div>
       </div>
     </div>
   </div></div>
@@ -306,6 +320,33 @@
   <div class="pains-foot">You don't have a funding problem. You have a <span class="g">clarity problem</span> — that's what we fix first.</div>
 </div></section>
 
+<section class="blk" id="fundability-check" style="padding-top:0"><div class="wrap reveal">
+  <span class="seclabel">Free · 90 seconds · no documents</span>
+  <div class="sechead">The free <span style="color:var(--accent)">Fundability Check.</span></div>
+  <p style="font-size:17px;line-height:1.55;color:var(--inkSoft);max-width:48ch;margin-top:14px">Answer a handful of quick questions in simple bands — no exact figures, no documents, no bank access. You'll get an instant, indicative read on how fundable your business looks today.</p>
+  <div class="sol">
+    <div class="solc">
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#2F7D58" stroke-width="1.4"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
+      <h4>A clear fundability verdict</h4>
+      <p>Red, amber or green — and what it means for your business right now.</p>
+    </div>
+    <div class="solc">
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 13h14M6 13V8M10 13V4M14 13V10" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
+      <h4>An indicative facility range</h4>
+      <p>The kind of facility you could realistically explore at your size.</p>
+    </div>
+    <div class="solc">
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14a6 6 0 0112 0" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 14l4-3.5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
+      <h4>Your three biggest levers</h4>
+      <p>What's working in your favour — and what's holding you back.</p>
+    </div>
+  </div>
+  <div style="margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+    <a class="btn accent" href="/triage/">Free Fundability Check →</a>
+    <span style="font-size:13px;color:var(--mut)">Indicative and self-reported — a fast snapshot, not a full diagnostic.</span>
+  </div>
+</div></section>
+
 <section class="blk" id="cost" style="padding-top:0"><div class="wrap reveal">
   <div class="calc"><div class="calc-inner">
     <div class="left">
@@ -329,7 +370,7 @@
       <div class="per" id="per">per year, vs. what you'd qualify for</div>
       <div class="gradbar"></div>
       <div class="gradl"><span>+200bps best</span><span>+400bps worst</span></div>
-      <div class="calc-foot">Roughly <b id="mult">3.4×</b> the cost of a full Read — left on the table every year.</div>
+      <div class="calc-foot">That's recoverable margin — exactly the gap a proper read is built to find and close.</div>
     </div>
   </div></div>
 </div></section>
@@ -346,9 +387,9 @@
     </div>
     <div class="solc">
       <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 5.5V10l3 2" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Answers in 5 minutes</h4>
-      <p>No CFO to hire, no three-month consulting project, no waiting weeks on a broker to call back. Upload your numbers and your Read turns around in about 5 minutes — saving you weeks of work.</p>
-      <div class="stat">5-minute turnaround</div>
+      <h4>Answers in 90 seconds</h4>
+      <p>No CFO to hire, no three-month consulting project, no waiting weeks for a broker to call back. The free Fundability Check reads you in 90 seconds — then a deeper Read-Lite goes further from your own numbers.</p>
+      <div class="stat">90 seconds · free</div>
     </div>
     <div class="solc">
       <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14a7 7 0 0114 0" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 14l4-3.5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
@@ -363,10 +404,11 @@
   <span class="seclabel">How it works</span>
   <div class="sechead">A staircase, not a <span style="color:var(--accent)">sales call.</span></div>
   <div class="steps">
-    <div class="step"><div class="n">01</div><h4>Read-Lite</h4><p>Upload financials &amp; store data. Get a readiness score, one strength, three fixes.</p><div class="price">Free</div></div>
-    <div class="step"><div class="n">02</div><h4>The full Read</h4><p>A 22-page lender-grade memo, credit pack and five-week plan.</p><div class="price">£2,950 · refundable</div></div>
-    <div class="step"><div class="n">03</div><h4>The Sprint</h4><p>We sit inside finance &amp; ops for twelve weeks until the margin moves.</p><div class="price">Retainer</div></div>
-    <div class="step"><div class="n">04</div><h4>The Brokerage</h4><p>We line up the right capital and negotiate it — or tell you not to.</p><div class="price">Disclosed commission</div></div>
+    <div class="step"><div class="n">01</div><h4>Free Fundability Check</h4><p>90 seconds, no data, no documents. An instant, indicative read on how fundable your business looks today.</p><div class="price">Free</div></div>
+    <div class="step"><div class="n">02</div><h4>Read-Lite</h4><p>A deeper read built from your real numbers — surfacing the key risks and concerns.</p><div class="price">Free · needs your data</div></div>
+    <div class="step"><div class="n">03</div><h4>Credit memo pack</h4><p>A lender-grade pack laying out the key risks and concerns — and exactly how to fix them.</p><div class="price">Paid</div></div>
+    <div class="step"><div class="n">04</div><h4>The Sprint</h4><p>We sit inside finance &amp; ops for twelve weeks until the margin moves.</p><div class="price">Retainer</div></div>
+    <div class="step"><div class="n">05</div><h4>The Brokerage</h4><p>We line up the right capital and negotiate it — or tell you not to.</p><div class="price">Disclosed commission</div></div>
   </div>
 </div></section>
 
@@ -397,8 +439,8 @@
   <div class="sechead">Before you upload <span style="color:var(--accent)">a single file.</span></div>
   <div class="faq">
     <details class="qa" open><summary>Is it safe to share my bank statements and financials?<span class="pm">+</span></summary><div class="ans">Yes. Everything you upload is encrypted in transit and at rest, stored in a private EU-hosted folder, and visible only to your named analyst. You can ask us to permanently delete all of it at any time. See our <a href="privacy.html">Privacy Policy</a> and <a href="data-rights.html">Data Rights</a> page.</div></details>
-    <details class="qa"><summary>Do I have to pay to get started?<span class="pm">+</span></summary><div class="ans">No. The Read-Lite is free and needs no payment and no bank access — just your financials and store data. You only pay if you choose the full Read or a Sprint, and the full Read fee is refunded if you take a retainer.</div></details>
-    <details class="qa"><summary>Do I need to give you access to my bank?<span class="pm">+</span></summary><div class="ans">Not to begin. The Read-Lite works from documents you upload (PDF or CSV). Direct bank and accounting connections are optional and only ever set up with your explicit consent later.</div></details>
+    <details class="qa"><summary>Do I have to pay to get started?<span class="pm">+</span></summary><div class="ans">No. Start with the free Fundability Check — 90 seconds, no documents. The deeper Read-Lite is free too, built from your own numbers. You only pay if you choose to go further with a credit memo or a Sprint.</div></details>
+    <details class="qa"><summary>Do I need to give you access to my bank?<span class="pm">+</span></summary><div class="ans">Not to begin. The free Fundability Check needs no documents at all. The deeper Read-Lite works from documents you upload (PDF or CSV), and direct bank or accounting connections are optional — only ever set up with your explicit consent later.</div></details>
     <details class="qa"><summary>What makes you different from a finance broker?<span class="pm">+</span></summary><div class="ans">Brokers are paid by lenders on volume, so they're incentivised to place you in the biggest deal. We're paid by you, read your business like an underwriter first, and disclose any commission in writing — and we'll tell you when <em>not</em> to borrow.</div></details>
     <details class="qa"><summary>Who actually reads my business?<span class="pm">+</span></summary><div class="ans">An ACA-qualified chartered accountant reads your file personally. You get findings in plain English, each tied to a number you can point to — never an opaque score.</div></details>
   </div>
@@ -415,8 +457,8 @@
   <div class="glow"></div>
   <div class="wrapi">
     <h2 class="typeline"><span data-tw>Find out what you'd </span><span data-tw class="g">really</span><span data-tw> qualify for.</span></h2>
-    <p>Start with a free Read-Lite. No payment, no bank access, no obligation.</p>
-    <div class="cta"><a class="btn accent js-start" href="#">Start my free Read →</a><a class="btn ghost" href="#how">See how it works</a></div>
+    <p>Start with your free Fundability Check — 90 seconds, no documents, no obligation.</p>
+    <div class="cta"><a class="btn accent" href="/triage/">Free Fundability Check →</a><a class="btn ghost js-start" href="#">Start my free Read →</a></div>
   </div>
 </div></div>
 
@@ -466,11 +508,43 @@
     requestAnimationFrame(step);
   }
 
-  /* hero score + bar, fire when hero visible (immediately) */
-  setTimeout(function(){
-    countUp(document.getElementById('score'), 71, '', '', 1400);
-    var bar=document.getElementById('scorebar'); if(bar) bar.style.width='71%';
-  }, reduce?0:450);
+  /* fundability tile — cycles through the three example outcomes so customers
+     see what the Check returns: Fundable now / 3–6 months / 6+ months */
+  (function(){
+    var card=document.getElementById('fcCard'); if(!card) return;
+    var pill=document.getElementById('fcPill'), scoreEl=document.getElementById('fcScore'),
+        metaEl=document.getElementById('fcMeta'), barEl=document.getElementById('fcBar'), rowsEl=document.getElementById('fcRows');
+    var S=[
+      {cls:'g',pill:'Fundable now',score:88,meta:'Indicative facility £120k–£190k',
+        rows:[['ok','Strong cash buffer','strength'],['ok','Comfortable serviceability','strength'],['ok','Healthy margin','strength']]},
+      {cls:'a',pill:'Fundable in 3–6 months',score:64,meta:'A few things to firm up first',
+        rows:[['ok','Solid demand &amp; repeat revenue','strength'],['fix','Margin a little tight','fix'],['fix','Cash buffer on the thin side','fix']]},
+      {cls:'r',pill:'Fundable in 6+ months',score:32,meta:'Strengthen these first',
+        rows:[['fix','Stacked across 4+ facilities','fix'],['fix','Cash buffer thin','fix'],['fix','Serviceability stretched','fix']]}
+    ];
+    function rowsHtml(rows){return rows.map(function(r){
+      var bg=r[0]==='ok'?'#E7F2EC':'#FAF1DF', st=r[0]==='ok'?'#2F7D58':'#C98A2B';
+      var svg=r[0]==='ok'
+        ? '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="'+st+'" stroke-width="1.6" fill="none"/></svg>'
+        : '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 2v6M2 5h6" stroke="'+st+'" stroke-width="1.6"/></svg>';
+      return '<div class="frow"><span class="ic" style="background:'+bg+'">'+svg+'</span>'+r[1]+'<span class="lv">'+r[2]+'</span></div>';
+    }).join('');}
+    function paint(s,anim){
+      pill.textContent=s.pill; pill.className='pill '+s.cls;
+      scoreEl.className='num '+s.cls; metaEl.textContent=s.meta;
+      barEl.className=s.cls; barEl.style.width=s.score+'%';
+      rowsEl.innerHTML=rowsHtml(s.rows);
+      if(anim){ countUp(scoreEl,s.score,'','',1100); } else { scoreEl.textContent=s.score; }
+    }
+    if(reduce){ paint(S[0],false); return; }
+    var i=0, fade=[pill,scoreEl,metaEl,rowsEl];
+    setTimeout(function(){ paint(S[0],true); }, 450);
+    setInterval(function(){
+      i=(i+1)%S.length;
+      fade.forEach(function(el){el.style.opacity=0;});
+      setTimeout(function(){ paint(S[i],true); fade.forEach(function(el){el.style.opacity=1;}); }, 420);
+    }, 4200);
+  })();
 
   /* trust stat count-ups on view */
   var sio = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ var el=e.target; countUp(el, +el.dataset.count, el.dataset.pre||'', el.dataset.suf||'', 1200); sio.unobserve(el);} }); }, {threshold:.6});
@@ -478,9 +552,9 @@
 
   /* calculator with animated numbers */
   (function(){
-    var READ=2950, term=1, cur={low:0,high:0};
+    var term=1, cur={low:0,high:0};
     var range=document.getElementById('range');
-    var amtEl=document.getElementById('amt'),lowEl=document.getElementById('low'),highEl=document.getElementById('high'),perEl=document.getElementById('per'),multEl=document.getElementById('mult');
+    var amtEl=document.getElementById('amt'),lowEl=document.getElementById('low'),highEl=document.getElementById('high'),perEl=document.getElementById('per');
     var chips=document.querySelectorAll('.chip'),termBtns=document.querySelectorAll('[data-term]');
     function fmt(n){return '£'+Math.round(n).toLocaleString('en-GB');}
     function animVal(el,from,to,dur){ if(reduce){el.textContent=fmt(to);return;} var s=null; function st(t){if(!s)s=t;var p=Math.min((t-s)/dur,1);var v=from+(to-from)*(1-Math.pow(1-p,3));el.textContent=fmt(v);if(p<1)requestAnimationFrame(st);} requestAnimationFrame(st); }
@@ -491,7 +565,6 @@
       if(animate){ animVal(lowEl,cur.low,lo,500); animVal(highEl,cur.high,hi,500); } else { lowEl.textContent=fmt(lo); highEl.textContent=fmt(hi); }
       cur.low=lo; cur.high=hi;
       perEl.textContent=(term===3?'over a 3-year facility':'per year')+", vs. what you'd qualify for";
-      var m=(amt*0.02)/READ; multEl.textContent=(m>=10?Math.round(m):m.toFixed(1))+'×';
       chips.forEach(function(c){c.classList.toggle('on',+c.dataset.amt===amt);});
       var pct=(amt-range.min)/(range.max-range.min)*100;
       range.style.background='linear-gradient(90deg,var(--accent) '+pct+'%,var(--track) '+pct+'%)';
