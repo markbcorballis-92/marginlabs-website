@@ -272,6 +272,7 @@ const OPT = {
   debt_providers:     [{v:'1'},{v:'2'},{v:'3'},{v:'4+'}],
   debt_monthly_band:  [{v:'<£1k'},{v:'£1–5k'},{v:'£5–15k'},{v:'£15–50k'},{v:'£50k+'},{v:'Prefer not to say'}],
   funding_intent:     [{v:'Raise finance now'},{v:"Understand if we're fundable"},{v:'Improve before raising'},{v:'Just exploring'}],
+  country_of_registration: [{v:'UK'},{v:'Ireland'},{v:'US'},{v:'Other'}],
 };
 
 /* ---------------- band midpoints (currency-agnostic numbers) ---------------- */
@@ -555,6 +556,7 @@ function viewStep5() {
       <div class="field"><label>Company number</label><input type="text" id="cnum" placeholder="e.g. 09876543" value="${a.company_number || ''}" /><div class="hint">Optional, but it sharpens the read.</div></div>
       <div class="field"><label>Website *</label><input type="url" id="web" placeholder="https://yourstore.com" value="${a.website_url || ''}" /></div>
     </div>
+    <div class="field"><label>Country of registration</label>${optGroup('country_of_registration')}<div class="hint">Optional — helps us check the right business registry.</div></div>
     <div class="field"><label>What are you hoping to do?</label>${optGroup('funding_intent')}</div>
     <div class="consent">
       <input type="checkbox" id="consent" ${a.consent ? 'checked' : ''} />
@@ -758,6 +760,7 @@ async function doSubmit() {
   const row = {
     email: a.email, first_name: a.first_name, last_name: a.last_name,
     legal_entity_name: a.legal_entity_name, company_number: a.company_number || null, website_url: a.website_url,
+    country_of_registration: a.country_of_registration || null,
     revenue_band: money('revenue_band'), revenue_3m_band: money('revenue_3m_band'), aov_band: money('aov_band'),
     business_type: a.business_type, gross_margin_band: a.gross_margin_band,
     revenue_direction: a.revenue_direction, repeat_band: a.repeat_band,
