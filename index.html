@@ -246,7 +246,6 @@
     .aurora b{animation:none}
     .hero .he,.hero .pcard{animation:none;opacity:1;transform:none}
     .reveal{opacity:1;transform:none;transition:none}
-    .bar i{transition:none}
   }
 </style>
 </head>
@@ -497,12 +496,12 @@
       (function ch(){ if(j<=txt.length){s.textContent=txt.slice(0,j);j++;setTimeout(ch,28);} else {i++;seg();} })();
     })();
   }
-  var tio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(!reduce)typeLine(e.target);tio.unobserve(e.target);}});},{threshold:.6});
+  var tio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){typeLine(e.target);tio.unobserve(e.target);}});},{threshold:.6});
   document.querySelectorAll('.typeline').forEach(function(el){ tio.observe(el); });
 
   /* count-up helper */
-  function countUp(el, to, pre, suf, dur){
-    if(reduce){ el.textContent = (pre||'') + to + (suf||''); return; }
+  function countUp(el, to, pre, suf, dur, force){
+    if(reduce && !force){ el.textContent = (pre||'') + to + (suf||''); return; }
     var start=null;
     function step(t){ if(!start)start=t; var p=Math.min((t-start)/dur,1); var v=Math.round(to*(1-Math.pow(1-p,3))); el.textContent=(pre||'')+v+(suf||''); if(p<1)requestAnimationFrame(step); }
     requestAnimationFrame(step);
@@ -534,9 +533,8 @@
       scoreEl.className='num '+s.cls; metaEl.textContent=s.meta;
       barEl.className=s.cls; barEl.style.width=s.score+'%';
       rowsEl.innerHTML=rowsHtml(s.rows);
-      if(anim){ countUp(scoreEl,s.score,'','',1100); } else { scoreEl.textContent=s.score; }
+      if(anim){ countUp(scoreEl,s.score,'','',1100,true); } else { scoreEl.textContent=s.score; }
     }
-    if(reduce){ paint(S[0],false); return; }
     var i=0, fade=[pill,scoreEl,metaEl,rowsEl];
     setTimeout(function(){ paint(S[0],true); }, 450);
     setInterval(function(){
