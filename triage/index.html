@@ -1,1 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MarginLabs — Free fundability check</title>
+<meta name="description" content="A 90-second, no-login fundability check. Answer in simple bands and get an indicative read on where your business stands with lenders." />
+<link rel="icon" href="../marginlabs-favicon.svg" type="image/svg+xml" />
+<style>
+  :root {
+    --bone: #FFFFFF; --bone2: #F1F5F2; --paper: #F6F8F6;
+    --ink: #10231A; --inkSoft: #42554C;
+    --stone1: #7C8A83; --stone2: #B5B1A4; --stone3: #D6D1C2;
+    --ledger: #2F7D58; --ledgerSoft: #5BB286; --clay: #2F7D58;
+    --good: #2F7D58; --bad: #B14431; --amber: #C98A2B;
+    --goodSoft: #E7F2EC; --amberSoft: #FAF1DF; --redSoft: #FBEAE6;
+    --line: #E8ECEA; --lineS: #F0F2F0; --accentSoft: #E7F2EC; --accentLine: #CDE5D7; --radius: 14px;
+    --serif: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bone); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100%; overflow-x: hidden; }
+  a { color: inherit; }
+  .mono { font-family: var(--mono); }
 
+  .shell { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px; border-bottom: 1px solid var(--line); background: var(--bone);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 22px; font-weight: 680; letter-spacing: -0.01em; }
+  .logo em { font-style: normal; color: var(--ledger); }
+  .topbar .right { display: flex; align-items: center; gap: 16px; }
+  .mode-pill {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 6px 10px; border: 1px solid var(--line); color: var(--stone1); border-radius: 999px; white-space: nowrap;
+  }
+  .mode-pill.live { color: var(--ledger); border-color: var(--ledger); }
+  .secure { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); display: flex; align-items: center; gap: 7px; }
+  .secure svg { display: block; }
+  /* currency toggle */
+  .curtoggle { display: inline-flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .curtoggle button { border: none; background: transparent; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--stone1); width: 30px; height: 26px; border-radius: 999px; cursor: pointer; transition: all 0.12s; }
+  .curtoggle button.on { background: var(--ink); color: #fff; }
+
+  .stage { display: grid; place-items: start center; padding: 56px 24px 80px; }
+  .card { width: 100%; max-width: 680px; }
+
+  .stepper { display: flex; gap: 8px; margin-bottom: 38px; }
+  .stepper .st { flex: 1; }
+  .stepper .st .bar { height: 3px; background: var(--stone3); border-radius: 999px; }
+  .stepper .st.done .bar, .stepper .st.on .bar { background: var(--ledger); }
+  .stepper .st .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); margin-top: 10px; }
+  .stepper .st.on .lbl, .stepper .st.done .lbl { color: var(--ink); }
+
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
+  h1.title { font-family: var(--serif); font-weight: 680; font-size: 44px; letter-spacing: -0.02em; line-height: 1.04; margin: 14px 0 14px; }
+  h1.title em { font-style: normal; color: var(--ledger); }
+  p.lead { font-size: 15px; line-height: 1.6; color: var(--inkSoft); max-width: 560px; }
+
+  .field { margin-top: 28px; }
+  .field > label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); margin-bottom: 11px; }
+  .field input[type=text], .field input[type=email], .field input[type=url] {
+    width: 100%; padding: 14px 16px; font-family: var(--sans); font-size: 15px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px; outline: none; transition: border-color 0.12s;
+  }
+  .field input:focus { border-color: var(--ledger); }
+  .field .hint { font-size: 12px; color: var(--stone1); margin-top: 8px; line-height: 1.5; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid2 .field { margin-top: 28px; }
+  @media (max-width: 560px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .optgrid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink);
+    padding: 11px 16px; border-radius: 999px; background: var(--paper);
+    border: 1px solid var(--line); cursor: pointer; transition: all 0.12s; line-height: 1;
+  }
+  .opt:hover { border-color: var(--accentLine); }
+  .opt.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: none;
+    font-family: var(--sans); font-size: 15px; font-weight: 560; letter-spacing: -0.01em;
+    padding: 13px 22px; border-radius: 999px; background: var(--ink); color: #fff; transition: transform 0.14s, box-shadow 0.14s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 26px -14px rgba(16,35,26,.5); }
+  .btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+  .btn:hover[disabled] { transform: none; box-shadow: none; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn.green { background: var(--ledger); }
+  .actions { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .actions.solo { justify-content: flex-end; }
+
+  .reassure { margin-top: 22px; padding: 14px 18px; background: var(--accentSoft); border: 1px solid var(--accentLine); border-radius: 12px; font-size: 12.5px; line-height: 1.6; color: var(--inkSoft); }
+  .reassure b { font-weight: 600; }
+
+  .consent { margin-top: 28px; display: flex; gap: 12px; align-items: flex-start; padding: 18px; background: var(--bone2); border: 1px solid var(--line); border-radius: 12px; }
+  .consent input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--ledger); flex: none; }
+  .consent label { font-size: 12.5px; line-height: 1.6; color: var(--inkSoft); }
+  .consent a { color: var(--ledger); }
+
+  .err { margin-top: 18px; padding: 14px 16px; background: rgba(177,68,49,0.08); border: 1px solid rgba(177,68,49,0.3); border-radius: 10px; color: var(--bad); font-size: 13px; }
+
+  /* ---- verdict / conversion screen (Phase 4) ---- */
+  .vbadge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; border: 1px solid; }
+  .ragdot { width: 10px; height: 10px; border-radius: 50%; flex: none; display: inline-block; }
+  .r-green  { color: var(--good); border-color: var(--accentLine); background: var(--goodSoft); }
+  .r-amber  { color: var(--amber); border-color: #EBD9B4; background: var(--amberSoft); }
+  .r-red    { color: var(--bad); border-color: #EAC9C1; background: var(--redSoft); }
+  .ragdot.r-green { background: var(--good); }
+  .ragdot.r-amber { background: var(--amber); }
+  .ragdot.r-red   { background: var(--bad); }
+
+  .vsize { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); margin-top: 8px; }
+
+  .emailed { margin-top: 22px; display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: var(--goodSoft); border: 1px solid var(--accentLine); border-radius: 12px; font-size: 13px; color: var(--inkSoft); }
+  .emailed svg { flex: none; }
+  .emailed b { color: var(--ink); font-weight: 600; }
+
+  .kpihead { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); margin: 30px 0 4px; }
+  .pillars { border-top: 1px solid var(--line); }
+  .prow { display: grid; grid-template-columns: 14px 1fr auto; gap: 14px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--lineS); }
+  .prow .plabel { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .prow .preason { font-size: 13px; color: var(--inkSoft); line-height: 1.5; margin-top: 3px; }
+  .ptag { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 999px; border: 1px solid; }
+  .withheldnote { font-size: 12.5px; color: var(--stone1); margin-top: 14px; line-height: 1.6; }
+
+  .facbox { margin-top: 28px; background: var(--goodSoft); border: 1px solid var(--accentLine); border-radius: 16px; padding: 24px; }
+  .faclabel { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ledger); }
+  .facrange { font-family: var(--serif); font-size: 40px; font-weight: 680; letter-spacing: -0.03em; margin: 8px 0 6px; }
+  .faccav { font-size: 12px; color: var(--inkSoft); line-height: 1.5; }
+
+  .hookhead { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); margin: 30px 0 10px; }
+  .hooks { display: flex; flex-direction: column; gap: 10px; }
+  .hook { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 14px 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; }
+  .hooklock { margin-top: 2px; }
+  .hookt { font-size: 14px; font-weight: 600; }
+  .hookd { font-size: 12.5px; color: var(--stone1); line-height: 1.55; margin-top: 3px; }
+
+  .ctaband { margin-top: 28px; background: var(--ink); color: #fff; border-radius: 18px; padding: 30px; text-align: center; }
+  .ctaband .ctacopy { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.86); max-width: 48ch; margin: 0 auto 22px; }
+  .ctaband .btn.green { background: var(--ledger); }
+  .ctadisc { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 16px; line-height: 1.5; max-width: 50ch; margin-left: auto; margin-right: auto; }
+
+  .caveat { margin-top: 22px; font-size: 12px; line-height: 1.6; color: var(--stone1); }
+
+  .footer { padding: 24px 32px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone1); }
+  .footer a { color: var(--stone1); }
+  .footer a:hover { color: var(--ink); }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--bone); padding: 14px 22px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 50;
+  }
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 680px) {
+    h1.title { font-size: 34px; }
+    .facrange { font-size: 32px; }
+    .stage { padding: 36px 18px 60px; }
+    .topbar { padding: 14px 16px; gap: 10px; }
+    .topbar .secure { display: none; }
+    .topbar .mode-pill { display: none; }     /* free the crowded top bar; keep the currency toggle */
+    .stepper .st .lbl { font-size: 8px; }
+    .opt { padding: 14px 16px; }               /* ~44px finger targets */
+    .ctaband { padding: 22px; }
+    .ctaband .btn { max-width: 100%; white-space: normal; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="logo">
+      <svg width="22" height="19" viewBox="0 0 280 240" fill="none">
+        <line x1="20" y1="220" x2="260" y2="220" stroke="#10231A" stroke-width="8" />
+        <rect x="40" y="150" width="48" height="70" fill="#10231A" />
+        <rect x="116" y="100" width="48" height="120" fill="#10231A" />
+        <rect x="192" y="40" width="48" height="180" fill="#2F7D58" />
+      </svg>
+      Margin<em>Labs.</em>
+    </div>
+    <div class="right">
+      <span class="secure">
+        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="5.5" width="9" height="6.5" stroke="#8A8678" stroke-width="1.2"/><path d="M3 5.5V3.5a2.5 2.5 0 015 0v2" stroke="#8A8678" stroke-width="1.2"/></svg>
+        Free check · no login
+      </span>
+      <span class="curtoggle" id="curToggle">
+        <button data-cur="GBP" class="on">£</button>
+        <button data-cur="EUR">€</button>
+        <button data-cur="USD">$</button>
+      </span>
+      <span class="mode-pill" id="modePill">Demo mode</span>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="app"><!-- rendered by JS --></div>
+  </div>
+
+  <div class="footer">
+    <span>© MMXXVI MarginLabs · Indicative only</span>
+    <span><a href="../privacy.html">Privacy</a> · <a href="../terms.html">Terms</a></span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   MarginLabs · Stage 1 · Lite creditworthiness triage (public form)
+   No login. Scoring v2 runs IN-PAGE on submit (pure function of the
+   answers), then ONE row is inserted into `triage` via the anon key,
+   carrying the computed verdict + facility + size + currency.
+   ===================================================================== */
+
+/* CONFIG — same project + publishable anon key as the portal/console. */
+const SUPABASE_URL = "https://dyoltpiyswztqpkywxlv.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_uuF9dA9DDxlHD38cq7BMPg_iQDZQdaG";
+const PORTAL_URL = "https://intake.getmarginlabs.com/";
+
+const LIVE = !SUPABASE_URL.includes("YOUR_PROJECT") && !SUPABASE_ANON_KEY.includes("YOUR_ANON");
+let sb = null;
+
+function loadSDK() {
+  return new Promise((resolve) => {
+    if (window.supabase) return resolve(true);
+    const s = document.createElement('script');
+    s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js";
+    s.onload = () => resolve(true);
+    s.onerror = () => { window.__sbFailed = true; resolve(false); };
+    document.head.appendChild(s);
+  });
+}
+function ensureClient() {
+  if (sb) return sb;
+  if (LIVE && window.supabase && !window.__sbFailed) {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  return sb;
+}
+
+/* ---------------- currency ---------------- */
+const SYM = { GBP: '£', EUR: '€', USD: '$' };
+const MONEY_KEYS = ['revenue_band', 'revenue_3m_band', 'aov_band', 'cash_band', 'debt_monthly_band'];
+function sym() { return SYM[state.currency] || '£'; }
+// Money bands are authored canonically in £; display swaps the active symbol.
+function disp(s) { return String(s).split('£').join(sym()); }
+
+/* ---------------- option sets (money bands authored in £) ---------------- */
+const OPT = {
+  business_type:      [{v:'DTC'},{v:'Retail'},{v:'Both'},{v:'Other'}],
+  years_trading_band: [{v:'<1',l:'Under 1 year'},{v:'1–2',l:'1–2 years'},{v:'2–4',l:'2–4 years'},{v:'4+',l:'4+ years'}],
+  markets_count:      [{v:'1',l:'1 country'},{v:'2–3',l:'2–3 countries'},{v:'4+',l:'4+ countries'}],
+  uses_shopify:       [{v:true,l:'Yes',t:'bool'},{v:false,l:'No',t:'bool'}],
+  accounting_system:  [{v:'Xero'},{v:'QuickBooks'},{v:'Sage'},{v:'Other'},{v:'None / spreadsheets'}],
+  revenue_band:       [{v:'<£100k'},{v:'£100–500k'},{v:'£500k–1M'},{v:'£1–3M'},{v:'£3–5M'},{v:'£5M+'}],
+  revenue_3m_band:    [{v:'<£25k'},{v:'£25–100k'},{v:'£100–250k'},{v:'£250–500k'},{v:'£500k–1M'},{v:'£1M+'}],
+  aov_band:           [{v:'<£30'},{v:'£30–60'},{v:'£60–120'},{v:'£120–250'},{v:'£250+'}],
+  gross_margin_band:  [{v:'<30%'},{v:'30–50%'},{v:'50–70%'},{v:'70%+'},{v:'Not sure'}],
+  revenue_direction:  [{v:'Growing'},{v:'Flat'},{v:'Declining'}],
+  repeat_band:        [{v:'Mostly one-time'},{v:'Some repeat'},{v:'Strong repeat'}],
+  sku_concentration:  [{v:'One hero product'},{v:'A handful'},{v:'Broad range'}],
+  cash_band:          [{v:'<£10k'},{v:'£10–50k'},{v:'£50–150k'},{v:'£150–500k'},{v:'£500k+'},{v:'Prefer not to say'}],
+  has_debt:           [{v:true,l:'Yes',t:'bool'},{v:false,l:'No',t:'bool'}],
+  debt_providers:     [{v:'1'},{v:'2'},{v:'3'},{v:'4+'}],
+  debt_monthly_band:  [{v:'<£1k'},{v:'£1–5k'},{v:'£5–15k'},{v:'£15–50k'},{v:'£50k+'},{v:'Prefer not to say'}],
+  funding_intent:     [{v:'Raise finance now'},{v:"Understand if we're fundable"},{v:'Improve before raising'},{v:'Just exploring'}],
+};
+
+/* ---------------- band midpoints (currency-agnostic numbers) ---------------- */
+const MID_12M  = {'<£100k':50000,'£100–500k':300000,'£500k–1M':750000,'£1–3M':2000000,'£3–5M':4000000,'£5M+':7500000};
+const MID_3M   = {'<£25k':12500,'£25–100k':62500,'£100–250k':175000,'£250–500k':375000,'£500k–1M':750000,'£1M+':1500000};
+const MID_CASH = {'<£10k':5000,'£10–50k':30000,'£50–150k':100000,'£150–500k':325000,'£500k+':750000};
+const MID_DEBT = {'<£1k':500,'£1–5k':3000,'£5–15k':10000,'£15–50k':32500,'£50k+':75000};
+const IDX_12M  = {'<£100k':0,'£100–500k':1,'£500k–1M':2,'£1–3M':3,'£3–5M':4,'£5M+':5};
+const ANN_3M   = {'<£25k':0,'£25–100k':1,'£100–250k':2,'£250–500k':3,'£500k–1M':4,'£1M+':5};
+
+/* ---------------- state ---------------- */
+const state = {
+  step: 0,             // 0 welcome · 1..5 questions · 6 verdict
+  answers: {},         // keyed by column name (money bands held canonically in £)
+  currency: 'GBP',
+  ref: '',
+  result: null,
+  error: '',
+};
+
+const app = document.getElementById('app');
+const modePill = document.getElementById('modePill');
+if (LIVE) { modePill.textContent = 'Live · Supabase'; modePill.classList.add('live'); }
+
+function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
+function uid() { return Math.random().toString(36).slice(2, 10); }
+function answered(k) { const v = state.answers[k]; return v !== undefined && v !== ''; }
+function fmtMoney(n) { const s = sym(); if (n >= 1000000) { return s + (Math.round(n / 100000) / 10) + 'M'; } return s + Math.round(n / 1000) + 'k'; }
+
+/* ============================ SCORING ENGINE v2 ============================ */
+const PILLAR_WEIGHT = { cash:25, serv:25, margin:20, debt:15, growth:7, conc:4, track:4 };
+const STATES = ['Fundable Now', 'Fundable in 3–6 months', 'Fundable in 6+ months'];
+const RAGS   = ['Green', 'Amber', 'Red'];
+const VERDICTS = [
+  // Fundable Now
+  "On what you've told us, you're in fundable shape now — and not because you're big. What lenders actually underwrite is here: a real cash cushion, margins that can carry repayments, and either no existing debt or debt you're comfortably servicing. The job from here isn't whether you can raise — it's making sure you take the right facility at the right price, not the first one offered.",
+  // Fundable in 3–6 months
+  "You've got real foundations, and you're close. One or two of the things lenders lean on hardest — your cash buffer, how much existing finance you're carrying, or your margin headroom — would want firming up before a clean yes at the size you're after. They're specific and fixable: the kind of thing the next three to six months can move. You're nearly there, and now you know exactly where to aim.",
+  // Fundable in 6+ months  (redline applied: ends at "brings the runway in.")
+  "You're fundable — on a longer runway than the brands a lender says yes to today, and that's a normal place to be, not a knock-back. It isn't about your size; it's that one or more of the fundamentals lenders rely on — a cash cushion, room to service debt, healthy margins, or not being stretched across too many existing facilities — isn't in place yet. Each one is something you can build deliberately, in a sensible order. Over the months ahead, the highest-value move isn't borrowing — it's strengthening those fundamentals first. That's exactly what brings the runway in.",
+];
+
+function ragOf(pts) { return pts >= 70 ? 'Green' : pts >= 40 ? 'Amber' : 'Red'; }
+function ptsOf(rag) { return rag === 'Green' ? 100 : rag === 'Amber' ? 50 : 0; }
+
+function roundClean(x, dir) {
+  const step = x < 100000 ? 5000 : x < 500000 ? 10000 : x < 1000000 ? 25000 : 100000;
+  return dir === 'down' ? Math.floor(x / step) * step : Math.ceil(x / step) * step;
+}
+
+function scoreTriage(a) {
+  // ---- normalised monthly revenue (conservative blend) ----
+  const recent   = MID_3M[a.revenue_3m_band] / 3;
+  const trailing = MID_12M[a.revenue_band] / 12;
+  const ratio = recent / trailing;
+  const within30 = ratio >= 0.7 && ratio <= 1.3;
+  const norm = within30 ? (recent + trailing) / 2 : Math.min(recent, trailing);
+  const trailingAnnual = MID_12M[a.revenue_band];
+
+  // ---- trajectory (annualised 3-month vs 12-month) → Growth ----
+  const traj = ANN_3M[a.revenue_3m_band] - IDX_12M[a.revenue_band];
+  const trajLabel = traj >= 1 ? 'Accelerating' : traj === 0 ? 'Steady' : traj === -1 ? 'Softening' : 'Sharply slowing';
+  const trajPts = traj >= 1 ? 1 : traj === 0 ? 0 : traj === -1 ? -1 : -2;
+
+  // ---- CASH (25) : cash relative to monthly revenue ----
+  let cash;
+  if (a.cash_band === 'Prefer not to say') {
+    cash = { rag:'Amber', reason:'Cash position not shared — we’ve treated it cautiously.' };
+  } else {
+    const mid = MID_CASH[a.cash_band];
+    const months = mid / norm;
+    let rag = months >= 3 ? 'Green' : months >= 1 ? 'Amber' : 'Red';
+    if (mid < 10000 && rag === 'Green') rag = 'Amber';  // absolute-thinness guard
+    cash = { rag, reason:
+      rag === 'Green' ? 'A solid cash cushion relative to your monthly turnover.' :
+      rag === 'Amber' ? 'A workable cash buffer, but thinner than lenders prefer.' :
+                        'Cash buffer is thin against your monthly outgoings.' };
+  }
+
+  // ---- SERVICEABILITY (25) : debt repayment ÷ monthly revenue ----
+  let serv;
+  if (a.has_debt !== true) {
+    serv = { rag:'Green', reason:'No existing debt to service — full headroom for new finance.' };
+  } else if (a.debt_monthly_band === 'Prefer not to say') {
+    serv = { rag:'Amber', reason:'Repayment level not shared — treated cautiously.' };
+  } else {
+    const r = MID_DEBT[a.debt_monthly_band] / norm;
+    const pct = Math.round(r * 100) + '%';
+    const rag = r <= 0.15 ? 'Green' : r <= 0.25 ? 'Amber' : 'Red';
+    serv = { rag, reason:
+      rag === 'Green' ? `Existing repayments are about ${pct} of revenue — comfortable headroom.` :
+      rag === 'Amber' ? `Existing repayments are about ${pct} of revenue — limited room for more.` :
+                        `Existing repayments are about ${pct} of revenue — already a heavy load.` };
+  }
+
+  // ---- MARGIN (20) ----
+  let margin, marginNotSure = false;
+  const g = a.gross_margin_band;
+  if (g === '70%+' || g === '50–70%')      margin = { rag:'Green', reason:'Healthy gross margin — room to carry repayments.' };
+  else if (g === '30–50%')                 margin = { rag:'Amber', reason:'Workable margin, with limited room to service new debt.' };
+  else if (g === '<30%')                   margin = { rag:'Red',   reason:'Thin margin makes affordable debt-service hard to evidence.' };
+  else { marginNotSure = true;             margin = { rag:'Amber', reason:'Margin not yet known — worth pinning down; treated neutrally.' }; }
+
+  // ---- DEBT LOAD (15) : none is best; stacking caps ----
+  let debt, capMiddle = false, debtPts;
+  if (a.has_debt !== true) { debt = { rag:'Green', reason:'No external debt — maximum headroom.' }; debtPts = 100; }
+  else if (a.debt_providers === '1') { debt = { rag:'Green', reason:'A single facility — a normal, healthy debt position.' }; debtPts = 85; }
+  else if (a.debt_providers === '2') { debt = { rag:'Amber', reason:'Two facilities running — manageable, but a watch-item.' }; debtPts = 50; }
+  else if (a.debt_providers === '3') { debt = { rag:'Amber', reason:'Three facilities running — enough to make a new lender pause.' }; debtPts = 40; capMiddle = true; }
+  else if (a.debt_providers === '4+') { debt = { rag:'Red', reason:'Four or more facilities — reads as debt-stacking, a serious flag.' }; debtPts = 0; capMiddle = true; }
+  else { debt = { rag:'Amber', reason:'Existing finance noted — details light.' }; debtPts = 50; }
+
+  // ---- GROWTH (7) : direction + repeat + trajectory ----
+  const dirPts = { Growing:2, Flat:0, Declining:-2 }[a.revenue_direction];
+  const repPts = { 'Mostly one-time':-1, 'Some repeat':0, 'Strong repeat':1 }[a.repeat_band];
+  const gs = dirPts + repPts + trajPts;
+  const growth = { rag: gs >= 2 ? 'Green' : gs <= -2 ? 'Red' : 'Amber', reason:
+    gs >= 2 ? 'Demand is moving the right way, with repeat revenue underpinning it.' :
+    gs <= -2 ? 'Revenue is contracting — a lender will want it explained.' :
+              'Growth is steady-to-mixed.' };
+
+  // ---- CONCENTRATION (4) : SKU + markets ----
+  const skuPts = { 'Broad range':1, 'A handful':0, 'One hero product':-1 }[a.sku_concentration];
+  const mkPts  = { '4+':1, '2–3':0, '1':-1 }[a.markets_count];
+  const cs = skuPts + mkPts;
+  const conc = { rag: cs >= 1 ? 'Green' : cs <= -2 ? 'Red' : 'Amber', reason:
+    cs >= 1 ? 'Revenue spread across products and markets.' :
+    cs <= -2 ? 'Heavily reliant on one product in one market.' :
+              'Some product or market concentration to watch.' };
+
+  // ---- TRACK & SYSTEMS (4) : years + systems + not-sure margin ----
+  const yrPts = { '4+':2, '2–4':1, '1–2':-1, '<1':-3 }[a.years_trading_band];
+  const shPts = a.uses_shopify === true ? 1 : 0;
+  const acPts = (['Xero','QuickBooks','Sage'].includes(a.accounting_system)) ? 1 : (a.accounting_system === 'None / spreadsheets' ? -2 : 0);
+  const ts = yrPts + shPts + acPts + (marginNotSure ? -1 : 0);
+  const track = { rag: ts >= 3 ? 'Green' : ts >= 1 ? 'Amber' : 'Red', reason:
+    ts >= 3 ? 'Established trading history with clean, verifiable systems.' :
+    ts >= 1 ? 'Foundations forming — history or systems still maturing.' :
+             'Limited history or hard-to-verify books.' };
+
+  // ---- assemble pillars + weighted score ----
+  const defs = [
+    ['cash','Cash buffer',cash], ['serv','Serviceability',serv], ['margin','Margin',margin],
+    ['debt','Debt load',debt], ['growth','Growth',growth], ['conc','Concentration',conc], ['track','Track & systems',track],
+  ];
+  const pillars = defs.map(([key,label,p]) => {
+    const pts = key === 'debt' ? debtPts : ptsOf(p.rag);
+    return { key, label, rag:p.rag, reason:p.reason, pts, weight:PILLAR_WEIGHT[key] };
+  });
+  const score = pillars.reduce((s,p) => s + p.pts * p.weight, 0) / 100;
+
+  // ---- roll-up → state index ----
+  const heavy = pillars.filter(p => ['cash','serv','margin','debt'].includes(p.key));
+  const heavyReds = heavy.filter(p => p.rag === 'Red').length;
+  const cashRed = cash.rag === 'Red', servRed = serv.rag === 'Red';
+  let idx;
+  if (trailingAnnual < 10000) idx = 2;                                  // residual ~£10k floor
+  else if (heavyReds >= 2 || (cashRed && servRed) || score < 45) idx = 2;
+  else if (heavyReds === 0 && score >= 65) idx = 0;
+  else idx = 1;
+  // caps (downgrade only)
+  if (capMiddle) idx = Math.max(idx, 1);                                // 3+ providers hold at middle
+  const thinCash = (a.cash_band === '<£10k' || a.cash_band === '£10–50k');
+  if (a.revenue_direction === 'Declining' && thinCash) idx = Math.min(idx + 1, 2);
+
+  // ---- facility sizing (suppressed on 6+) ----
+  const multLow = trailingAnnual >= 500000 ? 2 : 1.5;
+  const multHigh = trailingAnnual >= 500000 ? 3 : 2;
+  let facility_low = null, facility_high = null;
+  if (idx < 2) { facility_low = roundClean(norm * multLow, 'down'); facility_high = roundClean(norm * multHigh, 'up'); }
+
+  // ---- size descriptor (descriptive only; never gates) ----
+  const size_descriptor = trailingAnnual < 250000 ? 'Early-stage' : trailingAnnual < 1000000 ? 'Established' : trailingAnnual < 5000000 ? 'Scaled' : 'Large';
+
+  // ---- top 3 most decisive pillars ----
+  const top3 = pillars.slice().sort((x,y) => Math.abs(y.pts - 50) * y.weight - Math.abs(x.pts - 50) * x.weight).slice(0, 3);
+
+  return {
+    rag_overall: RAGS[idx],
+    fundability_state: STATES[idx],
+    verdict_summary: VERDICTS[idx],
+    idx, score, size_descriptor, facility_low, facility_high,
+    norm, recent, trailing, trailingAnnual, trajectory: trajLabel, multiple: [multLow, multHigh],
+    pillars, top3keys: top3.map(p => p.key),
+  };
+}
+
+/* ---------------- view helpers ---------------- */
+const STEP_LABELS = ['Business', 'Scale', 'Growth', 'Position', 'You'];
+function ragClass(rag) { return 'r-' + String(rag || '').toLowerCase(); }
+
+function stepper() {
+  if (state.step < 1 || state.step > 5) return '';
+  return `<div class="stepper">${STEP_LABELS.map((s, i) => {
+    const idx = i + 1; const cls = idx < state.step ? 'done' : idx === state.step ? 'on' : '';
+    return `<div class="st ${cls}"><div class="bar"></div><div class="lbl">${String(idx).padStart(2,'0')} · ${s}</div></div>`;
+  }).join('')}</div>`;
+}
+function optGroup(key) {
+  const money = MONEY_KEYS.includes(key);
+  return `<div class="optgrid" data-group="${key}">${OPT[key].map(o => {
+    const sel = state.answers[key] === o.v;
+    const label = (o.l || o.v);
+    return `<button type="button" class="opt ${sel ? 'on' : ''}" data-key="${key}" data-val="${String(o.v)}" data-type="${o.t || 'str'}">${money ? disp(label) : label}</button>`;
+  }).join('')}</div>`;
+}
+function q(label, key, hint) { return `<div class="field"><label>${label}</label>${optGroup(key)}${hint ? `<div class="hint">${hint}</div>` : ''}</div>`; }
+
+/* ---------------- step views ---------------- */
+function viewWelcome() {
+  return `
+    <span class="eyebrow">Free fundability check · no login</span>
+    <h1 class="title">Where do you stand<br/>with <em>lenders?</em></h1>
+    <p class="lead">A 90-second, no-obligation read on your business's fundability. Answer in simple bands — no exact figures, no documents, no bank access. You'll see an indicative verdict the moment you're done, and we'll email you the same thing.</p>
+    <div class="reassure"><b>Indicative only.</b> A quick self-reported snapshot, not a full diagnostic. Nothing you enter is shared publicly, and you can ask us to delete it at any time. <b>Working in € or $?</b> Switch currency top-right.</div>
+    <div class="actions solo"><button class="btn green" id="next">Start my free check →</button></div>`;
+}
+function viewStep1() {
+  return `${stepper()}
+    <span class="eyebrow">Step 01 · The business</span>
+    <h1 class="title">Tell us about<br/>the <em>business.</em></h1>
+    <p class="lead">The basics first — single taps, nothing sensitive yet.</p>
+    ${q('What kind of business is it?', 'business_type')}
+    ${q('How long has it been trading?', 'years_trading_band')}
+    ${q('How many countries do you sell to?', 'markets_count')}
+    ${q('Do you sell on Shopify?', 'uses_shopify')}
+    ${q('What do you keep the books in?', 'accounting_system', 'Helps us gauge how readily a lender can verify your numbers.')}
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+}
+function viewStep2() {
+  return `${stepper()}
+    <span class="eyebrow">Step 02 · Scale &amp; margin</span>
+    <h1 class="title">Scale and <em>margins.</em></h1>
+    <p class="lead">Rough bands are all we need — pick the closest one. Amounts are in ${sym()} (switch top-right).</p>
+    ${q('Revenue over the last 12 months', 'revenue_band')}
+    ${q('Revenue in the last 3 months', 'revenue_3m_band', 'Your most recent run-rate — we read it against the annual band for trajectory.')}
+    ${q('Average order value', 'aov_band')}
+    ${q('Gross margin', 'gross_margin_band', "Not sure? That's a fine answer — pick it and we'll note it.")}
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+}
+function viewStep3() {
+  return `${stepper()}
+    <span class="eyebrow">Step 03 · Growth</span>
+    <h1 class="title">Growth and <em>focus.</em></h1>
+    <p class="lead">How the business is moving, and how concentrated it is.</p>
+    ${q('Revenue over the last 12 months has been…', 'revenue_direction')}
+    ${q('How much of your revenue is repeat customers?', 'repeat_band')}
+    ${q('How concentrated is your product range?', 'sku_concentration')}
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+}
+function viewStep4() {
+  const showDebt = state.answers.has_debt === true;
+  return `${stepper()}
+    <span class="eyebrow">Step 04 · Position</span>
+    <h1 class="title">Cash and <em>finance.</em></h1>
+    <p class="lead">The last and most sensitive bit. Bands only — never exact figures — and "prefer not to say" is always there.</p>
+    ${q('Roughly how much cash is in the business bank account?', 'cash_band', 'A rough band is fine. We never see statements at this stage.')}
+    ${q('Is the business currently repaying any finance?', 'has_debt')}
+    ${showDebt ? q('How many finance providers are you repaying?', 'debt_providers') : ''}
+    ${showDebt ? q('Total repaid across all of them, per month', 'debt_monthly_band') : ''}
+    <div class="reassure"><b>Why we ask.</b> Existing finance and your cash cushion are the biggest drivers of whether a lender says yes — and how much more they'll lend. It stays private to your analyst.</div>
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+}
+function viewStep5() {
+  const a = state.answers;
+  return `${stepper()}
+    <span class="eyebrow">Step 05 · You</span>
+    <h1 class="title">Where do we<br/>send your <em>read?</em></h1>
+    <p class="lead">Your indicative verdict shows on the next screen and lands in your inbox. No spam, no calls unless you ask.</p>
+    <div class="grid2">
+      <div class="field"><label>First name *</label><input type="text" id="first" placeholder="Sam" value="${a.first_name || ''}" autocomplete="given-name" /></div>
+      <div class="field"><label>Last name *</label><input type="text" id="last" placeholder="Okafor" value="${a.last_name || ''}" autocomplete="family-name" /></div>
+    </div>
+    <div class="field"><label>Work email *</label><input type="email" id="email" placeholder="you@yourcompany.com" value="${a.email || ''}" autocomplete="email" /></div>
+    <div class="field"><label>Business / legal entity name *</label><input type="text" id="legal" placeholder="Carrow &amp; Bell Ltd" value="${a.legal_entity_name || ''}" /></div>
+    <div class="grid2">
+      <div class="field"><label>Company number</label><input type="text" id="cnum" placeholder="e.g. 09876543" value="${a.company_number || ''}" /><div class="hint">Optional, but it sharpens the read.</div></div>
+      <div class="field"><label>Website *</label><input type="url" id="web" placeholder="https://yourstore.com" value="${a.website_url || ''}" /></div>
+    </div>
+    <div class="field"><label>What are you hoping to do?</label>${optGroup('funding_intent')}</div>
+    <div class="consent">
+      <input type="checkbox" id="consent" ${a.consent ? 'checked' : ''} />
+      <label for="consent">I'm authorised to share this business's information, and I accept the <a href="../terms.html" target="_blank">Terms</a> and <a href="../privacy.html" target="_blank">Privacy Policy</a>.</label>
+    </div>
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn green" id="submit" ${a.consent ? '' : 'disabled'}>See my verdict →</button></div>`;
+}
+
+/* ---------------- verdict / conversion screen (section 9) ---------------- */
+function portalUrl(src) {
+  return PORTAL_URL + '?email=' + encodeURIComponent(state.answers.email || '') +
+         '&ref=' + encodeURIComponent(state.ref) + '&src=' + src;
+}
+function lockSvg() {
+  return `<svg class="hooklock" width="13" height="15" viewBox="0 0 13 15" fill="none"><rect x="1" y="6.5" width="11" height="7.5" rx="1.5" stroke="#7C8A83" stroke-width="1.1"/><path d="M3.5 6.5V4.2a3 3 0 016 0v2.3" stroke="#7C8A83" stroke-width="1.1"/></svg>`;
+}
+function listToText(arr) {
+  if (!arr.length) return 'a few fundamentals';
+  if (arr.length === 1) return arr[0];
+  if (arr.length === 2) return arr[0] + ' and ' + arr[1];
+  return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
+}
+function kpiRow(p) {
+  const rc = ragClass(p.rag);
+  return `<div class="prow"><span class="ragdot ${rc}"></span>
+    <div><div class="plabel">${p.label}</div><div class="preason">${p.reason}</div></div>
+    <span class="ptag ${rc}">${p.rag}</span></div>`;
+}
+function hookRow(t, d) { return `<div class="hook">${lockSvg()}<div><div class="hookt">${t}</div><div class="hookd">${d}</div></div></div>`; }
+
+function viewVerdict() {
+  const a = state.answers, r = state.result, rc = ragClass(r.rag_overall);
+  const top = r.top3keys.map(k => r.pillars.find(p => p.key === k));
+
+  const hero = `
+    <span class="eyebrow">Your indicative verdict</span>
+    <div style="margin:14px 0 4px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <span class="vbadge ${rc}"><span class="ragdot ${rc}"></span>${r.rag_overall}</span>
+      <h1 class="title" style="margin:0">${r.fundability_state}</h1>
+    </div>
+    <div class="vsize">${r.size_descriptor} · self-reported</div>
+    <p class="lead" style="margin-top:18px">${r.verdict_summary}</p>
+    <div class="emailed">
+      <svg width="16" height="13" viewBox="0 0 16 13" fill="none"><rect x="1" y="1" width="14" height="11" rx="2" stroke="#2F7D58" stroke-width="1.2"/><path d="M2 2.5L8 7l6-4.5" stroke="#2F7D58" stroke-width="1.2"/></svg>
+      We've emailed a copy to <b>${a.email}</b>.
+    </div>`;
+
+  const kpis = `
+    <div class="kpihead">The three factors that moved your result</div>
+    <div class="pillars">${top.map(kpiRow).join('')}</div>
+    <div class="withheldnote">We assessed <b>seven</b> factors in total — these three moved your result the most. The other four, your improvement plan, and the capital that fits come with your free Read-Lite.</div>`;
+
+  let facility = '';
+  if (r.facility_low != null) {
+    facility = `
+      <div class="facbox">
+        <div class="faclabel">Indicative facility you could explore</div>
+        <div class="facrange">${fmtMoney(r.facility_low)}–${fmtMoney(r.facility_high)}</div>
+        <div class="faccav">Indicative only, sized from the bands you gave. Your free Read-Lite works from your actual numbers — and often finds more.</div>
+      </div>`;
+  }
+
+  let hooks, cta;
+  if (r.idx < 2) {
+    // fundable tiers — withheld hooks + warm handoff to the portal
+    const weakest = r.pillars.slice().sort((x, y) => x.pts - y.pts)[0];
+    hooks = `
+      <div class="hookhead">What your free Read-Lite unlocks</div>
+      <div class="hooks">
+        ${hookRow('Where you can improve', `Your single biggest lever sits in ${weakest.label.toLowerCase()} — your free Read-Lite names the exact change, and the order to make it in.`)}
+        ${hookRow('How to access more cash', 'The range above is the careful read. The free Read-Lite works from your real numbers and often finds headroom to push it higher.')}
+        ${hookRow('What capital suits you', 'Some capital types fit your profile far better than others — and some you should avoid. Your free Read-Lite names which, and why.')}
+      </div>`;
+    cta = `
+      <div class="ctaband">
+        <p class="ctacopy">Your next step is the Read-Lite — a deeper read built from your real numbers, and still free. It turns this snapshot into a lender-grade view: your improvement plan, the real facility you could access, and the capital best suited to you.</p>
+        <a class="btn green" href="${portalUrl('triage')}">Start my free Read-Lite →</a>
+      </div>`;
+  } else {
+    // 6+ tier — honest read first, then a partnership offer (no doc-upload push, no guarantee)
+    const weak = r.pillars.filter(p => ['cash','serv','margin','debt'].includes(p.key) && p.rag !== 'Green').map(p => p.label.toLowerCase());
+    hooks = `
+      <div class="hookhead">The honest read — and the good news</div>
+      <div class="hooks">
+        ${hookRow("What's holding you back", `It comes down to ${listToText(weak)} — specific, and fixable in a clear order.`)}
+        ${hookRow('Where to start', 'Your free Read-Lite turns this snapshot into a clear, prioritised list: which fundamental to strengthen first, and how.')}
+        ${hookRow('What fundable looks like for you', 'It shows you the markers you’re aiming for, so you can track your way there.')}
+      </div>`;
+    cta = `
+      <div class="ctaband">
+        <p class="ctacopy">The honest read is that you're not there yet — and right now, not borrowing is the right call, not just a delay. The good news: it's fixable, and the next step doesn't cost anything. Your free Read-Lite turns this snapshot into a clear plan — exactly which fundamentals to strengthen first, and in what order.</p>
+        <a class="btn green" href="${portalUrl('triage-readiness')}">Start my free Read-Lite →</a>
+        <div class="ctadisc">It's a deeper read of your business — free, and never a promise of finance.</div>
+      </div>`;
+  }
+
+  const caveat = `<div class="caveat">Indicative and based on the bands you selected — a self-reported snapshot in ${sym()}, not a full credit assessment. Reference · ${state.ref}</div>`;
+
+  return `<div class="verdict">${hero}${kpis}${facility}${hooks}${cta}${caveat}</div>`;
+}
+
+/* ---------------- render ---------------- */
+function render() {
+  const views = [viewWelcome, viewStep1, viewStep2, viewStep3, viewStep4, viewStep5, viewVerdict];
+  app.innerHTML = views[state.step]();
+  wire();
+}
+
+/* ---------------- wiring ---------------- */
+function wire() {
+  document.querySelectorAll('.opt').forEach(b => {
+    b.onclick = () => {
+      const key = b.dataset.key;
+      let val = b.dataset.val;
+      if (b.dataset.type === 'bool') val = (val === 'true');
+      state.answers[key] = val;
+      state.error = '';
+      b.closest('.optgrid').querySelectorAll('.opt').forEach(x => x.classList.toggle('on', x === b));
+      if (key === 'has_debt') render();
+    };
+  });
+
+  const next = document.getElementById('next');
+  const back = document.getElementById('back');
+  const submit = document.getElementById('submit');
+
+  if (back) back.onclick = () => { state.error = ''; state.step--; render(); };
+  if (state.step === 0 && next) next.onclick = () => { state.step = 1; render(); };
+  if (next && state.step >= 1 && state.step <= 4) {
+    next.onclick = () => {
+      const missing = requiredFor(state.step).find(k => !answered(k));
+      if (missing) { state.error = 'Just need one more — please pick an option for every question above.'; return render(); }
+      state.error = ''; state.step++; render();
+    };
+  }
+  if (state.step === 5) {
+    const cb = document.getElementById('consent');
+    if (cb) cb.onchange = () => { state.answers.consent = cb.checked; document.getElementById('submit').disabled = !cb.checked; };
+    if (submit) submit.onclick = doSubmit;
+  }
+}
+function requiredFor(step) {
+  switch (step) {
+    case 1: return ['business_type', 'years_trading_band', 'markets_count', 'uses_shopify', 'accounting_system'];
+    case 2: return ['revenue_band', 'revenue_3m_band', 'aov_band', 'gross_margin_band'];
+    case 3: return ['revenue_direction', 'repeat_band', 'sku_concentration'];
+    case 4: return state.answers.has_debt === true
+      ? ['cash_band', 'has_debt', 'debt_providers', 'debt_monthly_band']
+      : ['cash_band', 'has_debt'];
+    default: return [];
+  }
+}
+function syncContactInputs() {
+  if (state.step !== 5) return;
+  const map = { first:'first_name', last:'last_name', email:'email', legal:'legal_entity_name', cnum:'company_number', web:'website_url' };
+  Object.entries(map).forEach(([id, key]) => { const e = document.getElementById(id); if (e) state.answers[key] = e.value.trim(); });
+}
+
+/* ---------------- submit ---------------- */
+async function doSubmit() {
+  const a = state.answers;
+  const val = id => (document.getElementById(id).value || '').trim();
+  a.first_name = val('first'); a.last_name = val('last'); a.email = val('email');
+  a.legal_entity_name = val('legal'); a.company_number = val('cnum'); a.website_url = val('web');
+
+  if (!a.first_name || !a.last_name) { state.error = 'Please add your first and last name.'; return render(); }
+  if (!a.email || !a.email.includes('@')) { state.error = 'Please enter a valid email so we can send your verdict.'; return render(); }
+  if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; return render(); }
+  if (!a.website_url) { state.error = 'Please add your website.'; return render(); }
+  if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
+  if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
+
+  const submit = document.getElementById('submit');
+  submit.disabled = true; submit.textContent = 'Scoring…';
+
+  // ---- compute the verdict BEFORE the insert ----
+  const result = scoreTriage(a);
+  state.result = result;
+  state.ref = 'ML-' + uid().toUpperCase();
+
+  // money bands stored with the chosen currency symbol (numbers unchanged)
+  const money = k => (a[k] ? disp(a[k]) : a[k]);
+
+  const pillar_scores = {
+    ref: state.ref,
+    score: Math.round(result.score),
+    currency: state.currency,
+    normalised_monthly: Math.round(result.norm),
+    recent_monthly: Math.round(result.recent),
+    trailing_monthly: Math.round(result.trailing),
+    trailing_annual: result.trailingAnnual,
+    trajectory: result.trajectory,
+    multiple: result.multiple,
+    facility: result.facility_low != null ? { low: result.facility_low, high: result.facility_high } : null,
+    size_descriptor: result.size_descriptor,
+    top3: result.top3keys,
+    pillars: result.pillars.map(p => ({ key:p.key, label:p.label, rag:p.rag, pts:p.pts, weight:p.weight, reason:p.reason })),
+  };
+
+  const row = {
+    email: a.email, first_name: a.first_name, last_name: a.last_name,
+    legal_entity_name: a.legal_entity_name, company_number: a.company_number || null, website_url: a.website_url,
+    revenue_band: money('revenue_band'), revenue_3m_band: money('revenue_3m_band'), aov_band: money('aov_band'),
+    business_type: a.business_type, gross_margin_band: a.gross_margin_band,
+    revenue_direction: a.revenue_direction, repeat_band: a.repeat_band,
+    sku_concentration: a.sku_concentration, markets_count: a.markets_count,
+    cash_band: money('cash_band'),
+    has_debt: a.has_debt,
+    debt_providers: a.has_debt ? (a.debt_providers || null) : null,
+    debt_monthly_band: a.has_debt ? money('debt_monthly_band') : null,
+    years_trading_band: a.years_trading_band, uses_shopify: a.uses_shopify, accounting_system: a.accounting_system,
+    funding_intent: a.funding_intent,
+    consent_authorised: true, accepted_terms_at: new Date().toISOString(),
+    // computed verdict (v2)
+    rag_overall: result.rag_overall,
+    fundability_state: result.fundability_state,
+    verdict_summary: result.verdict_summary,
+    pillar_scores,
+    facility_low: result.facility_low,
+    facility_high: result.facility_high,
+    size_descriptor: result.size_descriptor,
+    currency: state.currency,
+  };
+
+  if (!LIVE) { await new Promise(r => setTimeout(r, 400)); state.step = 6; render(); return; }
+
+  try {
+    await loadSDK();
+    const client = ensureClient();
+    if (!client) { state.error = 'Secure connection is still loading — give it a second and try again.'; submit.textContent = 'See my verdict →'; submit.disabled = false; return render(); }
+    // No .select() — anon has INSERT but no READ on triage.
+    const { error } = await client.from('triage').insert(row);
+    if (error) throw error;
+    state.step = 6; render();
+  } catch (e) {
+    state.error = 'Something went wrong submitting that: ' + (e.message || e) + '. Your answers are still here — please try again.';
+    submit.textContent = 'See my verdict →'; submit.disabled = false; render();
+  }
+}
+
+/* ---------------- boot ---------------- */
+render();
+
+// currency toggle (always visible in the topbar)
+document.querySelectorAll('#curToggle button').forEach(b => {
+  b.onclick = () => {
+    syncContactInputs();
+    state.currency = b.dataset.cur;
+    document.querySelectorAll('#curToggle button').forEach(x => x.classList.toggle('on', x === b));
+    render();
+  };
+});
+
+// webfonts after first paint
+(function loadFonts() {
+  var l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = 'https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap';
+  document.head.appendChild(l);
+})();
+</script>
+</body>
+</html>
