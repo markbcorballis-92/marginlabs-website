@@ -40,7 +40,7 @@
   nav .links{display:flex;align-items:center;gap:30px}
   nav .links a.l{font-size:14.5px;color:var(--inkSoft);font-weight:480}
   nav .links a.l:hover{color:var(--ink)}
-  @media(max-width:820px){nav .links a.l{display:none}}
+  @media(max-width:820px){nav .links a.l{display:none}nav .btn.sm{font-size:11px;padding:7px 12px}}
 
   /* hero */
   .hero{position:relative;padding:88px 0 76px;overflow:hidden}
@@ -124,6 +124,7 @@
   .curbtn:hover{border-color:var(--accentLine)}
   .curbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
   .hcur{transition:opacity .3s}
+  #finBadge{transition:opacity .3s}
   /* contact form */
   .cform{margin-top:28px;max-width:660px}
   .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -302,7 +303,7 @@
       <div class="trust he d4">
         <div class="t"><b data-count="90" data-suf=" sec">0</b>to your verdict</div>
         <div class="t"><b>Free</b>no data required</div>
-        <div class="t"><b class="typeline"><span data-tw>£10,000 – £10,000,000+</span></b>financing we arrange</div>
+        <div class="t"><b class="typeline" id="finBadge"><span data-tw>£10,000 – £10,000,000+</span></b>financing we arrange</div>
       </div>
     </div>
     <div class="pcard" id="fcCard">
@@ -621,11 +622,12 @@
     var metaEl=document.getElementById('fcMeta');
     setInterval(function(){
       hci=(hci+1)%HS.length; window.HEROCUR=HS[hci];
-      var spans=document.querySelectorAll('.hcur');
-      spans.forEach(function(s){ s.style.opacity=0; });
+      var spans=document.querySelectorAll('.hcur'); var fb=document.getElementById('finBadge');
+      spans.forEach(function(s){ s.style.opacity=0; }); if(fb) fb.style.opacity=0.4;
       setTimeout(function(){
         spans.forEach(function(s){ s.textContent=window.HEROCUR; s.style.opacity=1; });
         if(metaEl) metaEl.textContent=metaEl.textContent.replace(/[£€$]/g,window.HEROCUR);
+        if(fb){ var tw=fb.querySelector('[data-tw]')||fb; tw.textContent=tw.textContent.replace(/[£€$]/g,window.HEROCUR); fb.style.opacity=1; }
       }, 220);
     }, 4200);
   })();
