@@ -55,6 +55,13 @@
   .stepper .st.done .bar, .stepper .st.on .bar { background: var(--ledger); }
   .stepper .st .lbl { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); margin-top: 10px; }
   .stepper .st.on .lbl, .stepper .st.done .lbl { color: var(--ink); }
+  /* --- progress bar --- */
+  .progwrap { margin-bottom: 16px; }
+  .progtop { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 12px; }
+  .progstep { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+  .progpct { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--ledger); white-space: nowrap; }
+  .progtrack { height: 7px; background: var(--bone2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .progfill { height: 100%; background: linear-gradient(90deg, var(--ledgerSoft), var(--ledger)); border-radius: 999px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
 
   .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
   h1.title { font-family: var(--serif); font-weight: 680; font-size: 44px; letter-spacing: -0.02em; line-height: 1.04; margin: 14px 0 14px; }
@@ -478,12 +485,19 @@ function scoreTriage(a) {
 }
 
 /* ---------------- view helpers ---------------- */
-const STEP_LABELS = ['Business', 'Scale', 'Growth', 'Position', 'Funding', 'You'];
+const STEP_LABELS = ['You', 'Business', 'Scale', 'Growth', 'Position', 'Funding'];
 function ragClass(rag) { return 'r-' + String(rag || '').toLowerCase(); }
 
 function stepper() {
   if (state.step < 1 || state.step > 6) return '';
-  return `<div class="stepper">${STEP_LABELS.map((s, i) => {
+  const total = STEP_LABELS.length;
+  const pct = Math.round(state.step / total * 100);
+  return `
+  <div class="progwrap">
+    <div class="progtop"><span class="progstep">Step ${state.step} of ${total} · ${STEP_LABELS[state.step - 1]}</span><span class="progpct">${pct}% complete</span></div>
+    <div class="progtrack"><div class="progfill" style="width:${pct}%"></div></div>
+  </div>
+  <div class="stepper">${STEP_LABELS.map((s, i) => {
     const idx = i + 1; const cls = idx < state.step ? 'done' : idx === state.step ? 'on' : '';
     return `<div class="st ${cls}"><div class="bar"></div><div class="lbl">${String(idx).padStart(2,'0')} · ${s}</div></div>`;
   }).join('')}</div>`;
@@ -509,7 +523,7 @@ function viewWelcome() {
 }
 function viewStep1() {
   return `${stepper()}
-    <span class="eyebrow">Step 01 · The business</span>
+    <span class="eyebrow">Step 02 · The business</span>
     <h1 class="title">Tell us about<br/>the <em>business.</em></h1>
     <p class="lead">The basics first — single taps, nothing sensitive yet.</p>
     ${q('What kind of business is it?', 'business_type')}
@@ -522,7 +536,7 @@ function viewStep1() {
 }
 function viewStep2() {
   return `${stepper()}
-    <span class="eyebrow">Step 02 · Scale &amp; margin</span>
+    <span class="eyebrow">Step 03 · Scale &amp; margin</span>
     <h1 class="title">Scale and <em>margins.</em></h1>
     <p class="lead">Rough bands are all we need — pick the closest one. Amounts are in ${sym()} (switch top-right).</p>
     ${q('Revenue over the last 12 months', 'revenue_band')}
@@ -534,7 +548,7 @@ function viewStep2() {
 }
 function viewStep3() {
   return `${stepper()}
-    <span class="eyebrow">Step 03 · Growth</span>
+    <span class="eyebrow">Step 04 · Growth</span>
     <h1 class="title">Growth and <em>focus.</em></h1>
     <p class="lead">How the business is moving, and how concentrated it is.</p>
     ${q('Revenue over the last 12 months has been…', 'revenue_direction')}
@@ -546,7 +560,7 @@ function viewStep3() {
 function viewStep4() {
   const showDebt = state.answers.has_debt === true;
   return `${stepper()}
-    <span class="eyebrow">Step 04 · Position</span>
+    <span class="eyebrow">Step 05 · Position</span>
     <h1 class="title">Cash and <em>finance.</em></h1>
     <p class="lead">The last and most sensitive bit. Bands only — never exact figures — and "prefer not to say" is always there.</p>
     ${q('Roughly how much cash is in the business bank account?', 'cash_band', 'A rough band is fine. We never see statements at this stage.')}
@@ -570,7 +584,7 @@ function viewFunding() {
   ];
   const sel = Array.isArray(a.product_preference) ? a.product_preference : [];
   return `${stepper()}
-    <span class="eyebrow">Step 05 · Funding need</span>
+    <span class="eyebrow">Step 06 · Funding need</span>
     <h1 class="title">What are you<br/>looking to <em>fund?</em></h1>
     <p class="lead">This shapes your assessment directly. A rough figure is fine — we'll confirm during assessment. Amounts in ${sym()} (switch top-right).</p>
     <div class="field"><label>How much funding do you need?</label>
@@ -586,13 +600,13 @@ function viewFunding() {
       <div class="hint">Your options will be confirmed based on your business data.</div></div>
     <div class="field"><label>What will the funds be used for?</label>${optGroup('use_of_funds')}</div>
     ${state.error ? `<div class="err">${state.error}</div>` : ''}
-    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn green" id="submit">See my verdict →</button></div>`;
 }
 
 function viewStep5() {
   const a = state.answers;
   return `${stepper()}
-    <span class="eyebrow">Step 06 · You</span>
+    <span class="eyebrow">Step 01 · You</span>
     <h1 class="title">Where do we<br/>send your <em>read?</em></h1>
     <p class="lead">Your indicative verdict shows on the next screen and lands in your inbox. No spam, no calls unless you ask.</p>
     <div class="grid2">
@@ -612,7 +626,7 @@ function viewStep5() {
       <label for="consent">I'm authorised to share this business's information, and I accept the <a href="../terms.html" target="_blank">Terms</a> and <a href="../privacy.html" target="_blank">Privacy Policy</a>.</label>
     </div>
     ${state.error ? `<div class="err">${state.error}</div>` : ''}
-    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn green" id="submit" ${a.consent ? '' : 'disabled'}>See my verdict →</button></div>`;
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next" ${a.consent ? '' : 'disabled'}>Continue →</button></div>`;
 }
 
 /* ---------------- verdict / conversion screen (section 9) ---------------- */
@@ -710,7 +724,7 @@ function viewVerdict() {
 
 /* ---------------- render ---------------- */
 function render() {
-  const views = [viewWelcome, viewStep1, viewStep2, viewStep3, viewStep4, viewFunding, viewStep5, viewVerdict];
+  const views = [viewWelcome, viewStep5, viewStep1, viewStep2, viewStep3, viewStep4, viewFunding, viewVerdict];
   app.innerHTML = views[state.step]();
   wire();
 }
@@ -735,14 +749,31 @@ function wire() {
 
   if (back) back.onclick = () => { state.error = ''; state.step--; render(); };
   if (state.step === 0 && next) next.onclick = () => { state.step = 1; render(); };
-  if (next && state.step >= 1 && state.step <= 4) {
+
+  if (state.step === 1) {                 // You (contact) — now the first section
+    const cb = document.getElementById('consent');
+    if (cb) cb.onchange = () => { state.answers.consent = cb.checked; const n = document.getElementById('next'); if (n) n.disabled = !cb.checked; };
+    ['first','last','email','legal','cnum','web'].forEach(id => { const e = document.getElementById(id); if (e) e.oninput = syncContactInputs; });
+    if (next) next.onclick = () => {
+      syncContactInputs();
+      const a = state.answers;
+      if (!a.first_name || !a.last_name) { state.error = 'Please add your first and last name.'; return render(); }
+      if (!a.email || !a.email.includes('@')) { state.error = 'Please enter a valid email so we can send your verdict.'; return render(); }
+      if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; return render(); }
+      if (!a.website_url) { state.error = 'Please add your website.'; return render(); }
+      if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
+      if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
+      state.error = ''; state.step++; render();
+    };
+  }
+  if (next && state.step >= 2 && state.step <= 5) {   // Business · Scale · Growth · Position
     next.onclick = () => {
       const missing = requiredFor(state.step).find(k => !answered(k));
       if (missing) { state.error = 'Just need one more — please pick an option for every question above.'; return render(); }
       state.error = ''; state.step++; render();
     };
   }
-  if (state.step === 5) {                 // NEW · funding step
+  if (state.step === 6) {                 // Funding need — now the final section, submits
     document.querySelectorAll('[data-multi]').forEach(b => b.onclick = () => {
       const key = b.dataset.multi, v = b.dataset.val;
       let arr = Array.isArray(state.answers[key]) ? state.answers[key].slice() : [];
@@ -752,34 +783,29 @@ function wire() {
     });
     const amt = document.getElementById('fundamt');
     if (amt) amt.oninput = () => { const raw = amt.value.replace(/[^0-9]/g, ''); state.answers.funding_amount = raw ? Number(raw) : ''; amt.value = raw ? Number(raw).toLocaleString() : ''; };
-    if (next) next.onclick = () => {
+    if (submit) submit.onclick = () => {
       const a = state.answers;
       if (!(Number(a.funding_amount) > 0)) { state.error = 'Please enter how much funding you need.'; return render(); }
       if (!answered('ideal_payback')) { state.error = 'Please choose an ideal payback period.'; return render(); }
       if (!Array.isArray(a.product_preference) || !a.product_preference.length) { state.error = 'Please select at least one product (or “Not sure”).'; return render(); }
       if (!answered('use_of_funds')) { state.error = 'Please choose what the funds are for.'; return render(); }
-      state.error = ''; state.step++; render();
+      doSubmit();
     };
-  }
-  if (state.step === 6) {                 // contact step (was 5)
-    const cb = document.getElementById('consent');
-    if (cb) cb.onchange = () => { state.answers.consent = cb.checked; document.getElementById('submit').disabled = !cb.checked; };
-    if (submit) submit.onclick = doSubmit;
   }
 }
 function requiredFor(step) {
   switch (step) {
-    case 1: return ['business_type', 'years_trading_band', 'markets_count', 'uses_shopify', 'accounting_system'];
-    case 2: return ['revenue_band', 'revenue_3m_band', 'aov_band', 'gross_margin_band'];
-    case 3: return ['revenue_direction', 'repeat_band', 'sku_concentration'];
-    case 4: return state.answers.has_debt === true
+    case 2: return ['business_type', 'years_trading_band', 'markets_count', 'uses_shopify', 'accounting_system'];
+    case 3: return ['revenue_band', 'revenue_3m_band', 'aov_band', 'gross_margin_band'];
+    case 4: return ['revenue_direction', 'repeat_band', 'sku_concentration'];
+    case 5: return state.answers.has_debt === true
       ? ['cash_band', 'has_debt', 'debt_providers', 'debt_monthly_band']
       : ['cash_band', 'has_debt'];
     default: return [];
   }
 }
 function syncContactInputs() {
-  if (state.step !== 6) return;
+  if (state.step !== 1) return;
   const map = { first:'first_name', last:'last_name', email:'email', legal:'legal_entity_name', cnum:'company_number', web:'website_url' };
   Object.entries(map).forEach(([id, key]) => { const e = document.getElementById(id); if (e) state.answers[key] = e.value.trim(); });
 }
@@ -787,16 +813,13 @@ function syncContactInputs() {
 /* ---------------- submit ---------------- */
 async function doSubmit() {
   const a = state.answers;
-  const val = id => (document.getElementById(id).value || '').trim();
-  a.first_name = val('first'); a.last_name = val('last'); a.email = val('email');
-  a.legal_entity_name = val('legal'); a.company_number = val('cnum'); a.website_url = val('web');
-
-  if (!a.first_name || !a.last_name) { state.error = 'Please add your first and last name.'; return render(); }
-  if (!a.email || !a.email.includes('@')) { state.error = 'Please enter a valid email so we can send your verdict.'; return render(); }
-  if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; return render(); }
-  if (!a.website_url) { state.error = 'Please add your website.'; return render(); }
-  if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
-  if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
+  // contact + consent were captured on the You step (now the first section); send back there if anything's missing
+  if (!a.first_name || !a.last_name) { state.error = 'Please add your first and last name.'; state.step = 1; return render(); }
+  if (!a.email || !a.email.includes('@')) { state.error = 'Please enter a valid email so we can send your verdict.'; state.step = 1; return render(); }
+  if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; state.step = 1; return render(); }
+  if (!a.website_url) { state.error = 'Please add your website.'; state.step = 1; return render(); }
+  if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; state.step = 1; return render(); }
+  if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; state.step = 1; return render(); }
 
   const submit = document.getElementById('submit');
   submit.disabled = true; submit.textContent = 'Scoring…';
