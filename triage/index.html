@@ -62,6 +62,10 @@
   .progpct { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; color: var(--ledger); white-space: nowrap; }
   .progtrack { height: 7px; background: var(--bone2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
   .progfill { height: 100%; background: linear-gradient(90deg, var(--ledgerSoft), var(--ledger)); border-radius: 999px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  /* --- industry taxonomy selects --- */
+  .field select.tsel { width: 100%; padding: 13px 36px 13px 15px; font-family: var(--sans); font-size: 14.5px; color: var(--ink); background-color: var(--paper); border: 1px solid var(--line); border-radius: 12px; outline: none; transition: border-color 0.12s; appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1l5 5 5-5' stroke='%237C8A83' stroke-width='1.5'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; }
+  .field select.tsel:focus { border-color: var(--ledger); }
+  .field select.tsel:disabled { opacity: 0.55; cursor: not-allowed; }
 
   .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone1); }
   h1.title { font-family: var(--serif); font-weight: 680; font-size: 44px; letter-spacing: -0.02em; line-height: 1.04; margin: 14px 0 14px; }
@@ -521,12 +525,50 @@ function viewWelcome() {
     <div class="reassure"><b>Indicative only.</b> A quick self-reported snapshot, not a full diagnostic. Nothing you enter is shared publicly, and you can ask us to delete it at any time. <b>Working in € or $?</b> Switch currency top-right.</div>
     <div class="actions solo"><button class="btn green" id="next">Start my free check →</button></div>`;
 }
+// Google Product Taxonomy (2-level) — [l1id, "L1 name", [[l2id,"L2 name"], ...]]
+const TAXO = [
+  [1,"Animals & Pet Supplies",[[3237,"Live Animals"],[2,"Pet Supplies"]]],
+  [166,"Apparel & Accessories",[[1604,"Clothing"],[167,"Clothing Accessories"],[184,"Costumes & Accessories"],[6552,"Handbag & Wallet Accessories"],[6551,"Handbags, Wallets & Cases"],[188,"Jewelry"],[1933,"Shoe Accessories"],[187,"Shoes"]]],
+  [8,"Arts & Entertainment",[[499969,"Event Tickets"],[5710,"Hobbies & Creative Arts"],[5709,"Party & Celebration"]]],
+  [537,"Baby & Toddler",[[4678,"Baby Bathing"],[5859,"Baby Gift Sets"],[5252,"Baby Health"],[540,"Baby Safety"],[2847,"Baby Toys & Activity Equipment"],[2764,"Baby Transport"],[4386,"Baby Transport Accessories"],[548,"Diapering"],[561,"Nursing & Feeding"],[6952,"Potty Training"],[6899,"Swaddling & Receiving Blankets"]]],
+  [111,"Business & Industrial",[[5863,"Advertising & Marketing"],[112,"Agriculture"],[7261,"Automation Control Components"],[114,"Construction"],[7497,"Dentistry"],[2155,"Film & Television"],[1813,"Finance & Insurance"],[135,"Food Service"],[1827,"Forestry & Logging"],[7240,"Hairdressing & Cosmetology"],[1795,"Heavy Machinery"],[1475,"Hotel & Hospitality"],[5830,"Industrial Storage"],[1556,"Law Enforcement"],[1470,"Manufacturing"],[6987,"Material Handling"],[2496,"Medical"],[2187,"Mining & Quarrying"],[4285,"Piercing & Tattooing"],[138,"Retail"],[1624,"Science & Laboratory"],[976,"Signage"],[2047,"Work Safety Protective Gear"]]],
+  [141,"Cameras & Optics",[[2096,"Camera & Optic Accessories"],[142,"Cameras"],[156,"Optics"],[39,"Photography"]]],
+  [222,"Electronics",[[3356,"Arcade Equipment"],[223,"Audio"],[3702,"Circuit Boards & Components"],[262,"Communications"],[1801,"Components"],[278,"Computers"],[2082,"Electronics Accessories"],[3895,"GPS Accessories"],[339,"GPS Navigation Systems"],[340,"Marine Electronics"],[342,"Networking"],[345,"Print, Copy, Scan & Fax"],[386,"Video"],[1270,"Video Game Console Accessories"],[1294,"Video Game Consoles"]]],
+  [412,"Food, Beverages & Tobacco",[[413,"Beverages"],[422,"Food Items"],[435,"Tobacco Products"]]],
+  [436,"Furniture",[[554,"Baby & Toddler Furniture"],[6433,"Beds & Accessories"],[441,"Benches"],[6356,"Cabinets & Storage"],[442,"Carts & Islands"],[443,"Chairs"],[457,"Entertainment Centers & TV Stands"],[6345,"Furniture Sets"],[450,"Futons"],[6362,"Office Furniture"],[458,"Ottomans"],[4299,"Outdoor Furniture"],[4163,"Room Dividers"],[464,"Shelving"],[460,"Sofas"],[6392,"Tables"]]],
+  [632,"Hardware",[[503739,"Building Consumables"],[115,"Building Materials"],[128,"Fencing & Barriers"],[543575,"Fuel"],[2878,"Hardware Accessories"],[500096,"Hardware Pumps"],[499873,"Heating, Ventilation & Air Conditioning"],[1974,"Locks & Keys"],[133,"Plumbing"],[127,"Power & Electrical Supplies"],[499982,"Small Engines"],[3650,"Tool Accessories"],[1167,"Tools"]]],
+  [469,"Health & Beauty",[[491,"Health Care"],[5573,"Jewelry Cleaning & Care"],[2915,"Personal Care"]]],
+  [536,"Home & Garden",[[574,"Bathroom Accessories"],[359,"Business & Home Security"],[696,"Decor"],[5835,"Emergency Preparedness"],[1679,"Flood, Fire & Gas Safety"],[3348,"Household Appliance Accessories"],[604,"Household Appliances"],[630,"Household Supplies"],[638,"Kitchen & Dining"],[689,"Lawn & Garden"],[594,"Lighting"],[4171,"Linens & Bedding"],[985,"Plants"],[729,"Pool & Spa"],[600,"Smoking Accessories"],[2639,"Wood Stoves"]]],
+  [5181,"Luggage & Bags",[[100,"Backpacks"],[101,"Briefcases"],[108,"Cosmetic & Toiletry Bags"],[549,"Diaper Bags"],[103,"Duffel Bags"],[104,"Fanny Packs"],[105,"Garment Bags"],[110,"Luggage Accessories"],[106,"Messenger Bags"],[5608,"Shopping Totes"],[107,"Suitcases"],[6553,"Train Cases"]]],
+  [772,"Mature",[[773,"Erotic"],[780,"Weapons"]]],
+  [783,"Media",[[784,"Books"],[839,"DVDs & Videos"],[886,"Magazines & Newspapers"],[855,"Music & Sound Recordings"],[5037,"Product Manuals"],[887,"Sheet Music"]]],
+  [922,"Office Supplies",[[6174,"Book Accessories"],[923,"Filing & Organization"],[932,"General Office Supplies"],[6519,"Office & Chair Mats"],[6373,"Office Carts"],[950,"Office Equipment"],[2986,"Office Instruments"],[2014,"Paper Handling"],[964,"Presentation Supplies"],[2636,"Shipping Supplies"]]],
+  [5605,"Religious & Ceremonial",[[5606,"Memorial Ceremony Supplies"],[97,"Religious Items"],[5455,"Wedding Ceremony Supplies"]]],
+  [2092,"Software",[[313,"Computer Software"],[5032,"Digital Goods & Currency"],[1279,"Video Game Software"]]],
+  [988,"Sporting Goods",[[499713,"Athletics"],[990,"Exercise & Fitness"],[1001,"Indoor Games"],[1011,"Outdoor Recreation"]]],
+  [1239,"Toys & Games",[[4648,"Game Timers"],[3793,"Games"],[1249,"Outdoor Play Equipment"],[3867,"Puzzles"],[1253,"Toys"]]],
+  [888,"Vehicles & Parts",[[5613,"Vehicle Parts & Accessories"],[5614,"Vehicles"]]],
+  [0,"Other / not listed",[]],
+];
+function industryField() {
+  const a = state.answers;
+  const l1 = a.industry_l1 || '';
+  const entry = TAXO.find(x => x[1] === l1);
+  const subs = entry ? entry[2] : [];
+  return `<div class="field"><label>What industry or category are you in?</label>
+    <div class="grid2">
+      <select id="ind_l1" class="tsel"><option value="">Select industry…</option>${TAXO.map(x => `<option value="${x[1]}" ${x[1] === l1 ? 'selected' : ''}>${x[1]}</option>`).join('')}</select>
+      <select id="ind_l2" class="tsel" ${subs.length ? '' : 'disabled'}><option value="">${subs.length ? 'Select category…' : (l1 ? 'No sub-categories' : 'Choose an industry first')}</option>${subs.map(s => `<option value="${s[1]}" data-id="${s[0]}" ${a.industry_l2 === s[1] ? 'selected' : ''}>${s[1]}</option>`).join('')}</select>
+    </div>
+    <div class="hint">Pick the closest match — the category helps us tailor the assessment (and check sector fit).</div></div>`;
+}
 function viewStep1() {
   return `${stepper()}
     <span class="eyebrow">Step 02 · The business</span>
     <h1 class="title">Tell us about<br/>the <em>business.</em></h1>
     <p class="lead">The basics first — single taps, nothing sensitive yet.</p>
     ${q('What kind of business is it?', 'business_type')}
+    ${industryField()}
     ${q('How long has it been trading?', 'years_trading_band')}
     ${q('How many countries do you sell to?', 'markets_count')}
     ${q('Do you sell on Shopify?', 'uses_shopify')}
@@ -743,6 +785,22 @@ function wire() {
     };
   });
 
+  const il1 = document.getElementById('ind_l1');
+  if (il1) il1.onchange = () => {
+    const e = TAXO.find(x => x[1] === il1.value);
+    state.answers.industry_l1 = il1.value || null;
+    state.answers.industry_l1_id = e ? e[0] : null;
+    state.answers.industry_l2 = null; state.answers.industry_l2_id = null;
+    state.error = ''; render();
+  };
+  const il2 = document.getElementById('ind_l2');
+  if (il2) il2.onchange = () => {
+    const o = il2.options[il2.selectedIndex];
+    state.answers.industry_l2 = il2.value || null;
+    state.answers.industry_l2_id = (o && o.dataset.id) ? Number(o.dataset.id) : null;
+    state.error = '';
+  };
+
   const next = document.getElementById('next');
   const back = document.getElementById('back');
   const submit = document.getElementById('submit');
@@ -795,7 +853,7 @@ function wire() {
 }
 function requiredFor(step) {
   switch (step) {
-    case 2: return ['business_type', 'years_trading_band', 'markets_count', 'uses_shopify', 'accounting_system'];
+    case 2: return ['business_type', 'industry_l1', 'years_trading_band', 'markets_count', 'uses_shopify', 'accounting_system'];
     case 3: return ['revenue_band', 'revenue_3m_band', 'aov_band', 'gross_margin_band'];
     case 4: return ['revenue_direction', 'repeat_band', 'sku_concentration'];
     case 5: return state.answers.has_debt === true
@@ -862,6 +920,9 @@ async function doSubmit() {
     debt_monthly_band: a.has_debt ? money('debt_monthly_band') : null,
     years_trading_band: a.years_trading_band, uses_shopify: a.uses_shopify, accounting_system: a.accounting_system,
     funding_intent: a.funding_intent,
+    industry_l1: a.industry_l1 || null,
+    industry_l2: a.industry_l2 || null,
+    industry_taxonomy_id: (a.industry_l2_id != null ? a.industry_l2_id : (a.industry_l1_id != null ? a.industry_l1_id : null)),
     // NEW · Phase-1 routing fields (sandbox). triage-table columns to be added on approval.
     funding_amount: (a.funding_amount != null && a.funding_amount !== '') ? Number(a.funding_amount) : null,
     funding_currency: state.currency,
