@@ -172,6 +172,20 @@
     .ctaband { padding: 22px; }
     .ctaband .btn { max-width: 100%; white-space: normal; }
   }
+  /* --- NEW funding step (sandbox) --- */
+  .amountfield { display: flex; align-items: center; gap: 2px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; transition: border-color 0.12s; }
+  .amountfield:focus-within { border-color: var(--ledger); }
+  .amountfield .amtsym { font-size: 17px; color: var(--inkSoft); }
+  .amountfield input { border: none; background: transparent; outline: none; font-size: 17px; padding: 14px 8px; width: 100%; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .prodcards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 560px) { .prodcards { grid-template-columns: 1fr; } }
+  .selcard { position: relative; text-align: left; padding: 14px 14px 13px; border-radius: 13px; background: var(--paper); border: 1.5px solid var(--line); cursor: pointer; transition: all 0.13s; display: flex; flex-direction: column; gap: 3px; }
+  .selcard:hover { border-color: var(--accentLine); transform: translateY(-1px); }
+  .selcard.on { border-color: var(--ledger); background: var(--goodSoft); }
+  .selcard .pt { font-size: 14px; font-weight: 600; line-height: 1.25; }
+  .selcard .pk { font-family: var(--mono); font-size: 10px; color: var(--stone1); letter-spacing: 0.03em; }
+  .selcard .tick { position: absolute; top: 11px; right: 11px; width: 19px; height: 19px; border-radius: 50%; border: 1.5px solid var(--stone3); display: grid; place-items: center; color: #fff; font-size: 11px; }
+  .selcard.on .tick { background: var(--ledger); border-color: var(--ledger); }
 </style>
 </head>
 <body>
@@ -273,6 +287,9 @@ const OPT = {
   debt_monthly_band:  [{v:'<£1k'},{v:'£1–5k'},{v:'£5–15k'},{v:'£15–50k'},{v:'£50k+'},{v:'Prefer not to say'}],
   funding_intent:     [{v:'Raise finance now'},{v:"Understand if we're fundable"},{v:'Improve before raising'},{v:'Just exploring'}],
   country_of_registration: [{v:'UK'},{v:'Ireland'},{v:'US'},{v:'Other'}],
+  // NEW · Phase-1 routing fields (sandbox) — single-select sets reuse the existing pill UI
+  ideal_payback:      [{v:'under_3m',l:'Under 3 months'},{v:'3_6m',l:'3–6 months'},{v:'6_12m',l:'6–12 months'},{v:'12m_plus',l:'12 months or more'},{v:'not_sure',l:'Not sure yet'}],
+  use_of_funds:       [{v:'inventory',l:'Inventory'},{v:'marketing',l:'Marketing'},{v:'hiring',l:'Hiring'},{v:'cashflow_gap',l:'Bridging a cashflow gap'},{v:'expansion',l:'Expansion'},{v:'other',l:'Other'}],
 };
 
 /* ---------------- band midpoints (currency-agnostic numbers) ---------------- */
@@ -461,11 +478,11 @@ function scoreTriage(a) {
 }
 
 /* ---------------- view helpers ---------------- */
-const STEP_LABELS = ['Business', 'Scale', 'Growth', 'Position', 'You'];
+const STEP_LABELS = ['Business', 'Scale', 'Growth', 'Position', 'Funding', 'You'];
 function ragClass(rag) { return 'r-' + String(rag || '').toLowerCase(); }
 
 function stepper() {
-  if (state.step < 1 || state.step > 5) return '';
+  if (state.step < 1 || state.step > 6) return '';
   return `<div class="stepper">${STEP_LABELS.map((s, i) => {
     const idx = i + 1; const cls = idx < state.step ? 'done' : idx === state.step ? 'on' : '';
     return `<div class="st ${cls}"><div class="bar"></div><div class="lbl">${String(idx).padStart(2,'0')} · ${s}</div></div>`;
@@ -540,10 +557,42 @@ function viewStep4() {
     ${state.error ? `<div class="err">${state.error}</div>` : ''}
     <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
 }
+function viewFunding() {
+  const a = state.answers;
+  const prods = [
+    ['mca_rbf','A cash advance repaid from sales','MCA'],
+    ['invoice_factoring','Funding against unpaid invoices','Invoice factoring'],
+    ['po_trade_finance','Funding to fulfil a large order','PO financing'],
+    ['retail_financing','Stock or inventory funding','Retail financing'],
+    ['enterprise_loc','A flexible credit line','Enterprise line of credit'],
+    ['b2b_bnpl','Buy now, pay later for my customers','BNPL'],
+    ['not_sure','Not sure — help me choose',"We'll recommend"],
+  ];
+  const sel = Array.isArray(a.product_preference) ? a.product_preference : [];
+  return `${stepper()}
+    <span class="eyebrow">Step 05 · Funding need</span>
+    <h1 class="title">What are you<br/>looking to <em>fund?</em></h1>
+    <p class="lead">This shapes your assessment directly. A rough figure is fine — we'll confirm during assessment. Amounts in ${sym()} (switch top-right).</p>
+    <div class="field"><label>How much funding do you need?</label>
+      <div class="amountfield"><span class="amtsym">${sym()}</span>
+        <input type="text" id="fundamt" inputmode="numeric" placeholder="e.g. 150,000" value="${a.funding_amount ? Number(a.funding_amount).toLocaleString() : ''}" /></div>
+      <div class="hint">A single number — this is what the assessment threshold keys off.</div></div>
+    <div class="field"><label>Ideal payback period</label>${optGroup('ideal_payback')}</div>
+    <div class="field"><label>Which products are you interested in? <span style="text-transform:none;letter-spacing:0;color:var(--stone1)">— select all that apply</span></label>
+      <div class="prodcards">${prods.map(([k,t,tag]) => {
+        const on = sel.includes(k);
+        return `<button type="button" class="selcard ${on?'on':''}" data-multi="product_preference" data-val="${k}"><span class="tick">${on?'✓':''}</span><span class="pt">${t}</span><span class="pk">${tag}</span></button>`;
+      }).join('')}</div>
+      <div class="hint">Your options will be confirmed based on your business data.</div></div>
+    <div class="field"><label>What will the funds be used for?</label>${optGroup('use_of_funds')}</div>
+    ${state.error ? `<div class="err">${state.error}</div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
+}
+
 function viewStep5() {
   const a = state.answers;
   return `${stepper()}
-    <span class="eyebrow">Step 05 · You</span>
+    <span class="eyebrow">Step 06 · You</span>
     <h1 class="title">Where do we<br/>send your <em>read?</em></h1>
     <p class="lead">Your indicative verdict shows on the next screen and lands in your inbox. No spam, no calls unless you ask.</p>
     <div class="grid2">
@@ -661,7 +710,7 @@ function viewVerdict() {
 
 /* ---------------- render ---------------- */
 function render() {
-  const views = [viewWelcome, viewStep1, viewStep2, viewStep3, viewStep4, viewStep5, viewVerdict];
+  const views = [viewWelcome, viewStep1, viewStep2, viewStep3, viewStep4, viewFunding, viewStep5, viewVerdict];
   app.innerHTML = views[state.step]();
   wire();
 }
@@ -693,7 +742,26 @@ function wire() {
       state.error = ''; state.step++; render();
     };
   }
-  if (state.step === 5) {
+  if (state.step === 5) {                 // NEW · funding step
+    document.querySelectorAll('[data-multi]').forEach(b => b.onclick = () => {
+      const key = b.dataset.multi, v = b.dataset.val;
+      let arr = Array.isArray(state.answers[key]) ? state.answers[key].slice() : [];
+      if (v === 'not_sure') arr = arr.includes('not_sure') ? [] : ['not_sure'];
+      else { arr = arr.filter(x => x !== 'not_sure'); arr = arr.includes(v) ? arr.filter(x => x !== v) : arr.concat(v); }
+      state.answers[key] = arr; state.error = ''; render();
+    });
+    const amt = document.getElementById('fundamt');
+    if (amt) amt.oninput = () => { const raw = amt.value.replace(/[^0-9]/g, ''); state.answers.funding_amount = raw ? Number(raw) : ''; amt.value = raw ? Number(raw).toLocaleString() : ''; };
+    if (next) next.onclick = () => {
+      const a = state.answers;
+      if (!(Number(a.funding_amount) > 0)) { state.error = 'Please enter how much funding you need.'; return render(); }
+      if (!answered('ideal_payback')) { state.error = 'Please choose an ideal payback period.'; return render(); }
+      if (!Array.isArray(a.product_preference) || !a.product_preference.length) { state.error = 'Please select at least one product (or “Not sure”).'; return render(); }
+      if (!answered('use_of_funds')) { state.error = 'Please choose what the funds are for.'; return render(); }
+      state.error = ''; state.step++; render();
+    };
+  }
+  if (state.step === 6) {                 // contact step (was 5)
     const cb = document.getElementById('consent');
     if (cb) cb.onchange = () => { state.answers.consent = cb.checked; document.getElementById('submit').disabled = !cb.checked; };
     if (submit) submit.onclick = doSubmit;
@@ -711,7 +779,7 @@ function requiredFor(step) {
   }
 }
 function syncContactInputs() {
-  if (state.step !== 5) return;
+  if (state.step !== 6) return;
   const map = { first:'first_name', last:'last_name', email:'email', legal:'legal_entity_name', cnum:'company_number', web:'website_url' };
   Object.entries(map).forEach(([id, key]) => { const e = document.getElementById(id); if (e) state.answers[key] = e.value.trim(); });
 }
@@ -771,6 +839,12 @@ async function doSubmit() {
     debt_monthly_band: a.has_debt ? money('debt_monthly_band') : null,
     years_trading_band: a.years_trading_band, uses_shopify: a.uses_shopify, accounting_system: a.accounting_system,
     funding_intent: a.funding_intent,
+    // NEW · Phase-1 routing fields (sandbox). triage-table columns to be added on approval.
+    funding_amount: (a.funding_amount != null && a.funding_amount !== '') ? Number(a.funding_amount) : null,
+    funding_currency: state.currency,
+    ideal_payback: a.ideal_payback || null,
+    product_preference: Array.isArray(a.product_preference) ? a.product_preference : [],
+    use_of_funds: a.use_of_funds || null,
     consent_authorised: true, accepted_terms_at: new Date().toISOString(),
     // computed verdict (v2)
     rag_overall: result.rag_overall,
@@ -783,7 +857,7 @@ async function doSubmit() {
     currency: state.currency,
   };
 
-  if (!LIVE) { await new Promise(r => setTimeout(r, 400)); state.step = 6; render(); return; }
+  if (!LIVE) { await new Promise(r => setTimeout(r, 400)); state.step = 7; render(); return; }
 
   try {
     await loadSDK();
@@ -792,7 +866,7 @@ async function doSubmit() {
     // No .select() — anon has INSERT but no READ on triage.
     const { error } = await client.from('triage').insert(row);
     if (error) throw error;
-    state.step = 6; render();
+    state.step = 7; render();
   } catch (e) {
     state.error = 'Something went wrong submitting that: ' + (e.message || e) + '. Your answers are still here — please try again.';
     submit.textContent = 'See my verdict →'; submit.disabled = false; render();
