@@ -19,8 +19,13 @@
 
     /* --- text ------------------------------------------------------------ */
     --ml-text:           #0A0A0A;   /* primary */
-    --ml-text-soft:      #171717;   /* body secondary */
-    --ml-text-muted:     #737373;   /* labels, captions, metadata */
+    --ml-text-soft:      #171717;   /* emphasis inside body copy */
+    /* The step that was missing. Secondary text had nowhere to sit between #171717
+       and #737373, so it ended up on #737373 — 4.7:1, a hair over the AA floor of
+       4.5, and it showed. This is 7.8:1, matching the 8.0:1 the product had before
+       the density pass. Secondary body copy belongs here, not on --ml-text-muted. */
+    --ml-text-body:      #525252;   /* secondary body copy — 7.8:1 on white */
+    --ml-text-muted:     #737373;   /* labels, captions, metadata — tertiary only */
     --ml-text-faint:     #A3A3A3;   /* placeholder, disabled */
     --ml-text-on-dark:   #FFFFFF;   /* text sitting on ink or brand fills */
 
@@ -74,8 +79,13 @@
     --ml-radius-pill:    999px;
 
     /* --- type ------------------------------------------------------------ */
-    --ml-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    --ml-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    /* IBM Plex, drawn for data-dense technical and financial interfaces, so it holds
+       up at the 12-16px the console actually lives at — where Geist, a geometric
+       display face, closes up on a / e / s / c. Plex Sans and Plex Mono are one
+       family, so the uppercase labels stop being a separate decision, and Plex has
+       true tabular figures, which matters wherever money lines up in a column. */
+    --ml-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --ml-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
     /* A deliberately SHORT scale. Every extra size is another decision a reader
        has to make; the density problem on these screens is too many competing
@@ -607,6 +617,15 @@ function stepper() {
     return `<div class="st ${cls}"><div class="bar"></div><div class="lbl">${String(idx).padStart(2,'0')} · ${s}</div></div>`;
   }).join('')}</div>`;
 }
+/* US states + DC. The United States has no federal company register — incorporation
+   is state by state — so a US company cannot be looked up without knowing which
+   register holds it. A nationwide name search returns thousands of matches and
+   cannot identify anyone. Two-letter codes, because that is what the register API
+   takes; a free-text state cannot be turned into one reliably. */
+const US_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA',
+  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',
+  'OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+
 function optGroup(key) {
   const money = MONEY_KEYS.includes(key);
   return `<div class="optgrid" data-group="${key}">${OPT[key].map(o => {
@@ -759,10 +778,18 @@ function viewStep5() {
     <div class="field"><label>Work email *</label><input type="email" id="email" placeholder="you@yourcompany.com" value="${a.email || ''}" autocomplete="email" /></div>
     <div class="field"><label>Business / legal entity name *</label><input type="text" id="legal" placeholder="Carrow &amp; Bell Ltd" value="${a.legal_entity_name || ''}" /></div>
     <div class="grid2">
-      <div class="field"><label>Company number</label><input type="text" id="cnum" placeholder="e.g. 09876543" value="${a.company_number || ''}" /><div class="hint">Optional, but it sharpens the read.</div></div>
+      <div class="field"><label>Company number</label><input type="text" id="cnum" placeholder="e.g. 09876543" value="${a.company_number || ''}" /><div class="hint">${a.country_of_registration === 'US' ? 'Your state entity / filing number — not the EIN.' : 'Optional, but it sharpens the read.'}</div></div>
       <div class="field"><label>Website *</label><input type="url" id="web" placeholder="https://yourstore.com" value="${a.website_url || ''}" /></div>
     </div>
     <div class="field"><label>Country of registration</label>${optGroup('country_of_registration')}<div class="hint">Optional — helps us check the right business registry.</div></div>
+    ${a.country_of_registration === 'US' ? `
+    <div class="field"><label>State of registration</label>
+      <select id="usstate">
+        <option value="">Select a state…</option>
+        ${US_STATES.map(st => `<option value="${st}" ${a.us_state === st ? 'selected' : ''}>${st}</option>`).join('')}
+      </select>
+      <div class="hint">US companies are registered by state, so we need this to look yours up.</div>
+    </div>` : ''}
     <div class="field"><label>What are you hoping to do?</label>${optGroup('funding_intent')}</div>
     <div class="consent">
       <input type="checkbox" id="consent" ${a.consent ? 'checked' : ''} />
@@ -882,9 +909,15 @@ function wire() {
       state.answers[key] = val;
       state.error = '';
       b.closest('.optgrid').querySelectorAll('.opt').forEach(x => x.classList.toggle('on', x === b));
-      if (key === 'has_debt') render();
+      // Country decides which fields are even askable, so the step must redraw.
+      // A state left over from a changed answer would be sent for a UK company.
+      if (key === 'country_of_registration' && val !== 'US') state.answers.us_state = null;
+      if (key === 'has_debt' || key === 'country_of_registration') render();
     };
   });
+
+  const uss = document.getElementById('usstate');
+  if (uss) uss.onchange = () => { state.answers.us_state = uss.value || null; state.error = ''; };
 
   const il1 = document.getElementById('ind_l1');
   if (il1) il1.onchange = () => {
@@ -1011,6 +1044,7 @@ async function doSubmit() {
     email: a.email, first_name: a.first_name, last_name: a.last_name,
     legal_entity_name: a.legal_entity_name, company_number: a.company_number || null, website_url: a.website_url,
     country_of_registration: a.country_of_registration || null,
+    us_state: (a.country_of_registration === 'US' && a.us_state) ? a.us_state : null,
     revenue_band: money('revenue_band'), revenue_3m_band: money('revenue_3m_band'), aov_band: money('aov_band'),
     business_type: a.business_type, gross_margin_band: a.gross_margin_band,
     revenue_direction: a.revenue_direction, repeat_band: a.repeat_band,
@@ -1075,7 +1109,7 @@ document.querySelectorAll('#curToggle button').forEach(b => {
 (function loadFonts() {
   var l = document.createElement('link');
   l.rel = 'stylesheet';
-  l.href = 'https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap';
+  l.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap';
   document.head.appendChild(l);
 })();
 </script>
