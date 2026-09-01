@@ -15,12 +15,115 @@
 <meta name="twitter:description" content="We read your business the way a lender does — then find the right capital, at the right price." />
 <link rel="icon" href="marginlabs-favicon.svg" type="image/svg+xml" />
 <style>
+  /* ML-TOKENS:BEGIN — generated from brand/tokens.css by
+     scripts/sync-tokens.py. Do not edit here; edit that file and re-run it. */
+  :root {
+    /* --- surfaces ------------------------------------------------------- */
+    /* True neutrals, not green-tinted. The tint was what made every screen feel
+       faintly coloured before anything meaningful was on it. */
+    --ml-surface:        #FFFFFF;   /* cards, raised panels, the thing you read on */
+    --ml-surface-sunk:   #F5F5F5;   /* page ground, inset wells */
+    --ml-surface-alt:    #FAFAFA;   /* secondary fill, hover, zebra rows */
+
+    /* --- text ------------------------------------------------------------ */
+    --ml-text:           #0A0A0A;   /* primary */
+    --ml-text-soft:      #171717;   /* body secondary */
+    --ml-text-muted:     #737373;   /* labels, captions, metadata */
+    --ml-text-faint:     #A3A3A3;   /* placeholder, disabled */
+    --ml-text-on-dark:   #FFFFFF;   /* text sitting on ink or brand fills */
+
+    /* --- lines ----------------------------------------------------------- */
+    --ml-line:           #E5E5E5;   /* default border */
+    --ml-line-soft:      #F0F0F0;   /* internal dividers */
+    --ml-line-strong:    #D4D4D4;   /* emphasis, form outlines */
+    --ml-track:          #E5E5E5;   /* progress / meter troughs */
+
+    /* --- action vs identity vs meaning -----------------------------------
+       These were ONE green doing three jobs, which is why a green tick and a
+       green button were indistinguishable. Now:
+         --ml-action  the thing you click. Achromatic, so it never competes.
+         --ml-mark    the identity green. The logo, and nothing else by default.
+         --ml-good    "we have this / it is done". The only green on a working
+                      screen, which is what makes it readable at a glance. */
+    --ml-action:         #171717;
+    --ml-action-hover:   #0A0A0A;
+    --ml-action-soft:    #FAFAFA;
+    --ml-action-line:    #E5E5E5;
+    --ml-mark:           #2F7D58;
+
+    /* --- semantic -------------------------------------------------------- */
+    /* These take the values the product ALREADY uses most, rather than importing
+       the reference's. #B14431 appears in 51 console rules and in both dashboard
+       ramps; #B45309 in 41. Adopting them unifies console, dashboards, portal and
+       website on one red and one amber in a single line each, instead of a
+       51-site find-and-replace through matched hex + rgba() + soft-fill sets. */
+    --ml-good:           #2F7D58;
+    --ml-warn:           #B45309;
+    --ml-bad:            #B14431;
+    --ml-good-soft:      #F0F7F3;
+    --ml-warn-soft:      #FAF1DF;
+    --ml-bad-soft:       #F9E9E5;
+
+    /* Kept so the legacy --ledger/--accent aliases still resolve. Points at the
+       ACTION colour: those aliases are overwhelmingly used for buttons, links and
+       focus rings. The genuinely semantic call sites were moved to --ml-good. */
+    --ml-brand:          var(--ml-action);
+    --ml-brand-light:    #404040;
+    --ml-brand-soft:     var(--ml-action-soft);
+    --ml-brand-line:     var(--ml-action-line);
+
+    /* --- shape -----------------------------------------------------------
+       The reference uses 18px interactive / 24px containers. Dialled back: a
+       lender should read precise rather than soft. One number to change if it
+       still feels too tight or too round. */
+    --ml-radius-sm:      6px;
+    --ml-radius:         12px;
+    --ml-radius-lg:      16px;
+    --ml-radius-pill:    999px;
+
+    /* --- type ------------------------------------------------------------ */
+    --ml-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --ml-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+    /* A deliberately SHORT scale. Every extra size is another decision a reader
+       has to make; the density problem on these screens is too many competing
+       sizes, not too few. Weights stop at 600 — the old 680 display weight read
+       as shouting. */
+    --ml-text-xs:        11px;   /* mono labels, eyebrows */
+    --ml-text-sm:        12.5px; /* captions, secondary */
+    --ml-text-base:      14px;   /* body */
+    --ml-text-md:        16px;   /* lead, card titles */
+    --ml-text-lg:        20px;   /* section headings */
+    --ml-text-xl:        28px;   /* page headings */
+    --ml-text-2xl:       48px;   /* display */
+    --ml-display-track:  -0.05em;
+    --ml-weight-normal:  400;
+    --ml-weight-medium:  500;
+    --ml-weight-bold:    600;
+    --ml-leading-tight:  1.2;
+    --ml-leading:        1.55;
+
+    /* --- spacing: a 4px rhythm, compact ---------------------------------- */
+    --ml-space-1:        4px;
+    --ml-space-2:        8px;    /* element gap */
+    --ml-space-3:        12px;
+    --ml-space-4:        16px;
+    --ml-space-5:        20px;   /* card padding */
+    --ml-space-6:        32px;
+    --ml-space-7:        48px;   /* section gap */
+    --ml-space-8:        80px;
+  }
+  /* ML-TOKENS:END */
+
+  /* Legacy names. Every one resolves to a canonical token above, so no markup
+     changed — but new work should use --ml-* directly and these should shrink. */
   :root{
-    --bg:#FFFFFF; --bg2:#F6F8F6; --ink:#10231A; --inkSoft:#42554C; --mut:#7C8A83;
-    --accent:#2F7D58; --accent2:#5BB286; --accentSoft:#E7F2EC; --accentLine:#CDE5D7; --track:#E4E9E6;
-    --line:#E8ECEA; --card:#FFFFFF; --radius:16px;
-    --sans:'Geist',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
-    --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+    --bg: var(--ml-surface);            --bg2: var(--ml-surface-sunk);    --card: var(--ml-surface);
+    --ink: var(--ml-text);              --inkSoft: var(--ml-text-soft);   --mut: var(--ml-text-muted);
+    --accent: var(--ml-brand);          --accent2: var(--ml-brand-light);
+    --accentSoft: var(--ml-brand-soft); --accentLine: var(--ml-brand-line); --track: var(--ml-track);
+    --line: var(--ml-line);             --radius: var(--ml-radius-lg);
+    --sans: var(--ml-sans);             --mono: var(--ml-mono);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -285,7 +388,7 @@
 
 <nav id="nav"><div class="wrap">
   <a class="logo" href="#top">
-    <span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="#2F7D58"/></svg></span>
+    <span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="var(--ml-mark)"/></svg></span>
     MarginLabs
   </a>
   <div class="links">
@@ -542,7 +645,7 @@
 </div></section>
 
 <footer><div class="wrap">
-  <a class="logo" href="#top"><span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="#2F7D58"/></svg></span>MarginLabs</a>
+  <a class="logo" href="#top"><span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="var(--ml-mark)"/></svg></span>MarginLabs</a>
   <div class="links"><a href="privacy.html">Privacy</a><a href="data-rights.html">Data rights</a><a href="terms.html">Terms</a></div>
   <div class="meta">© MMXXVI MarginLabs · eCommerce &amp; retail advisory · getmarginlabs.com</div>
 </div></footer>
