@@ -27,8 +27,13 @@
 
     /* --- text ------------------------------------------------------------ */
     --ml-text:           #0A0A0A;   /* primary */
-    --ml-text-soft:      #171717;   /* body secondary */
-    --ml-text-muted:     #737373;   /* labels, captions, metadata */
+    --ml-text-soft:      #171717;   /* emphasis inside body copy */
+    /* The step that was missing. Secondary text had nowhere to sit between #171717
+       and #737373, so it ended up on #737373 — 4.7:1, a hair over the AA floor of
+       4.5, and it showed. This is 7.8:1, matching the 8.0:1 the product had before
+       the density pass. Secondary body copy belongs here, not on --ml-text-muted. */
+    --ml-text-body:      #525252;   /* secondary body copy — 7.8:1 on white */
+    --ml-text-muted:     #737373;   /* labels, captions, metadata — tertiary only */
     --ml-text-faint:     #A3A3A3;   /* placeholder, disabled */
     --ml-text-on-dark:   #FFFFFF;   /* text sitting on ink or brand fills */
 
@@ -61,7 +66,11 @@
     --ml-warn:           #B45309;
     --ml-bad:            #B14431;
     --ml-good-soft:      #F0F7F3;
-    --ml-warn-soft:      #FAF1DF;
+    /* #FAF1DF put warn text at 4.47:1 — the only one of the three semantic pills
+       under AA, while good sat at 4.60 and bad at 4.76. Lightened so the amber
+       pill matches its siblings, rather than moving --ml-warn, which 39 console
+       literals already equal. */
+    --ml-warn-soft:      #FDF6EA;
     --ml-bad-soft:       #F9E9E5;
 
     /* Kept so the legacy --ledger/--accent aliases still resolve. Points at the
@@ -82,8 +91,13 @@
     --ml-radius-pill:    999px;
 
     /* --- type ------------------------------------------------------------ */
-    --ml-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    --ml-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    /* IBM Plex, drawn for data-dense technical and financial interfaces, so it holds
+       up at the 12-16px the console actually lives at — where Geist, a geometric
+       display face, closes up on a / e / s / c. Plex Sans and Plex Mono are one
+       family, so the uppercase labels stop being a separate decision, and Plex has
+       true tabular figures, which matters wherever money lines up in a column. */
+    --ml-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --ml-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
     /* A deliberately SHORT scale. Every extra size is another decision a reader
        has to make; the density problem on these screens is too many competing
@@ -189,13 +203,13 @@
   /* borrowing-readiness tile — RAG variants + crossfade between the 3 example outcomes */
   #fcPill,#fcScore,#fcMeta,#fcRows{transition:opacity .4s ease}
   .pcard .top .pill.g{color:#2F7D58;background:#E7F2EC}
-  .pcard .top .pill.a{color:#C98A2B;background:#FAF1DF}
+  .pcard .top .pill.a{color:var(--ml-warn);background:var(--ml-warn-soft)}
   .pcard .top .pill.r{color:#B14431;background:#FBEAE6}
   .scorerow .num.g{color:#2F7D58}
-  .scorerow .num.a{color:#C98A2B}
+  .scorerow .num.a{color:var(--ml-warn)}
   .scorerow .num.r{color:#B14431}
   .bar i.g{background:linear-gradient(90deg,#2F7D58,#5BB286)}
-  .bar i.a{background:linear-gradient(90deg,#C98A2B,#E0B768)}
+  .bar i.a{background:linear-gradient(90deg,var(--ml-warn),#E0B768)}
   .bar i.r{background:linear-gradient(90deg,#B14431,#D98E80)}
 
   /* trust strip */
@@ -652,7 +666,7 @@
 
 <script>
   (function(){var l=document.createElement('link');l.rel='stylesheet';
-  l.href='https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap';
+  l.href='https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap';
   document.head.appendChild(l);})();
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -705,7 +719,7 @@
         rows:[['fix','Stacked across 4+ facilities','fix'],['fix','Cash buffer thin','fix'],['fix','Serviceability stretched','fix']]}
     ];
     function rowsHtml(rows){return rows.map(function(r){
-      var bg=r[0]==='ok'?'#E7F2EC':'#FAF1DF', st=r[0]==='ok'?'#2F7D58':'#C98A2B';
+      var bg=r[0]==='ok'?'#E7F2EC':'var(--ml-warn-soft)', st=r[0]==='ok'?'#2F7D58':'var(--ml-warn)';
       var svg=r[0]==='ok'
         ? '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="'+st+'" stroke-width="1.6" fill="none"/></svg>'
         : '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 2v6M2 5h6" stroke="'+st+'" stroke-width="1.6"/></svg>';

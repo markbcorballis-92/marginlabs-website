@@ -58,7 +58,11 @@
     --ml-warn:           #B45309;
     --ml-bad:            #B14431;
     --ml-good-soft:      #F0F7F3;
-    --ml-warn-soft:      #FAF1DF;
+    /* #FAF1DF put warn text at 4.47:1 — the only one of the three semantic pills
+       under AA, while good sat at 4.60 and bad at 4.76. Lightened so the amber
+       pill matches its siblings, rather than moving --ml-warn, which 39 console
+       literals already equal. */
+    --ml-warn-soft:      #FDF6EA;
     --ml-bad-soft:       #F9E9E5;
 
     /* Kept so the legacy --ledger/--accent aliases still resolve. Points at the
