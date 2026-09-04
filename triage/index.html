@@ -401,7 +401,7 @@ const OPT = {
   uses_shopify:       [{v:true,l:'Yes',t:'bool'},{v:false,l:'No',t:'bool'}],
   accounting_system:  [{v:'Xero'},{v:'QuickBooks'},{v:'Sage'},{v:'Other'},{v:'None / spreadsheets'}],
   revenue_band:       [{v:'<£100k'},{v:'£100–500k'},{v:'£500k–1M'},{v:'£1–3M'},{v:'£3–5M'},{v:'£5M+'}],
-  revenue_3m_band:    [{v:'<£25k'},{v:'£25–100k'},{v:'£100–250k'},{v:'£250–500k'},{v:'£500k–1M'},{v:'£1M+'}],
+  revenue_3m_band:    [{v:'<£20k'},{v:'£20–30k'},{v:'£30–100k'},{v:'£100–250k'},{v:'£250–500k'},{v:'£500k–1M'},{v:'£1M+'}],
   aov_band:           [{v:'<£30'},{v:'£30–60'},{v:'£60–120'},{v:'£120–250'},{v:'£250+'}],
   gross_margin_band:  [{v:'<30%'},{v:'30–50%'},{v:'50–70%'},{v:'70%+'},{v:'Not sure'}],
   revenue_direction:  [{v:'Growing'},{v:'Flat'},{v:'Declining'}],
@@ -412,7 +412,8 @@ const OPT = {
   debt_providers:     [{v:'1'},{v:'2'},{v:'3'},{v:'4+'}],
   debt_monthly_band:  [{v:'<£1k'},{v:'£1–5k'},{v:'£5–15k'},{v:'£15–50k'},{v:'£50k+'},{v:'Prefer not to say'}],
   funding_intent:     [{v:'Raise finance now'},{v:"Understand if we're fundable"},{v:'Improve before raising'},{v:'Just exploring'}],
-  country_of_registration: [{v:'UK'},{v:'Ireland'},{v:'US'},{v:'Other'}],
+  // Ordered by market priority: US primary, UK second, Ireland for testing.
+  country_of_registration: [{v:'US'},{v:'UK'},{v:'Ireland'},{v:'Other'}],
   // NEW · Phase-1 routing fields (sandbox) — single-select sets reuse the existing pill UI
   ideal_payback:      [{v:'under_3m',l:'Under 3 months'},{v:'3_6m',l:'3–6 months'},{v:'6_12m',l:'6–12 months'},{v:'12m_plus',l:'12 months or more'},{v:'not_sure',l:'Not sure yet'}],
   use_of_funds:       [{v:'inventory',l:'Inventory'},{v:'marketing',l:'Marketing'},{v:'hiring',l:'Hiring'},{v:'cashflow_gap',l:'Bridging a cashflow gap'},{v:'expansion',l:'Expansion'},{v:'other',l:'Other'}],
@@ -420,17 +421,26 @@ const OPT = {
 
 /* ---------------- band midpoints (currency-agnostic numbers) ---------------- */
 const MID_12M  = {'<£100k':50000,'£100–500k':300000,'£500k–1M':750000,'£1–3M':2000000,'£3–5M':4000000,'£5M+':7500000};
-const MID_3M   = {'<£25k':12500,'£25–100k':62500,'£100–250k':175000,'£250–500k':375000,'£500k–1M':750000,'£1M+':1500000};
+// The gate divides these by 3. £20–30k -> £8,333/mo clears the £5,000 floor;
+// <£20k -> £3,333/mo does not, and goes to an analyst (never a decline).
+const MID_3M   = {'<£20k':10000,'£20–30k':25000,'£30–100k':65000,'£100–250k':175000,'£250–500k':375000,'£500k–1M':750000,'£1M+':1500000};
 const MID_CASH = {'<£10k':5000,'£10–50k':30000,'£50–150k':100000,'£150–500k':325000,'£500k+':750000};
 const MID_DEBT = {'<£1k':500,'£1–5k':3000,'£5–15k':10000,'£15–50k':32500,'£50k+':75000};
 const IDX_12M  = {'<£100k':0,'£100–500k':1,'£500k–1M':2,'£1–3M':3,'£3–5M':4,'£5M+':5};
-const ANN_3M   = {'<£25k':0,'£25–100k':1,'£100–250k':2,'£250–500k':3,'£500k–1M':4,'£1M+':5};
+// x4: <£20k->under £80k (class 0); £20–30k->£80–120k and £30–100k->£120–400k
+// both land in the £100–500k class (1). Sharing a class is correct here — the
+// value is "which annual band does this annualise into", not a rank.
+const ANN_3M   = {'<£20k':0,'£20–30k':1,'£30–100k':1,'£100–250k':2,'£250–500k':3,'£500k–1M':4,'£1M+':5};
 
 /* ---------------- state ---------------- */
 const state = {
   step: 0,             // 0 welcome · 1..5 questions · 6 verdict
   answers: {},         // keyed by column name (money bands held canonically in £)
-  currency: 'GBP',
+  // USD by default because the US is the primary market. The money bands are
+  // authored canonically in £ and disp() swaps the symbol, so this changes what
+  // an applicant SEES and what we store on the row — never the band midpoints
+  // the pre-screen gate looks up, which stay currency-agnostic numbers.
+  currency: 'USD',
   ref: '',
   result: null,
   error: '',
