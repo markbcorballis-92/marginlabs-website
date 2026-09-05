@@ -936,6 +936,7 @@ function wire() {
       if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; return render(); }
       if (!a.website_url) { state.error = 'Please add your website.'; return render(); }
       if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
+      if (a.country_of_registration === 'US' && !a.us_state) { state.error = 'Please choose the state your business is registered in \u2014 US companies are registered by state, not federally.'; return render(); }
       if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
       state.error = ''; state.step++; render();
     };
@@ -993,6 +994,7 @@ async function doSubmit() {
   if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; state.step = 1; return render(); }
   if (!a.website_url) { state.error = 'Please add your website.'; state.step = 1; return render(); }
   if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; state.step = 1; return render(); }
+  if (a.country_of_registration === 'US' && !a.us_state) { state.error = 'Please choose the state your business is registered in.'; state.step = 1; return render(); }
   if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; state.step = 1; return render(); }
 
   const submit = document.getElementById('submit');
