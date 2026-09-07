@@ -644,6 +644,40 @@ function stepper() {
    register holds it. A nationwide name search returns thousands of matches and
    cannot identify anyone. Two-letter codes, because that is what the register API
    takes; a free-text state cannot be turned into one reliably. */
+// What a registration number is CALLED, per country. "Company number" is a
+// British term; asking an American for one gets you an EIN, which is a tax id
+// and resolves at no register. The US label follows the state where we know it,
+// because Delaware says File Number, Florida Document Number, California Entity
+// Number and New York a DOS ID — there is no national word for it.
+const US_REG_LABEL = {
+  DE: 'File number', FL: 'Document number', CA: 'Entity number', NY: 'DOS ID',
+  TX: 'Filing number', WA: 'UBI number', MA: 'Identification number',
+};
+const REG_NO_BASE = {
+  UK:      { label: 'Company number',  eg: 'e.g. 09876543',
+             hint: 'Eight digits from Companies House — on your certificate of incorporation.' },
+  Ireland: { label: 'CRO number',      eg: 'e.g. 759409',
+             hint: 'Your Companies Registration Office number, usually six digits.' },
+  US:      { label: 'State filing number', eg: 'e.g. 1234567',
+             hint: 'The number your STATE issued when you registered — not your EIN. An EIN is a tax id and will not find you on the register.' },
+};
+
+// Resolve the wording for the country, and for the STATE once we know it. Asked
+// after the country for exactly this reason: the question has no single correct
+// phrasing until you know where the business is registered.
+function regNo(a) {
+  const base = REG_NO_BASE[a.country_of_registration]
+            || { label: 'Company number', eg: 'e.g. 09876543',
+                 hint: 'The number your business is registered under.' };
+  if (a.country_of_registration !== 'US') return base;
+  const named = US_REG_LABEL[a.us_state];
+  if (!named) return base;
+  // The label is already the state's own word for it, so the hint does not repeat
+  // the state code back at them — it explains what the number is and, more
+  // usefully, what it is NOT.
+  return { label: named, eg: base.eg,
+           hint: 'That is what your state calls it — the number issued when you registered. Not your EIN: that is a federal tax id and will not find you on the register.' };
+}
 const US_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA',
   'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',
   'OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
@@ -799,19 +833,19 @@ function viewStep5() {
     </div>
     <div class="field"><label>Work email *</label><input type="email" id="email" placeholder="you@yourcompany.com" value="${a.email || ''}" autocomplete="email" /></div>
     <div class="field"><label>Business / legal entity name *</label><input type="text" id="legal" placeholder="Carrow &amp; Bell Ltd" value="${a.legal_entity_name || ''}" /></div>
-    <div class="grid2">
-      <div class="field"><label>Company number</label><input type="text" id="cnum" placeholder="e.g. 09876543" value="${a.company_number || ''}" /><div class="hint">${a.country_of_registration === 'US' ? 'Your state entity / filing number — not the EIN.' : 'Optional, but it sharpens the read.'}</div></div>
-      <div class="field"><label>Website *</label><input type="url" id="web" placeholder="https://yourstore.com" value="${a.website_url || ''}" /></div>
-    </div>
-    <div class="field"><label>Country of registration</label>${optGroup('country_of_registration')}<div class="hint">Optional — helps us check the right business registry.</div></div>
+    <div class="field"><label>Country of registration *</label>${optGroup('country_of_registration')}<div class="hint">Asked before the registration number, because every country calls that number something different.</div></div>
     ${a.country_of_registration === 'US' ? `
-    <div class="field"><label>State of registration</label>
+    <div class="field"><label>State of registration *</label>
       <select id="usstate">
         <option value="">Select a state…</option>
         ${US_STATES.map(st => `<option value="${st}" ${a.us_state === st ? 'selected' : ''}>${st}</option>`).join('')}
       </select>
-      <div class="hint">US companies are registered by state, so we need this to look yours up.</div>
+      <div class="hint">There is no federal company register in the US — companies are registered by state, so we need this to look yours up.</div>
     </div>` : ''}
+    <div class="grid2">
+      <div class="field"><label>${regNo(a).label} *</label><input type="text" id="cnum" placeholder="${regNo(a).eg}" value="${a.company_number || ''}" /><div class="hint">${regNo(a).hint}</div></div>
+      <div class="field"><label>Website *</label><input type="url" id="web" placeholder="https://yourstore.com" value="${a.website_url || ''}" /></div>
+    </div>
     <div class="field"><label>What are you hoping to do?</label>${optGroup('funding_intent')}</div>
     <div class="consent">
       <input type="checkbox" id="consent" ${a.consent ? 'checked' : ''} />
@@ -944,7 +978,9 @@ function wire() {
       if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; return render(); }
       if (!a.website_url) { state.error = 'Please add your website.'; return render(); }
       if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
+      if (!a.country_of_registration) { state.error = 'Please choose the country your business is registered in.'; return render(); }
       if (a.country_of_registration === 'US' && !a.us_state) { state.error = 'Please choose the state your business is registered in \u2014 US companies are registered by state, not federally.'; return render(); }
+      if (!a.company_number) { state.error = 'Please add your ' + regNo(a).label.toLowerCase() + " — we hold applications that arrive without one, so it's quicker to give it now."; return render(); }
       if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
       state.error = ''; state.step++; render();
     };
@@ -1002,7 +1038,9 @@ async function doSubmit() {
   if (!a.legal_entity_name) { state.error = 'Please add the business / legal entity name.'; state.step = 1; return render(); }
   if (!a.website_url) { state.error = 'Please add your website.'; state.step = 1; return render(); }
   if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; state.step = 1; return render(); }
+  if (!a.country_of_registration) { state.error = 'Please choose the country your business is registered in.'; state.step = 1; return render(); }
   if (a.country_of_registration === 'US' && !a.us_state) { state.error = 'Please choose the state your business is registered in.'; state.step = 1; return render(); }
+  if (!a.company_number) { state.error = 'Please add your ' + regNo(a).label.toLowerCase() + '.'; state.step = 1; return render(); }
   if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; state.step = 1; return render(); }
 
   const submit = document.getElementById('submit');
