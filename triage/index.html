@@ -156,11 +156,6 @@
   .mode-pill.live { color: var(--ledger); border-color: var(--ledger); }
   .secure { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone1); display: flex; align-items: center; gap: 7px; }
   .secure svg { display: block; }
-  /* currency toggle */
-  .curtoggle { display: inline-flex; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-  .curtoggle button { border: none; background: transparent; font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--stone1); width: 30px; height: 26px; border-radius: 999px; cursor: pointer; transition: all 0.12s; }
-  .curtoggle button.on { background: var(--ink); color: #fff; }
-
   .stage { display: grid; place-items: start center; padding: 56px 24px 80px; }
   .card { width: 100%; max-width: 680px; }
 
@@ -292,7 +287,7 @@
     .stage { padding: 36px 18px 60px; }
     .topbar { padding: 14px 16px; gap: 10px; }
     .topbar .secure { display: none; }
-    .topbar .mode-pill { display: none; }     /* free the crowded top bar; keep the currency toggle */
+    .topbar .mode-pill { display: none; }     /* free the crowded top bar */
     .stepper .st .lbl { font-size: 8px; }
     .opt { padding: 14px 16px; }               /* ~44px finger targets */
     .ctaband { padding: 22px; }
@@ -330,11 +325,6 @@
       <span class="secure">
         <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="1" y="5.5" width="9" height="6.5" stroke="#8A8678" stroke-width="1.2"/><path d="M3 5.5V3.5a2.5 2.5 0 015 0v2" stroke="#8A8678" stroke-width="1.2"/></svg>
         Funding application · no login
-      </span>
-      <span class="curtoggle" id="curToggle">
-        <button data-cur="GBP" class="on">£</button>
-        <button data-cur="EUR">€</button>
-        <button data-cur="USD">$</button>
       </span>
       <span class="mode-pill" id="modePill">Demo mode</span>
     </div>
@@ -386,11 +376,34 @@ function ensureClient() {
   return sb;
 }
 
-/* ---------------- currency ---------------- */
+/* ---------------- currency ----------------
+   THE COUNTRY DECIDES. There was a £/€/$ toggle in the top bar, and asking an
+   applicant to pick a currency was asking a question we already knew the answer
+   to: a company registered in Delaware reports in dollars.
+
+   It was also actively harmful. The chosen symbol was written into the STORED
+   band ("$20–30k"), while every downstream lookup — the pre-screen gate's
+   midpoints, the verdict email's, the screening engine's — is keyed on the
+   canonical "£20–30k". The toggle defaulted to USD, so the next applicant who
+   left it alone would have had their revenue read as "no revenue band given"
+   and been held for a symbol.
+
+   So: the symbol shown is derived from country_of_registration, and the band
+   STORED is always canonical. Currency now matters in exactly one place, which
+   is where it always did — the size of an indicative offer. */
 const SYM = { GBP: '£', EUR: '€', USD: '$' };
 const MONEY_KEYS = ['revenue_band', 'revenue_3m_band', 'aov_band', 'cash_band', 'debt_monthly_band'];
-function sym() { return SYM[state.currency] || '£'; }
-// Money bands are authored canonically in £; display swaps the active symbol.
+const CURRENCY_BY_COUNTRY = { US: 'USD', Ireland: 'EUR', UK: 'GBP' };
+// Country is asked in section 1 and the money bands are in section 3, so this is
+// always resolved before an applicant sees a figure. Before they answer — and
+// for 'Other', which the gate holds for an analyst anyway — the bands show in
+// their authored £, which is what is stored regardless.
+function currency() {
+  return CURRENCY_BY_COUNTRY[state.answers.country_of_registration] || 'GBP';
+}
+function sym() { return SYM[currency()] || '£'; }
+// Money bands are authored canonically in £; display swaps the derived symbol.
+// DISPLAY ONLY — never use this on a value being stored.
 function disp(s) { return String(s).split('£').join(sym()); }
 
 /* ---------------- option sets (money bands authored in £) ---------------- */
@@ -436,11 +449,6 @@ const ANN_3M   = {'<£20k':0,'£20–30k':1,'£30–100k':1,'£100–250k':2,'£
 const state = {
   step: 0,             // 0 welcome · 1..5 questions · 6 verdict
   answers: {},         // keyed by column name (money bands held canonically in £)
-  // USD by default because the US is the primary market. The money bands are
-  // authored canonically in £ and disp() swaps the symbol, so this changes what
-  // an applicant SEES and what we store on the row — never the band midpoints
-  // the pre-screen gate looks up, which stay currency-agnostic numbers.
-  currency: 'USD',
   ref: '',
   result: null,
   error: '',
@@ -656,7 +664,7 @@ function viewWelcome() {
     <span class="eyebrow">Funding application · no login</span>
     <h1 class="title">Apply for funding<br/>in <em>90 seconds.</em></h1>
     <p class="lead">Answer in simple bands — no exact figures, no documents, and no bank access at this stage. Submit it and we'll come back by email with your next step, usually within a couple of minutes.</p>
-    <div class="reassure"><b>No obligation.</b> Starting an application doesn't commit you to anything. Nothing you enter is shared publicly, and you can ask us to delete it at any time. <b>Working in € or $?</b> Switch currency top-right.</div>
+    <div class="reassure"><b>No obligation.</b> Starting an application doesn't commit you to anything. Nothing you enter is shared publicly, and you can ask us to delete it at any time.</div>
     <div class="actions solo"><button class="btn green" id="next">Start my application →</button></div>`;
 }
 // Google Product Taxonomy (2-level) — [l1id, "L1 name", [[l2id,"L2 name"], ...]]
@@ -1005,13 +1013,16 @@ async function doSubmit() {
   state.result = result;
   state.ref = 'ML-' + uid().toUpperCase();
 
-  // money bands stored with the chosen currency symbol (numbers unchanged)
-  const money = k => (a[k] ? disp(a[k]) : a[k]);
+  // Bands are stored EXACTLY as authored, in £. They are the key every
+  // downstream midpoint table is looked up by; a symbol swapped into the stored
+  // value is what turned a real revenue band into "no revenue band given".
+  // The applicant's currency travels in its own column, where it belongs.
+  const money = k => a[k];
 
   const pillar_scores = {
     ref: state.ref,
     score: Math.round(result.score),
-    currency: state.currency,
+    currency: currency(),
     normalised_monthly: Math.round(result.norm),
     recent_monthly: Math.round(result.recent),
     trailing_monthly: Math.round(result.trailing),
@@ -1044,7 +1055,7 @@ async function doSubmit() {
     industry_taxonomy_id: (a.industry_l2_id != null ? a.industry_l2_id : (a.industry_l1_id != null ? a.industry_l1_id : null)),
     // NEW · Phase-1 routing fields (sandbox). triage-table columns to be added on approval.
     funding_amount: (a.funding_amount != null && a.funding_amount !== '') ? Number(a.funding_amount) : null,
-    funding_currency: state.currency,
+    funding_currency: currency(),
     ideal_payback: a.ideal_payback || null,
     product_preference: Array.isArray(a.product_preference) ? a.product_preference : [],
     use_of_funds: a.use_of_funds || null,
@@ -1057,7 +1068,7 @@ async function doSubmit() {
     facility_low: result.facility_low,
     facility_high: result.facility_high,
     size_descriptor: result.size_descriptor,
-    currency: state.currency,
+    currency: currency(),
   };
 
   if (!LIVE) { await new Promise(r => setTimeout(r, 400)); state.step = 7; render(); return; }
@@ -1078,16 +1089,6 @@ async function doSubmit() {
 
 /* ---------------- boot ---------------- */
 render();
-
-// currency toggle (always visible in the topbar)
-document.querySelectorAll('#curToggle button').forEach(b => {
-  b.onclick = () => {
-    syncContactInputs();
-    state.currency = b.dataset.cur;
-    document.querySelectorAll('#curToggle button').forEach(x => x.classList.toggle('on', x === b));
-    render();
-  };
-});
 
 // webfonts after first paint
 (function loadFonts() {
