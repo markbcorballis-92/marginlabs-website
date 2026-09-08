@@ -678,9 +678,27 @@ function regNo(a) {
   return { label: named, eg: base.eg,
            hint: 'That is what your state calls it — the number issued when you registered. Not your EIN: that is a federal tax id and will not find you on the register.' };
 }
-const US_STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','DC','FL','GA','HI','ID','IL','IN','IA',
-  'KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND',
-  'OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+// The VALUE stays the two-letter code — company-register validates /^[A-Z]{2}$/
+// and builds the jurisdiction as `us_` + lowercase, so 'DE' is load-bearing.
+// Only the LABEL changes. A borrower picking their own state reads either
+// happily; the person reading the application back six weeks later does not,
+// and 'DE' beside an Irish company is a genuinely confusable thing to store.
+// Order is unchanged: it was already alphabetical by full name.
+const US_STATES = [
+  ['AL','Alabama'], ['AK','Alaska'], ['AZ','Arizona'], ['AR','Arkansas'],
+  ['CA','California'], ['CO','Colorado'], ['CT','Connecticut'], ['DE','Delaware'],
+  ['DC','District of Columbia'], ['FL','Florida'], ['GA','Georgia'], ['HI','Hawaii'],
+  ['ID','Idaho'], ['IL','Illinois'], ['IN','Indiana'], ['IA','Iowa'],
+  ['KS','Kansas'], ['KY','Kentucky'], ['LA','Louisiana'], ['ME','Maine'],
+  ['MD','Maryland'], ['MA','Massachusetts'], ['MI','Michigan'], ['MN','Minnesota'],
+  ['MS','Mississippi'], ['MO','Missouri'], ['MT','Montana'], ['NE','Nebraska'],
+  ['NV','Nevada'], ['NH','New Hampshire'], ['NJ','New Jersey'], ['NM','New Mexico'],
+  ['NY','New York'], ['NC','North Carolina'], ['ND','North Dakota'], ['OH','Ohio'],
+  ['OK','Oklahoma'], ['OR','Oregon'], ['PA','Pennsylvania'], ['RI','Rhode Island'],
+  ['SC','South Carolina'], ['SD','South Dakota'], ['TN','Tennessee'], ['TX','Texas'],
+  ['UT','Utah'], ['VT','Vermont'], ['VA','Virginia'], ['WA','Washington'],
+  ['WV','West Virginia'], ['WI','Wisconsin'], ['WY','Wyoming'],
+];
 
 function optGroup(key) {
   const money = MONEY_KEYS.includes(key);
@@ -838,7 +856,7 @@ function viewStep5() {
     <div class="field"><label>State of registration *</label>
       <select id="usstate">
         <option value="">Select a state…</option>
-        ${US_STATES.map(st => `<option value="${st}" ${a.us_state === st ? 'selected' : ''}>${st}</option>`).join('')}
+        ${US_STATES.map(([code, name]) => `<option value="${code}" ${a.us_state === code ? 'selected' : ''}>${name}</option>`).join('')}
       </select>
       <div class="hint">There is no federal company register in the US — companies are registered by state, so we need this to look yours up.</div>
     </div>` : ''}
