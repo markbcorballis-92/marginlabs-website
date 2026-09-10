@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MarginLabs — Apply for funding</title>
-<meta name="description" content="Apply for business funding in 90 seconds. Answer in simple bands — no documents, no login. We'll come back by email with your next step." />
+<meta name="description" content="Apply for business funding in 90 seconds. Answer in simple bands. No documents, no login. We'll come back by email with your next step." />
 <link rel="icon" href="../marginlabs-favicon.svg" type="image/svg+xml" />
 <style>
   /* ML-TOKENS:BEGIN — generated from brand/tokens.css by
@@ -90,6 +90,9 @@
        true tabular figures, which matters wherever money lines up in a column. */
     --ml-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
     --ml-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    /* Matches the website's display face, so the jump from the last page
+       of getmarginlabs.com into this form does not change voice. */
+    --ml-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
 
     /* A deliberately SHORT scale. Every extra size is another decision a reader
        has to make; the density problem on these screens is too many competing
@@ -132,7 +135,7 @@
     --goodSoft: var(--ml-good-soft);    --amberSoft: var(--ml-warn-soft);  --redSoft: var(--ml-bad-soft);
     --line: var(--ml-line);             --lineS: var(--ml-line-soft);
     --accentSoft: var(--ml-brand-soft); --accentLine: var(--ml-brand-line); --radius: var(--ml-radius);
-    --serif: var(--ml-sans);            --sans: var(--ml-sans);           --mono: var(--ml-mono);
+    --serif: var(--ml-serif);           --sans: var(--ml-sans);           --mono: var(--ml-mono);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--bone); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100%; overflow-x: hidden; }
@@ -715,7 +718,7 @@ function viewWelcome() {
   return `
     <span class="eyebrow">Funding application · no login</span>
     <h1 class="title">Apply for funding<br/>in <em>90 seconds.</em></h1>
-    <p class="lead">Answer in simple bands — no exact figures, no documents, and no bank access at this stage. Submit it and we'll come back by email with your next step, usually within a couple of minutes.</p>
+    <p class="lead">Answer in simple bands. No exact figures, no documents, and no bank access at this stage. Submit it and we'll come back by email with your next step, usually within a couple of minutes.</p>
     <div class="reassure"><b>No obligation.</b> Starting an application doesn't commit you to anything. Nothing you enter is shared publicly, and you can ask us to delete it at any time.</div>
     <div class="actions solo"><button class="btn green" id="next">Start my application →</button></div>`;
 }
@@ -1150,7 +1153,7 @@ render();
 (function loadFonts() {
   var l = document.createElement('link');
   l.rel = 'stylesheet';
-  l.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap';
+  l.href = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap';
   document.head.appendChild(l);
 })();
 </script>
