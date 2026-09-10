@@ -3,829 +3,571 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MarginLabs — Know what you'd really qualify for.</title>
-<meta name="description" content="A broker and commercial advisor for eCommerce & retail. We read your business like a lender does — then find the right capital, at the right price." />
-<!-- social share (Open Graph + Twitter Card) -->
-<meta property="og:title" content="MarginLabs — Know what you'd really qualify for." />
-<meta property="og:description" content="We read your business the way a lender does — then find the right capital, at the right price." />
+<title>MarginLabs · Funding shaped like your revenue</title>
+<meta name="description" content="MarginLabs funds growing brands with its own money. Connect your bank and get your funding answer in six minutes. For businesses across the United States." />
+<meta property="og:title" content="MarginLabs · Funding shaped like your revenue" />
+<meta property="og:description" content="MarginLabs funds growing brands with its own money. Connect your bank and get your funding answer in six minutes. For businesses across the United States." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://getmarginlabs.com" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="MarginLabs — Know what you'd really qualify for." />
-<meta name="twitter:description" content="We read your business the way a lender does — then find the right capital, at the right price." />
+<meta name="twitter:title" content="MarginLabs · Funding shaped like your revenue" />
+<meta name="twitter:description" content="MarginLabs funds growing brands with its own money. Connect your bank and get your funding answer in six minutes. For businesses across the United States." />
 <link rel="icon" href="marginlabs-favicon.svg" type="image/svg+xml" />
-<style>
-  /* ML-TOKENS:BEGIN — generated from brand/tokens.css by
-     scripts/sync-tokens.py. Do not edit here; edit that file and re-run it. */
-  :root {
-    /* --- surfaces ------------------------------------------------------- */
-    /* True neutrals, not green-tinted. The tint was what made every screen feel
-       faintly coloured before anything meaningful was on it. */
-    --ml-surface:        #FFFFFF;   /* cards, raised panels, the thing you read on */
-    --ml-surface-sunk:   #F5F5F5;   /* page ground, inset wells */
-    --ml-surface-alt:    #FAFAFA;   /* secondary fill, hover, zebra rows */
-
-    /* --- text ------------------------------------------------------------ */
-    --ml-text:           #0A0A0A;   /* primary */
-    --ml-text-soft:      #171717;   /* emphasis inside body copy */
-    /* The step that was missing. Secondary text had nowhere to sit between #171717
-       and #737373, so it ended up on #737373 — 4.7:1, a hair over the AA floor of
-       4.5, and it showed. This is 7.8:1, matching the 8.0:1 the product had before
-       the density pass. Secondary body copy belongs here, not on --ml-text-muted. */
-    --ml-text-body:      #525252;   /* secondary body copy — 7.8:1 on white */
-    --ml-text-muted:     #737373;   /* labels, captions, metadata — tertiary only */
-    --ml-text-faint:     #A3A3A3;   /* placeholder, disabled */
-    --ml-text-on-dark:   #FFFFFF;   /* text sitting on ink or brand fills */
-
-    /* --- lines ----------------------------------------------------------- */
-    --ml-line:           #E5E5E5;   /* default border */
-    --ml-line-soft:      #F0F0F0;   /* internal dividers */
-    --ml-line-strong:    #D4D4D4;   /* emphasis, form outlines */
-    --ml-track:          #E5E5E5;   /* progress / meter troughs */
-
-    /* --- action vs identity vs meaning -----------------------------------
-       These were ONE green doing three jobs, which is why a green tick and a
-       green button were indistinguishable. Now:
-         --ml-action  the thing you click. Achromatic, so it never competes.
-         --ml-mark    the identity green. The logo, and nothing else by default.
-         --ml-good    "we have this / it is done". The only green on a working
-                      screen, which is what makes it readable at a glance. */
-    --ml-action:         #171717;
-    --ml-action-hover:   #0A0A0A;
-    --ml-action-soft:    #FAFAFA;
-    --ml-action-line:    #E5E5E5;
-    --ml-mark:           #2F7D58;
-
-    /* --- semantic -------------------------------------------------------- */
-    /* These take the values the product ALREADY uses most, rather than importing
-       the reference's. #B14431 appears in 51 console rules and in both dashboard
-       ramps; #B45309 in 41. Adopting them unifies console, dashboards, portal and
-       website on one red and one amber in a single line each, instead of a
-       51-site find-and-replace through matched hex + rgba() + soft-fill sets. */
-    --ml-good:           #2F7D58;
-    --ml-warn:           #B45309;
-    --ml-bad:            #B14431;
-    --ml-good-soft:      #F0F7F3;
-    /* #FAF1DF put warn text at 4.47:1 — the only one of the three semantic pills
-       under AA, while good sat at 4.60 and bad at 4.76. Lightened so the amber
-       pill matches its siblings, rather than moving --ml-warn, which 39 console
-       literals already equal. */
-    --ml-warn-soft:      #FDF6EA;
-    --ml-bad-soft:       #F9E9E5;
-
-    /* Kept so the legacy --ledger/--accent aliases still resolve. Points at the
-       ACTION colour: those aliases are overwhelmingly used for buttons, links and
-       focus rings. The genuinely semantic call sites were moved to --ml-good. */
-    --ml-brand:          var(--ml-action);
-    --ml-brand-light:    #404040;
-    --ml-brand-soft:     var(--ml-action-soft);
-    --ml-brand-line:     var(--ml-action-line);
-
-    /* --- shape -----------------------------------------------------------
-       The reference uses 18px interactive / 24px containers. Dialled back: a
-       lender should read precise rather than soft. One number to change if it
-       still feels too tight or too round. */
-    --ml-radius-sm:      6px;
-    --ml-radius:         12px;
-    --ml-radius-lg:      16px;
-    --ml-radius-pill:    999px;
-
-    /* --- type ------------------------------------------------------------ */
-    /* IBM Plex, drawn for data-dense technical and financial interfaces, so it holds
-       up at the 12-16px the console actually lives at — where Geist, a geometric
-       display face, closes up on a / e / s / c. Plex Sans and Plex Mono are one
-       family, so the uppercase labels stop being a separate decision, and Plex has
-       true tabular figures, which matters wherever money lines up in a column. */
-    --ml-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    --ml-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
-
-    /* A deliberately SHORT scale. Every extra size is another decision a reader
-       has to make; the density problem on these screens is too many competing
-       sizes, not too few. Weights stop at 600 — the old 680 display weight read
-       as shouting. */
-    --ml-text-xs:        11px;   /* mono labels, eyebrows */
-    --ml-text-sm:        12.5px; /* captions, secondary */
-    --ml-text-base:      14px;   /* body */
-    --ml-text-md:        16px;   /* lead, card titles */
-    --ml-text-lg:        20px;   /* section headings */
-    --ml-text-xl:        28px;   /* page headings */
-    --ml-text-2xl:       48px;   /* display */
-    --ml-display-track:  -0.05em;
-    --ml-weight-normal:  400;
-    --ml-weight-medium:  500;
-    --ml-weight-bold:    600;
-    --ml-leading-tight:  1.2;
-    --ml-leading:        1.55;
-
-    /* --- spacing: a 4px rhythm, compact ---------------------------------- */
-    --ml-space-1:        4px;
-    --ml-space-2:        8px;    /* element gap */
-    --ml-space-3:        12px;
-    --ml-space-4:        16px;
-    --ml-space-5:        20px;   /* card padding */
-    --ml-space-6:        32px;
-    --ml-space-7:        48px;   /* section gap */
-    --ml-space-8:        80px;
-  }
-  /* ML-TOKENS:END */
-
-  /* Legacy names. Every one resolves to a canonical token above, so no markup
-     changed — but new work should use --ml-* directly and these should shrink. */
-  :root{
-    --bg: var(--ml-surface);            --bg2: var(--ml-surface-sunk);    --card: var(--ml-surface);
-    --ink: var(--ml-text);              --inkSoft: var(--ml-text-soft);   --mut: var(--ml-text-muted);
-    --accent: var(--ml-brand);          --accent2: var(--ml-brand-light);
-    --accentSoft: var(--ml-brand-soft); --accentLine: var(--ml-brand-line); --track: var(--ml-track);
-    --line: var(--ml-line);             --radius: var(--ml-radius-lg);
-    --sans: var(--ml-sans);             --mono: var(--ml-mono);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;letter-spacing:-0.011em;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1140px;margin:0 auto;padding:0 28px}
-  .mono{font-family:var(--mono)}
-  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--accent);font-weight:500}
-
-  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;font-size:15px;font-weight:560;
-    padding:13px 22px;border-radius:999px;background:var(--ink);color:#fff;transition:transform .14s,box-shadow .14s;position:relative}
-  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px -12px rgba(16,35,26,.5)}
-  .btn.accent{background:var(--accent)}
-  .btn.accent:hover{box-shadow:0 12px 26px -10px rgba(47,125,88,.6)}
-  .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
-  .btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--accentLine);transform:translateY(-2px)}
-  .btn.sm{padding:10px 18px;font-size:14px}
-
-  /* nav */
-  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.7);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
-  nav.scrolled{border-bottom-color:var(--line);box-shadow:0 4px 20px -16px rgba(16,35,26,.4)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
-  .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:680;letter-spacing:-0.02em}
-  .logo .dotmark{width:26px;height:26px;border-radius:8px;background:var(--accentSoft);display:grid;place-items:center}
-  nav .links{display:flex;align-items:center;gap:30px}
-  nav .links a.l{font-size:14.5px;color:var(--inkSoft);font-weight:480}
-  nav .links a.l:hover{color:var(--ink)}
-  @media(max-width:820px){nav .links a.l{display:none}nav .btn.sm{font-size:11px;padding:7px 12px}}
-
-  /* hero */
-  .hero{position:relative;padding:88px 0 76px;overflow:hidden}
-  .aurora{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-  .aurora b{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
-  .aurora .a1{width:520px;height:520px;background:radial-gradient(circle,#BFE6CF,transparent 65%);top:-160px;right:-120px;animation:drift1 18s ease-in-out infinite}
-  .aurora .a2{width:440px;height:440px;background:radial-gradient(circle,#D7EFE0,transparent 65%);top:60px;left:-160px;animation:drift2 22s ease-in-out infinite}
-  @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,30px)}}
-  @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
-  .hero .wrap{position:relative;z-index:1}
-  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-  .hero h1{font-size:64px;line-height:1.0;letter-spacing:-0.038em;font-weight:680;margin:18px 0 0}
-  .hero h1 .g{color:var(--accent)}
-  .hero p.sub{font-size:19px;line-height:1.55;color:var(--inkSoft);max-width:32ch;margin-top:22px}
-  .hero .cta{display:flex;gap:12px;align-items:center;margin-top:32px;flex-wrap:wrap}
-  .hero .trust{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
-  .hero .trust .t{font-size:13px;color:var(--mut)}
-  .hero .trust .t b{display:block;font-family:var(--mono);font-size:22px;color:var(--ink);font-weight:500;letter-spacing:-0.02em}
-  @media(max-width:820px){.hero .grid{grid-template-columns:1fr;gap:40px}.hero h1{font-size:44px}}
-
-  .pcard{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 70px -30px rgba(16,35,26,.3);overflow:hidden}
-  .pcard .top{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-  .pcard .top .ttl{font-size:13px;font-weight:560}
-  .pcard .top .pill{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accentSoft);padding:5px 9px;border-radius:999px}
-  .pcard .body{padding:24px 22px}
-  .scorerow{display:flex;align-items:flex-end;gap:14px}
-  .scorerow .num{font-size:64px;font-weight:680;letter-spacing:-0.04em;line-height:.9}
-  .scorerow .meta{font-size:12.5px;color:var(--mut);padding-bottom:6px}
-  .scorerow .meta b{display:block;color:var(--accent);font-size:13px}
-  .bar{height:8px;border-radius:999px;background:var(--track);margin:18px 0 22px;overflow:hidden}
-  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width 1.4s cubic-bezier(.22,1,.36,1)}
-  .frow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:13.5px}
-  .frow .ic{width:22px;height:22px;border-radius:6px;background:var(--accentSoft);display:grid;place-items:center;flex:none}
-  .frow .lv{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--mut)}
-  /* funding-range tile — RAG variants + crossfade between the 3 example outcomes */
-  #fcPill,#fcScore,#fcMeta,#fcRows{transition:opacity .4s ease}
-  .pcard .top .pill.g{color:#2F7D58;background:#E7F2EC}
-  .pcard .top .pill.a{color:var(--ml-warn);background:var(--ml-warn-soft)}
-  .pcard .top .pill.r{color:#B14431;background:#FBEAE6}
-  .scorerow .num.g{color:#2F7D58}
-  .scorerow .num.a{color:var(--ml-warn)}
-  .scorerow .num.r{color:#B14431}
-  .bar i.g{background:linear-gradient(90deg,#2F7D58,#5BB286)}
-  .bar i.a{background:linear-gradient(90deg,var(--ml-warn),#E0B768)}
-  .bar i.r{background:linear-gradient(90deg,#B14431,#D98E80)}
-
-  /* trust strip */
-  .strip{padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
-  .strip .wrap{display:flex;align-items:center;gap:14px 30px;flex-wrap:wrap;justify-content:center}
-  .strip .item{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--inkSoft);font-weight:480}
-  .strip .item svg{flex:none}
-  .strip .sep{width:4px;height:4px;border-radius:50%;background:var(--accentLine)}
-  @media(max-width:820px){.strip .sep{display:none}}
-
-  /* sections */
-  section.blk{padding:72px 0}
-  @media(max-width:820px){section.blk{padding:48px 0}}
-  .seclabel{font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);font-weight:500}
-  .sechead{font-size:40px;line-height:1.06;letter-spacing:-0.03em;font-weight:680;margin-top:14px;max-width:18ch}
-
-  .pains{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
-  .pcardp{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
-  .pcardp .q{font-size:18px;font-weight:560;letter-spacing:-0.02em;line-height:1.35}
-  .pcardp .t{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-top:12px}
-  .pains-foot{margin-top:26px;font-size:22px;font-weight:560;letter-spacing:-0.02em}
-  .pains-foot .g{color:var(--accent)}
-  @media(max-width:820px){.pains{grid-template-columns:1fr}.sechead{font-size:30px}}
-
-  /* calculator */
-  .calc{background:var(--bg2);border-radius:24px;border:1px solid var(--line);padding:8px}
-  .calc-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:8px}
-  .calc .left{padding:34px}
-  .calc .lead{font-size:15px;color:var(--inkSoft);max-width:40ch;margin-top:10px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
-  .chip{font-size:13px;font-weight:520;padding:9px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink);cursor:pointer;transition:.12s}
-  .chip:hover{border-color:var(--accentLine)}
-  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-  /* slider currency toggle (user-controlled £/€/$) + hero auto-cycle fade */
-  .curtog{display:inline-flex;gap:5px;margin-top:14px}
-  .curbtn{font-family:var(--mono);font-size:13px;font-weight:520;min-width:30px;height:30px;border-radius:8px;background:#fff;border:1px solid var(--line);color:var(--mut);cursor:pointer;transition:.12s}
-  .curbtn:hover{border-color:var(--accentLine)}
-  .curbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .hcur{transition:opacity .3s}
-  #finBadge{transition:opacity .3s}
-  /* contact form */
-  .cform{margin-top:28px;max-width:660px}
-  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media(max-width:820px){.cgrid{grid-template-columns:1fr}}
-  .cform label{display:block;font-size:13px;font-weight:520;color:var(--mut);margin-bottom:16px}
-  .cform input,.cform textarea{display:block;width:100%;margin-top:6px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit;font-size:15px;outline:none;transition:border-color .12s}
-  .cform input:focus,.cform textarea:focus{border-color:var(--accent)}
-  .cform textarea{resize:vertical;min-height:96px}
-  .cform .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
-  .cform-foot{display:flex;align-items:center;gap:16px;margin-top:6px;flex-wrap:wrap}
-  .cstatus{font-size:13px;color:var(--mut)}
-  .cstatus.ok{color:var(--accent);font-weight:520}
-  .cstatus.err{color:#B14431}
-  .amt{font-size:46px;font-weight:680;letter-spacing:-0.035em;margin-top:26px}
-  .amt .u{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-left:10px}
-  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;background:var(--track);margin-top:20px;cursor:pointer;outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:none;box-shadow:0 2px 8px rgba(16,35,26,.25),inset 0 0 0 6px var(--accent)}
-  input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:#fff;border:none;box-shadow:0 2px 8px rgba(16,35,26,.25),inset 0 0 0 6px var(--accent)}
-  .rlabels{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--mut)}
-  .calc .result{background:var(--ink);border-radius:18px;color:#fff;padding:34px;display:flex;flex-direction:column}
-  .result .rl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
-  .toggle{display:inline-flex;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;margin:14px 0 20px}
-  .toggle button{font-size:12px;font-weight:520;padding:7px 13px;border-radius:999px;background:transparent;color:rgba(255,255,255,.7);border:none;cursor:pointer}
-  .toggle button.on{background:var(--accent);color:#fff}
-  .bignum{font-size:44px;font-weight:680;letter-spacing:-0.03em;line-height:1}
-  .bignum .d{color:rgba(255,255,255,.35)}
-  .per{font-size:13px;color:#8FD6B0;margin-top:10px;font-family:var(--mono);letter-spacing:.02em}
-  .gradbar{height:6px;border-radius:999px;background:linear-gradient(90deg,#5BB286,#9ED9BB);margin:22px 0 8px}
-  .gradl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5)}
-  .calc-foot{margin-top:auto;padding-top:22px;font-size:16px;line-height:1.45;color:rgba(255,255,255,.9)}
-  .calc-foot b{color:#8FD6B0}
-  @media(max-width:820px){.calc-inner{grid-template-columns:1fr}.amt{font-size:38px}}
-
-  /* founder trust block */
-  .founder{background:var(--ink);color:#fff;border-radius:24px;padding:48px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
-  .founder .ph{width:148px;height:148px;border-radius:20px;background:linear-gradient(150deg,#2F7D58,#1c4a35);display:grid;place-items:center;flex:none;position:relative;overflow:hidden}
-  .founder .ph .mono{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-  .founder .ph .init{font-size:52px;font-weight:680;letter-spacing:-0.03em}
-  .founder .q{font-size:25px;line-height:1.4;letter-spacing:-0.02em;font-weight:480}
-  .founder .q .g{color:#8FD6B0}
-  .founder .by{margin-top:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .founder .by .nm{font-weight:600;font-size:15px}
-  .founder .by .cred{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8FD6B0;background:rgba(143,214,176,.12);padding:5px 10px;border-radius:999px}
-  @media(max-width:820px){.founder{grid-template-columns:1fr;padding:32px;text-align:center}.founder .ph{margin:0 auto}.founder .q{font-size:20px}}
-
-  /* security band */
-  .secband{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
-  .sc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
-  .sc .ic{width:38px;height:38px;border-radius:10px;background:var(--accentSoft);display:grid;place-items:center;margin-bottom:16px}
-  .sc h4{font-size:16px;font-weight:620;letter-spacing:-0.01em;margin-bottom:6px}
-  .sc p{font-size:13px;color:var(--inkSoft);line-height:1.55}
-  @media(max-width:820px){.secband{grid-template-columns:1fr 1fr}}
-
-  /* staircase */
-  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px}
-  .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;transition:.16s}
-  .step:hover{border-color:var(--accentLine);transform:translateY(-3px);box-shadow:0 16px 36px -22px rgba(47,125,88,.4)}
-  .step .n{width:30px;height:30px;border-radius:8px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:500}
-  .step h4{font-size:20px;font-weight:620;letter-spacing:-0.02em;margin:16px 0 8px}
-  .step p{font-size:13.5px;color:var(--inkSoft);line-height:1.55}
-  .step .price{margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
-  @media(max-width:820px){.steps{grid-template-columns:1fr 1fr}}
-
-  /* versus */
-  .vs{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-  .vrow{display:grid;grid-template-columns:200px 1fr 1fr}
-  .vrow+.vrow{border-top:1px solid var(--line)}
-  .vrow.head .c{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:16px 22px}
-  .vrow.head .them{color:var(--mut)}
-  .vrow.head .us{color:var(--accent)}
-  .vc{padding:18px 22px;font-size:14px;line-height:1.5}
-  .vc.k{font-weight:560;color:var(--ink)}
-  .vc.them{color:var(--mut)}
-  .vc.us{color:var(--ink);background:var(--accentSoft)}
-  .vc.us b{color:var(--accent);font-weight:560}
-  @media(max-width:820px){.vrow{grid-template-columns:1fr}.vc.k{padding-bottom:4px}}
-
-  /* guarantee */
-  .guar{display:flex;align-items:center;gap:28px;background:var(--accentSoft);border:1px solid var(--accentLine);border-radius:20px;padding:36px 40px;margin-top:8px}
-  .guar .seal{width:72px;height:72px;border-radius:50%;background:#fff;border:1px solid var(--accentLine);display:grid;place-items:center;flex:none}
-  .guar h3{font-size:26px;font-weight:680;letter-spacing:-0.025em}
-  .guar p{font-size:15px;color:var(--inkSoft);margin-top:6px;max-width:60ch}
-  @media(max-width:820px){.guar{flex-direction:column;text-align:center;padding:30px}}
-
-  /* faq */
-  .faq{margin-top:36px;border-top:1px solid var(--line)}
-  .qa{border-bottom:1px solid var(--line)}
-  .qa summary{list-style:none;cursor:pointer;padding:22px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:18px;font-weight:560;letter-spacing:-0.015em}
-  .qa summary::-webkit-details-marker{display:none}
-  .qa summary .pm{width:26px;height:26px;border-radius:50%;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;flex:none;font-size:18px;transition:transform .2s}
-  .qa[open] summary .pm{transform:rotate(45deg)}
-  .qa .ans{padding:0 0 22px;font-size:14.5px;color:var(--inkSoft);line-height:1.6;max-width:70ch}
-  .qa .ans a{color:var(--accent);text-decoration:underline}
-
-  /* testimonial placeholder */
-  .tph{margin-top:36px;border:1.5px dashed var(--accentLine);border-radius:var(--radius);padding:34px;text-align:center;background:var(--bg2)}
-  .tph .q{font-size:24px;font-weight:560;letter-spacing:-0.02em;color:var(--mut);max-width:46ch;margin:0 auto;line-height:1.4}
-  .tph .lab{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-top:16px}
-
-  /* final */
-  .final{position:relative;background:var(--ink);border-radius:28px;padding:80px 40px;text-align:center;color:#fff;margin:40px 0;overflow:hidden}
-  .final .glow{position:absolute;width:600px;height:300px;background:radial-gradient(circle,rgba(91,178,134,.4),transparent 70%);top:-80px;left:50%;transform:translateX(-50%);filter:blur(50px);pointer-events:none}
-  .final .wrapi{position:relative;z-index:1}
-  .final h2{font-size:48px;font-weight:680;letter-spacing:-0.03em;line-height:1.04;max-width:18ch;margin:0 auto}
-  .final h2 .g{color:#8FD6B0}
-  .final p{font-size:16px;color:rgba(255,255,255,.72);max-width:48ch;margin:18px auto 0}
-  .final .cta{display:flex;gap:12px;justify-content:center;margin-top:30px;flex-wrap:wrap}
-  .final .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
-  @media(max-width:820px){.final h2{font-size:32px}}
-
-  footer{padding:46px 0;border-top:1px solid var(--line)}
-  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
-  footer .links{display:flex;gap:20px;font-size:13px;color:var(--mut)}
-  footer .links a:hover{color:var(--ink)}
-  footer .meta{width:100%;font-family:var(--mono);font-size:11px;color:var(--mut);padding-top:16px;border-top:1px solid var(--line)}
-
-  /* solution */
-  .sol{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
-  .solc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:.16s}
-  .solc:hover{border-color:var(--accentLine);transform:translateY(-3px);box-shadow:0 16px 36px -22px rgba(47,125,88,.4)}
-  .solc .ic{width:44px;height:44px;border-radius:12px;background:var(--accentSoft);display:grid;place-items:center;margin-bottom:18px}
-  .solc h4{font-size:19px;font-weight:620;letter-spacing:-0.02em;margin-bottom:8px}
-  .solc p{font-size:14px;color:var(--inkSoft);line-height:1.6}
-  .solc .stat{margin-top:16px;font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--accent);font-weight:500;border-top:1px solid var(--line);padding-top:14px}
-  @media(max-width:820px){.sol{grid-template-columns:1fr}}
-  /* #solution carries 4 value cards → scoped 2×2 (other .sol sections stay 3-up) */
-  #solution .sol{grid-template-columns:repeat(2,1fr)}
-  @media(max-width:820px){#solution .sol{grid-template-columns:1fr}}
-
-  /* typewriter caret */
-  .caret{display:inline-block;width:2px;height:.92em;background:currentColor;margin-left:1px;vertical-align:-1px;border-radius:1px;animation:blink 1s steps(1) infinite}
-  @keyframes blink{50%{opacity:0}}
-  .typeline{min-height:1.06em}
-
-  /* motion */
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
-  .reveal.in{opacity:1;transform:none}
-  .hero .he{opacity:0;transform:translateY(18px);animation:rise .8s cubic-bezier(.22,1,.36,1) forwards}
-  .hero .he.d1{animation-delay:.05s}.hero .he.d2{animation-delay:.15s}.hero .he.d3{animation-delay:.25s}.hero .he.d4{animation-delay:.35s}
-  .hero .pcard{opacity:0;transform:translateY(24px) scale(.98);animation:rise .9s cubic-bezier(.22,1,.36,1) .3s forwards}
-  @keyframes rise{to{opacity:1;transform:none}}
-  @media(prefers-reduced-motion:reduce){
-    .aurora b{animation:none}
-    .hero .he,.hero .pcard{animation:none;opacity:1;transform:none}
-    .reveal{opacity:1;transform:none;transition:none}
-  }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="site.css" />
 </head>
 <body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<nav id="nav"><div class="wrap">
-  <a class="logo" href="#top">
-    <span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="var(--ml-mark)"/></svg></span>
-    MarginLabs
-  </a>
-  <div class="links">
-    <a class="l" href="#solution">The fix</a>
-    <a class="l" href="#how">How it works</a>
-    <a class="l" href="#cost">What You Save</a>
-    <a class="btn sm" href="/triage/">Apply for funding</a>
-  </div>
-</div></nav>
-
-<header class="hero" id="top">
-  <div class="aurora"><b class="a1"></b><b class="a2"></b></div>
-  <div class="wrap"><div class="grid">
-    <div>
-      <span class="eyebrow he d1">Merchant cash advances · eCommerce &amp; retail</span>
-      <h1 class="he d2">Know what you'd <span class="g">really qualify for.</span></h1>
-      <p class="sub he d3">We read your business the way a lender does — then find the right capital, at the right price, so you don't overpay on interest.</p>
-      <div class="cta he d4">
-        <a class="btn accent" href="/triage/">Apply for funding →</a>
-        <a class="btn ghost js-start" href="#">See how it works →</a>
-      </div>
-      <div class="he d4" style="margin-top:14px"><a href="#how" style="font-size:14px;font-weight:520;color:var(--accent)">See how it works →</a></div>
-      <div class="trust he d4">
-        <div class="t"><b data-count="90" data-suf=" sec">0</b>to your verdict</div>
-        <div class="t"><b>Free</b>no data required</div>
-        <div class="t"><b class="typeline" id="finBadge"><span data-tw>£10,000 – £10,000,000+</span></b>advances we fund</div>
+<nav class="nav" id="nav" aria-label="Primary">
+  <a class="brand" href="./" aria-label="MarginLabs home"><svg viewBox="0 0 280 240" aria-hidden="true"><line class="mk-ink" x1="20" y1="220" x2="260" y2="220" stroke="#10231A" stroke-width="16"/><rect class="mk-ink" x="40" y="150" width="48" height="62" fill="#10231A"/><rect class="mk-ink" x="116" y="100" width="48" height="112" fill="#10231A"/><rect x="192" y="40" width="48" height="172" fill="#2F7D58"/></svg><span>MarginLabs</span></a>
+  <div class="navlinks" id="navlinks">
+    <div class="glide" id="glide" aria-hidden="true"></div>
+    <div data-menu style="position:relative">
+      <button class="navlink" aria-expanded="false">Products
+        <svg class="caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="panel" role="menu">
+        <a class="panelitem" href="products/merchant-cash-advance" role="menuitem"><b>Merchant cash advance</b><em>Money now, paid back from your sales</em></a>
+<a class="panelitem" href="products/extended-payment-terms" role="menuitem"><b>Extended payment terms</b><em>Pay suppliers now, settle with us later</em></a>
+<a class="panelitem" href="products/invoice-financing" role="menuitem"><b>Invoice financing</b><em>Get paid now, and nobody is told</em></a>
+<a class="panelitem" href="products/line-of-credit" role="menuitem"><b>Line of credit</b><em>Dip into it when timing goes against you</em></a>
+<a class="panelitem" href="products/long-term-loan" role="menuitem"><b>Long-term loan</b><em>Fixed amount, fixed term, fixed repayments</em></a>
+        <a class="panelitem" href="products" role="menuitem" style="border-top:1px solid var(--line-soft);margin-top:6px;padding-top:12px"><b>Compare all six &rarr;</b></a>
       </div>
     </div>
-    <div class="pcard" id="fcCard">
-      <div class="top"><span class="ttl">Your indicative funding range</span><span class="pill g" id="fcPill">Merchant cash advance</span></div>
-      <div class="body">
-        <div class="scorerow"><span class="num g" id="fcScore">0</span><span class="meta">of your revenue verified<b id="fcMeta">Indicative £120k–£190k</b></span></div>
-        <div class="bar"><i id="fcBar" class="g"></i></div>
-        <div id="fcRows">
-          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Strong cash buffer<span class="lv">strength</span></div>
-          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Comfortable serviceability<span class="lv">strength</span></div>
-          <div class="frow"><span class="ic" style="background:#E7F2EC"><svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="#2F7D58" stroke-width="1.6" fill="none"/></svg></span>Healthy margin<span class="lv">strength</span></div>
+    <div data-menu style="position:relative">
+      <button class="navlink" aria-expanded="false">Company
+        <svg class="caret" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="panel" role="menu">
+        <a class="panelitem" href="company" role="menuitem"><b>About MarginLabs</b><em>Who we are and why we fund with our own money</em></a>
+        <a class="panelitem" href="company#decide" role="menuitem"><b>How we decide</b><em>What we look at, and what it tells us</em></a>
+        <a class="panelitem" href="#who" role="menuitem"><b>Who we fund</b><em>The five revenue shapes we work with</em></a>
+        <a class="panelitem" href="terms.html" role="menuitem"><b>Terms</b><em>The agreement, in readable English</em></a>
+        <a class="panelitem" href="privacy.html" role="menuitem"><b>Privacy &amp; data</b><em>What we hold and how to remove it</em></a>
+      </div>
+    </div>
+    <a class="navlink" href="faq">FAQ</a>
+    <a class="navlink" href="contact">Contact</a>
+  </div>
+  <div class="navspacer"></div>
+  <a class="nav-login" href="triage/">Apply</a>
+  <a class="navcta" href="#register"><span class="cta-long">Register your interest</span><span class="cta-short">Register</span></a>
+  <button class="navlink navtoggle" id="navtoggle" aria-expanded="false" aria-label="Menu">Menu</button>
+</nav>
+<main id="main">
+
+<!-- ===== 1 · HERO ===== -->
+<section class="sec sec--hero photo photo--scene" data-dark-hero style="--img:url(assets/hero.jpg)">
+  <svg class="curve curve--bottom" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0,0 C360,64 1080,64 1440,0 L1440,64 L0,64 Z" fill="var(--surface)"/></svg>
+  <div class="inner hero">
+    <h1 class="rev">Funding shaped like <em>your revenue</em>.</h1>
+    <p class="lede rev" style="--i:1;margin-top:22px">
+      Connect your bank and we will see how money actually reaches your business.
+      Then we fund the shape you have really got, rather than the one that fits our form.
+    </p>
+    <div class="herocta rev" style="--i:2">
+      <a class="btn btn--light" href="#register">Register your interest</a>
+      <a class="btn btn--quiet" href="triage/">Ready now? Apply <span class="arrow">&rarr;</span></a>
+    </div>
+    <div class="herofoot rev" style="--i:3">
+      <div class="stat">
+        <b>$10k &ndash; $10m+</b>
+        <span>what we fund, in USD</span>
+      </div>
+      <p class="heroline">You're minutes away from getting your funding answer.</p>
+    </div>
+  </div>
+  <div class="inner rev" style="--i:4">
+    <div class="tstrip"><div class="trail" aria-hidden="false"><figure class="tcard"><blockquote>They looked at what we actually sell, not at a deck.</blockquote><figcaption><b>Kindred Goods</b><span>Direct-to-consumer</span></figcaption></figure><figure class="tcard"><blockquote>Money landed before our next drop did.</blockquote><figcaption><b>ORA</b><span>Direct-to-consumer</span></figcaption></figure><figure class="tcard"><blockquote>We stopped waiting ninety days to get paid.</blockquote><figcaption><b>Northfield</b><span>Retail</span></figcaption></figure><figure class="tcard"><blockquote>First funder who understood how Amazon pays out.</blockquote><figcaption><b>deckhand</b><span>Marketplace</span></figcaption></figure><figure class="tcard"><blockquote>Helped us hit Q4 without going near a bank.</blockquote><figcaption><b>Sable & Co.</b><span>Retail</span></figcaption></figure><figure class="tcard"><blockquote>One number, agreed up front. Nothing moved later.</blockquote><figcaption><b>TEMPO</b><span>Marketplace</span></figcaption></figure><figure class="tcard"><blockquote>Three minutes of my time, and an answer that day.</blockquote><figcaption><b>Bellhouse</b><span>Direct-to-consumer</span></figcaption></figure><span class="trail-copy" aria-hidden="true"><figure class="tcard"><blockquote>They looked at what we actually sell, not at a deck.</blockquote><figcaption><b>Kindred Goods</b><span>Direct-to-consumer</span></figcaption></figure><figure class="tcard"><blockquote>Money landed before our next drop did.</blockquote><figcaption><b>ORA</b><span>Direct-to-consumer</span></figcaption></figure><figure class="tcard"><blockquote>We stopped waiting ninety days to get paid.</blockquote><figcaption><b>Northfield</b><span>Retail</span></figcaption></figure><figure class="tcard"><blockquote>First funder who understood how Amazon pays out.</blockquote><figcaption><b>deckhand</b><span>Marketplace</span></figcaption></figure><figure class="tcard"><blockquote>Helped us hit Q4 without going near a bank.</blockquote><figcaption><b>Sable & Co.</b><span>Retail</span></figcaption></figure><figure class="tcard"><blockquote>One number, agreed up front. Nothing moved later.</blockquote><figcaption><b>TEMPO</b><span>Marketplace</span></figcaption></figure><figure class="tcard"><blockquote>Three minutes of my time, and an answer that day.</blockquote><figcaption><b>Bellhouse</b><span>Direct-to-consumer</span></figcaption></figure></span></div></div>
+    <p class="tnote">Placeholder brands and quotes, for layout only.</p>
+  </div>
+</section>
+
+<!-- ===== 1c · WHO WE WORK WITH ===== -->
+<section class="sec sec--tall sec--sunk sec--edge" id="builtfor">
+  <div class="inner bfgrid">
+    <div>
+      <div class="eyebrow rev">Who we work with</div>
+      <h2 class="rev bfhead" style="--i:1">Built for<br />
+        <span class="typed" id="typed" aria-live="polite"><i>direct-to-consumer brands</i></span>
+      </h2>
+      <noscript><p class="lede" style="margin-top:16px">Direct-to-consumer brands, retail brands and marketplace sellers.</p></noscript>
+    </div>
+    <div class="regions rev" style="--i:2">
+      <span class="cap">Where we work</span>
+      <ul>
+        <li><b>United States</b><span>All 50 states</span></li>
+        <li><b>Selling anywhere</b><span>Your customers can be wherever they are. We fund US-registered businesses.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 · WHO WE FUND ===== -->
+<section class="sec sec--tall" id="who">
+  <div class="inner">
+    <div class="eyebrow rev">Who we fund</div>
+    <h2 class="rev" style="--i:1">How you get paid<br />decides what you need.</h2>
+    <p class="lede rev" style="--i:2;margin-top:20px">
+      A brand taking a thousand card payments a day needs something completely different from a
+      supplier waiting 90 days on four big orders. We work out which one you are before we
+      talk about money.
+    </p>
+    <div class="photoband rev" style="--i:3;--img:url(assets/who.jpg)" role="img"
+         aria-label="A founder packing an order at a workbench"></div>
+    <div class="doors">
+      <div class="door rev" style="--i:3">
+        <div class="glyph"><i class="hi" style="height:100%"></i><i style="height:34%"></i><i style="height:22%"></i></div>
+        <h3>Direct-to-consumer</h3>
+        <p>You sell through your own store and the money lands daily in small pieces.</p>
+        <div class="fit">Cash advance · line of credit</div>
+      </div>
+
+      <div class="door rev" style="--i:4">
+        <div class="glyph"><i style="height:30%"></i><i class="hi" style="height:100%"></i><i style="height:40%"></i></div>
+        <h3>Marketplace seller</h3>
+        <p>Amazon, eBay, TikTok Shop. You get paid on the platform's schedule, not yours.</p>
+        <div class="fit">Cash advance · line of credit</div>
+      </div>
+
+      <div class="door rev" style="--i:5">
+        <div class="glyph"><i style="height:38%"></i><i style="height:56%"></i><i class="hi" style="height:100%"></i></div>
+        <h3>Wholesale</h3>
+        <p>You sell in bulk to stockists and big-box buyers, then wait 30, 60, 90 days to be paid.</p>
+        <div class="fit">Invoices · payment terms</div>
+      </div>
+
+      <div class="door rev" style="--i:6">
+        <div class="glyph"><i style="height:78%"></i><i class="hi" style="height:100%"></i><i style="height:52%"></i></div>
+        <h3>Bricks-and-mortar</h3>
+        <p>Tills, footfall, and one season that has to pay for the whole year.</p>
+        <div class="fit">Cash advance · payment terms</div>
+      </div></div>
+  </div>
+</section>
+
+<!-- ===== 2b · ESTIMATOR ===== -->
+<section class="sec sec--tall sec--sunk sec--edge" id="estimate">
+  <div class="inner split">
+    <div>
+      <div class="eyebrow rev">Rough idea</div>
+      <h2 class="rev" style="--i:1">How much could<br />you get?</h2>
+      <p class="lede rev" style="--i:2;margin-top:20px">
+        Move the slider to roughly what you sell in a month. This is an indication, not an
+        offer. The real number comes from your bank, and it is usually the one that matters.
+      </p>
+      <p class="note rev" style="--i:3;margin-top:22px">
+        Most advances land between 1 and 2.5 times a month's sales.
+        We price it once we have seen your bank, not before.
+      </p>
+    </div>
+
+    <div class="card est rev" style="--i:3"
+         data-min-mult="1.0" data-max-mult="2.5"
+         data-floor="10000" data-ceiling="10000000">
+      <div class="estrow">
+        <label class="cap" for="est-rev">Your monthly sales</label>
+        <span class="estusd">USD</span>
+      </div>
+
+      <output class="estrev" id="est-out" for="est-rev">$80,000</output>
+
+      <div class="estslider">
+        <svg class="wedge wedge--bg" viewBox="0 0 100 18" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,8.2 L100,0.6 L100,17.4 L0,9.8 Z" />
+        </svg>
+        <div class="wedge-clip" aria-hidden="true">
+          <svg class="wedge wedge--fill" viewBox="0 0 100 18" preserveAspectRatio="none">
+            <path d="M0,8.2 L100,0.6 L100,17.4 L0,9.8 Z" />
+          </svg>
+        </div>
+        <input class="estrange" id="est-rev" type="range"
+               min="5000" max="2000000"
+               step="1000" value="80000"
+               aria-label="Monthly sales" />
+      </div>
+      <div class="estends">
+        <span id="est-lo">$5k</span><span id="est-hi">$2m</span>
+      </div>
+
+      <div class="estresult">
+        <span class="cap">You could be looking at</span>
+        <b id="est-range">$80,000 to $200,000</b>
+      </div>
+
+      <div class="esttake"
+           data-fmin="1.12" data-fmax="1.24"
+           data-share="0.2">
+        <div class="estrow">
+          <label class="cap" for="est-take">If you took</label>
+          <output class="esttakeval" id="est-take-out" for="est-take">$140,000</output>
+        </div>
+        <div class="estslider estslider--plain">
+          <input class="estrange" id="est-take" type="range" min="0" max="100" step="1" value="50"
+                 aria-label="Amount you would take" />
+        </div>
+
+        <dl class="estback">
+          <div class="ebrow"><dt>Repaid from</dt><dd id="eb-share">20% of your sales</dd></div>
+        </dl>
+      </div>
+
+      <p class="estnote" id="est-note">
+        An indication, not an offer. What it costs depends on your business and on which
+        product fits, and we put that in writing before you sign anything.
+      </p>
+      <a class="btn btn--primary" href="#register" style="width:100%;margin-top:2px">Register your interest</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 · HOW IT WORKS ===== -->
+<section class="sec--warm seqsec" id="how">
+  <svg class="curve curve--top" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C360,0 1080,0 1440,64 L1440,64 L0,64 Z" fill="var(--surface)"/></svg>
+  <div class="seqtrack" id="seqtrack">
+    <i class="seqstop" style="top:0"></i>
+    <i class="seqstop" style="top:33.34%"></i>
+    <i class="seqstop" style="top:66.67%"></i>
+    <div class="seqsticky">
+      <div class="inner">
+        <h2 class="rev" style="text-align:center;max-width:22ch;margin:0 auto">Three minutes from you. The rest is ours.</h2>
+        <div class="seq" id="seq">
+          <div class="seqmedia photo"><div class="motif" aria-hidden="true"><svg viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="10"/><rect x="40" y="150" width="48" height="62" fill="#2F7D58"/><rect x="116" y="100" width="48" height="112" fill="#2F7D58"/><rect x="192" y="40" width="48" height="172" fill="#2F7D58"/></svg></div>
+        <div class="pane" data-pane>
+          <div class="scene"><div class="sheet"><div class="q"><span class="qlab">What do you sell?</span><div class="qopts"><span data-on>Own store</span><span>Marketplace</span><span>Wholesale</span></div></div><div class="q"><span class="qlab">Monthly revenue</span><div class="qopts"><span>Under $25k</span><span data-on>$25k–$100k</span><span>$100k+</span></div></div><div class="q"><span class="qlab">Trading for</span><div class="qopts"><span>Under 1 yr</span><span>1–3 yrs</span><span data-on>3 yrs+</span></div></div><div class="sheetfoot"><span class="cap">Bands, not exact figures</span></div></div></div>
+          <div class="glass">
+            <span class="cap">Step 01 / 03</span>
+            <b>Answer a few questions</b>
+            <div class="qchips"><span>What do you sell?</span><span>Who pays you?</span><span>What's it for?</span></div>
+            <div class="prog"><i style="width:33%"></i></div>
+          </div>
+        </div>
+
+        <div class="pane" data-pane>
+          <div class="scene"><div class="sheet"><div class="sheethd"><span class="lock" aria-hidden="true"></span><span class="cap">Read-only access</span></div><div class="acct"><span class="an">Current account</span><span class="am">•••• 4471</span><span class="ap">12 months</span></div><div class="acct"><span class="an">Merchant settlement</span><span class="am">•••• 1032</span><span class="ap">12 months</span></div><div class="acct"><span class="an">Savings</span><span class="am">•••• 8820</span><span class="ap">9 months</span></div><div class="sheetfoot"><span class="cap">Cannot move money · revoke any time</span></div></div></div>
+          <div class="glass">
+            <span class="cap">Step 02 / 03</span>
+            <b>Connect your bank. That's it.</b>
+            <div class="qchips"><span>Read-only</span><span>Or send statements</span><span>Unhook any time</span></div>
+            <div class="prog"><i style="width:67%"></i></div>
+          </div>
+        </div>
+
+        <div class="pane" data-pane>
+          <div class="scene"><div class="sheet"><div class="chk" style="--k:0"><span class="tick" aria-hidden="true"></span><span class="cn">Company checks out</span><span class="cv">Active, nothing filed</span></div><div class="chk" style="--k:1"><span class="tick" aria-hidden="true"></span><span class="cn">Where money comes from</span><span class="cv">Mostly direct sales</span></div><div class="chk" style="--k:2"><span class="tick" aria-hidden="true"></span><span class="cn">Funding you're repaying</span><span class="cv">One found</span></div><div class="chk" style="--k:3"><span class="tick" aria-hidden="true"></span><span class="cn">Numbers add up</span><span class="cv">Statements match</span></div></div></div>
+          <div class="glass">
+            <span class="cap">Step 03 / 03</span>
+            <b>Get your answer</b>
+            <div class="qchips"><span>Company checks out</span><span>Where money comes from</span><span>Funding you're repaying</span><span>Numbers add up</span></div>
+            <div class="prog"><i style="width:100%"></i></div>
+          </div>
+        </div></div>
+          <div class="seqrail">
+            
+        <button class="step" data-step type="button">
+          <span class="dot" data-dot></span>
+          <span class="steptxt"><span class="cap">2 min</span><b>Answer a few questions</b><em>What you sell, who pays you, and what the money is for. Rough answers are fine, and there are no documents to dig out.</em></span>
+        </button>
+
+        <button class="step" data-step type="button">
+          <span class="dot" data-dot></span>
+          <span class="steptxt"><span class="cap">1 min</span><b>Connect your bank. That's it.</b><em>Read-only, so it can look but never touch. Or send six months of statements if you'd rather. Unhook it whenever you like.</em></span>
+        </button>
+
+        <button class="step" data-step type="button">
+          <span class="dot" data-dot></span>
+          <span class="steptxt"><span class="cap">6 min</span><b>Get your answer</b><em>We check your company is real and in good standing, see where your money actually comes from, spot funding you're already repaying, and make sure the numbers add up.</em></span>
+        </button>
+            <button class="btn btn--primary" id="seq-next" type="button" style="margin-top:8px;align-self:flex-start">Next step <span class="arrow">&rarr;</span></button>
+          </div>
         </div>
       </div>
     </div>
-  </div></div>
-</header>
+  </div>
+  <svg class="curve curve--bottom" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0,0 C360,64 1080,64 1440,0 L1440,64 L0,64 Z" fill="var(--surface)"/></svg>
+</section>
 
-<div class="strip"><div class="wrap">
-  <span class="item"><svg width="13" height="15" viewBox="0 0 11 13" fill="none"><rect x="1" y="5.5" width="9" height="6.5" stroke="#2F7D58" stroke-width="1.2"/><path d="M3 5.5V3.5a2.5 2.5 0 015 0v2" stroke="#2F7D58" stroke-width="1.2"/></svg>Encrypted &amp; EU-hosted</span>
-  <span class="sep"></span>
-  <span class="item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 4" stroke="#2F7D58" stroke-width="1.4"/></svg>GDPR-compliant</span>
-  <span class="sep"></span>
-  <span class="item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M3 4h6.5a2 2 0 010 4H4.5a2 2 0 000 4H11" stroke="#2F7D58" stroke-width="1.2"/></svg>Fees in writing before you sign</span>
-</div></div>
 
-<section class="blk" id="who"><div class="wrap reveal">
-  <span class="seclabel">Who we serve</span>
-  <h2 class="sechead">Built for consumer brands across the <span style="color:var(--accent)">UK, EU and US.</span></h2>
-  <p style="font-size:16px;line-height:1.6;color:var(--inkSoft);max-width:60ch;margin-top:14px">We work with growing direct-to-consumer and retail brands — real revenue, real funding needs, and rarely read properly by a lender.</p>
-  <div class="sol">
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#2F7D58" stroke-width="1.4"/><path d="M2 10h16M10 2c2.6 2.2 2.6 13.8 0 16M10 2c-2.6 2.2-2.6 13.8 0 16" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>UK · EU · US</h4>
-      <p>Brands trading across the United Kingdom, Europe and the United States.</p>
-      <div class="stat">3 regions · one read</div>
+<!-- ===== 6 · WHAT YOU CAN USE IT FOR ===== -->
+<section class="sec sec--tall" id="usefor">
+  <div class="inner">
+    <div class="eyebrow rev">What it is for</div>
+    <h2 class="rev" style="--i:1">Spend it on whatever<br />the business needs.</h2>
+    <p class="lede rev" style="--i:2;margin-top:20px">
+      We do not tell you where the money goes. Most brands use it for one of these.
+    </p>
+    <div class="uses mt-lg">
+      <div class="use rev" style="--i:3"><b>Stock</b><span>Buy the season before the season pays for itself.</span></div>
+      <div class="use rev" style="--i:4"><b>Ads</b><span>Push spend when the return is there, without waiting for cash to catch up.</span></div>
+      <div class="use rev" style="--i:5"><b>A big order</b><span>Say yes to the retailer whose order is larger than your bank balance.</span></div>
+      <div class="use rev" style="--i:6"><b>A slow month</b><span>Cover payroll and suppliers through the quiet part of your year.</span></div>
+      <div class="use rev" style="--i:7"><b>Hiring</b><span>Bring someone in before the revenue that justifies them arrives.</span></div>
+      <div class="use rev" style="--i:8"><b>A new line</b><span>Fund the launch without pulling cash out of the thing that works.</span></div>
     </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7h10l-1 9H6z" stroke="#2F7D58" stroke-width="1.4"/><path d="M7.5 7a2.5 2.5 0 015 0" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Direct-to-consumer</h4>
-      <p>DTC brands selling through their own store and the marketplaces.</p>
-      <div class="stat">Shopify · Amazon</div>
-    </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 8h12v9H4z" stroke="#2F7D58" stroke-width="1.4"/><path d="M4 8l1.5-4h9L16 8" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Retail &amp; omnichannel</h4>
-      <p>Retail and wholesale brands with stockists, stores, or a mix of channels.</p>
-      <div class="stat">Stores · wholesale</div>
+    <div class="nots rev" style="--i:9">
+      <span>No equity</span><span>No dilution</span><span>No board seat</span><span>No spending rules</span>
     </div>
   </div>
-</div></section>
+</section>
 
-<section class="blk" id="problem"><div class="wrap reveal">
-  <span class="seclabel">The problem</span>
-  <div class="sechead">Most founders take the <span style="color:var(--accent)">wrong capital</span>, because no one read their business like a lender.</div>
-  <div class="pains">
-    <div class="pcardp"><div class="q">"I got declined — and no one will tell me why."</div><div class="t">The black-box rejection</div></div>
-    <div class="pcardp"><div class="q">"A broker put me in an MCA that's strangling my cash flow."</div><div class="t">The wrong product, sold fast</div></div>
-    <div class="pcardp"><div class="q">"Three lenders, three different numbers."</div><div class="t">No way to compare</div></div>
-    <div class="pcardp"><div class="q">"Is my business even ready to borrow yet?"</div><div class="t">Asking blind</div></div>
-  </div>
-  <div class="pains-foot">You don't have a funding problem. You have a <span class="g">clarity problem</span> — that's what we fix first.</div>
-</div></section>
+<!-- ===== 4 · PRODUCTS ===== -->
+<section class="sec sec--tall sec--sunk sec--edge" id="products">
+  <div class="inner">
+    <div class="eyebrow rev">Our products</div>
+    <h2 class="rev" style="--i:1">Five ways to fund it.<br />We tell you which is yours.</h2>
+    <p class="lede rev" style="--i:2;margin-top:20px">
+      Most lenders sell you the one thing they have. We look at how money reaches your business
+      first, then tell you which of these fits and which do not.
+    </p>
+    <div class="g3 mt-lg">
+      <a class="tile rev" style="--i:3" href="products/merchant-cash-advance">
+        <div class="top"><h3>Merchant cash advance</h3><span class="chip chip--soon">Coming soon</span></div>
+        <p>Money now, paid back as a slice of what you sell.</p>
+        <div class="go">Read more <span class="arrow">&rarr;</span></div>
+      </a>
 
-<section class="blk" id="apply"><div class="wrap reveal">
-  <span class="seclabel">Free · a few minutes · no documents</span>
-  <div class="sechead">The <span style="color:var(--accent)">application.</span></div>
-  <p style="font-size:17px;line-height:1.55;color:var(--inkSoft);max-width:48ch;margin-top:14px">Answer a handful of quick questions in simple bands — no exact figures, no documents, no bank access. You'll get an instant, indicative read on how ready to borrow your business looks today.</p>
-  <div class="sol">
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#2F7D58" stroke-width="1.4"/><path d="M6.5 10.5l2.5 2.5 4.5-5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>An answer, not a sales call</h4>
-      <p>We check the company register and your site automatically. Most applications hear back the same day.</p>
-    </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 13h14M6 13V8M10 13V4M14 13V10" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Then your real numbers</h4>
-      <p>Connect your bank read-only, or send six months of statements. We underwrite on money that has actually moved.</p>
-    </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14a6 6 0 0112 0" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 14l4-3.5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>An indicative range</h4>
-      <p>How much we could advance, the structure that fits how you get paid, and what we&rsquo;d still need.</p>
-    </div>
-  </div>
-  <div style="margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-    <a class="btn accent" href="/triage/">Apply for funding →</a>
-    <span style="font-size:13px;color:var(--mut)">Applying is free and puts you under no obligation. Any advance is subject to underwriting.</span>
-  </div>
-</div></section>
+      <a class="tile rev" style="--i:4" href="products/extended-payment-terms">
+        <div class="top"><h3>Extended payment terms</h3><span class="chip chip--soon">Coming soon</span></div>
+        <p>We pay your supplier now. You settle with us in up to 120 days.</p>
+        <div class="go">Read more <span class="arrow">&rarr;</span></div>
+      </a>
 
-<section class="blk" id="cost"><div class="wrap reveal">
-  <div class="calc"><div class="calc-inner">
-    <div class="left">
-      <span class="seclabel">The money you could keep</span>
-      <div class="sechead" style="font-size:30px">Keep more in your <span style="color:var(--accent)">bank account.</span></div>
-      <p class="lead">Without a Read, a typical brand borrows at 200–400 bps above what it'd qualify for — cash straight out of your account. See what you could keep. Pick a scenario, or drag your own.</p>
-      <div class="chips">
-        <button class="chip" data-amt="250000"><span class="scur">£</span>250k · Q4 stock</button>
-        <button class="chip on" data-amt="500000"><span class="scur">£</span>500k · expansion</button>
-        <button class="chip" data-amt="1200000"><span class="scur">£</span>1.2m · refinance</button>
-        <button class="chip" data-amt="5000000"><span class="scur">£</span>5m · acquisition</button>
+      <a class="tile rev" style="--i:5" href="products/invoice-financing">
+        <div class="top"><h3>Invoice financing</h3><span class="chip chip--soon">Coming soon</span></div>
+        <p>Get paid now, and carry on chasing your own invoices.</p>
+        <div class="go">Read more <span class="arrow">&rarr;</span></div>
+      </a>
+
+      <a class="tile rev" style="--i:6" href="products/line-of-credit">
+        <div class="top"><h3>Line of credit</h3><span class="chip chip--soon">Coming soon</span></div>
+        <p>Money to dip into, costing nothing when you do not.</p>
+        <div class="go">Read more <span class="arrow">&rarr;</span></div>
+      </a>
+
+      <a class="tile rev" style="--i:7" href="products/long-term-loan">
+        <div class="top"><h3>Long-term loan</h3><span class="chip chip--soon">Coming soon</span></div>
+        <p>A fixed amount over a fixed term, for the things that pay back slowly.</p>
+        <div class="go">Read more <span class="arrow">&rarr;</span></div>
+      </a></div>
+    <div class="callout rev mt-lg" style="margin-bottom:0">
+      <b>Come back for more.</b> Once you have repaid part of what you took, you can usually
+      top up without starting again. We already have your numbers, so the second time is
+      faster than the first.
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8 · FEES AND ELIGIBILITY ===== -->
+<section class="sec sec--tall sec--warm" id="fees">
+  <svg class="curve curve--top" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C360,0 1080,0 1440,64 L1440,64 L0,64 Z" fill="var(--surface)"/></svg>
+  <div class="inner split">
+    <div>
+      <div class="eyebrow rev">What it costs</div>
+      <h2 class="rev" style="--i:1">One fee.<br />Agreed before you sign.</h2>
+      <p class="lede rev" style="--i:2;margin-top:20px">
+        You take an amount. You agree one total to pay back. That total is fixed before you
+        sign anything and it does not move afterwards.
+      </p>
+      <ul class="ticks rev" style="--i:3">
+        <li>No interest rate, so nothing compounds while you repay</li>
+        <li>No fee for paying it off early</li>
+        <li>No arrangement fee, no late fee, no admin charges</li>
+        <li>The full cost in writing before you commit to anything</li>
+      </ul>
+      <p class="note rev" style="--i:4;margin-top:20px">
+        What it costs depends on which of the six you end up with, and on what your bank shows.
+        A cash advance does not price like an invoice facility. We quote the real number once we
+        have looked, and applying is free and puts you under no obligation.
+      </p>
+    </div>
+    <div class="card rev" style="--i:3">
+      <div class="cap" style="margin-bottom:16px">Can we fund you?</div>
+      <ul class="eligs">
+        <li><b>A registered company</b><span>Limited company, LLC or the local equivalent. Sole traders are not something we can fund yet.</span></li>
+        <li><b>Trading for a year or more</b><span>We need twelve months of history to see how your money actually moves.</span></li>
+        <li><b>$5,000 a month in sales</b><span>Below that the numbers are too thin to read anything useful into.</span></li>
+        <li><b>A business bank account</b><span>One we can read, either by connecting it or from six months of statements.</span></li>
+      </ul>
+      <p class="note" style="margin-top:18px">
+        We fund businesses registered in the United States. If you are close to this but not
+        quite there, say so anyway and we will tell you straight.
+      </p>
+    </div>
+  </div>
+  <svg class="curve curve--bottom" viewBox="0 0 1440 64" preserveAspectRatio="none" aria-hidden="true"><path d="M0,0 C360,64 1080,64 1440,0 L1440,64 L0,64 Z" fill="var(--surface)"/></svg>
+</section>
+
+<!-- ===== 8b · WHEN WE ASK FOR MORE ===== -->
+<section class="sec sec--tall" id="more">
+  <div class="inner">
+    <div class="eyebrow rev">Sometimes we need more</div>
+    <h2 class="rev" style="--i:1">Bigger asks<br />need a bit more.</h2>
+    <p class="lede rev" style="--i:2;margin-top:20px">
+      For a cash advance, your bank on its own is usually enough. The other products, and
+      anything large or unusual, need a little more. We tell you exactly what and why before
+      you go looking for it, and we never ask for something we can find ourselves.
+    </p>
+
+    <div class="needs mt-lg">
+      <div class="need rev" style="--i:3">
+        <b>You sell wholesale</b>
+        <span>What actually sold, not only what shipped. Sell-through and order data from
+              your stockists, so we are not guessing at what moved.</span>
       </div>
-      <div class="amt"><span id="amt">£500,000</span><span class="u">borrowed</span></div>
-      <div class="curtog" role="group" aria-label="Currency">
-        <button class="curbtn on" data-cur="£">£</button><button class="curbtn" data-cur="€">€</button><button class="curbtn" data-cur="$">$</button>
+      <div class="need rev" style="--i:4">
+        <b>You want a larger amount</b>
+        <span>Your profit and loss, and a balance sheet. Above a certain size we need to see
+              the whole business rather than one bank account.</span>
       </div>
-      <input type="range" id="range" min="10000" max="10000000" step="10000" value="500000" />
-      <div class="rlabels"><span><span class="scur">£</span>10k</span><span><span class="scur">£</span>10m</span></div>
+      <div class="need rev" style="--i:5">
+        <b>You already have funding</b>
+        <span>The agreements for anything you are still repaying, so we size around it rather
+              than stack on top of it.</span>
+      </div>
+      <div class="need rev" style="--i:6">
+        <b>You are funding invoices or supplier bills</b>
+        <span>Who owes you what and how long it has been, or the supplier invoices you want
+              covered. Different products read different things.</span>
+      </div>
     </div>
-    <div class="result">
-      <span class="rl">You could be keeping</span>
-      <div class="toggle"><button class="on" data-term="1">Per year</button><button data-term="3">Over 3 years</button></div>
-      <div class="bignum"><span id="low">£10,000</span> <span class="d">–</span> <span id="high">£20,000</span></div>
-      <div class="per" id="per">per year, back in your account</div>
-      <div class="gradbar"></div>
-      <div class="gradl"><span>+200bps best</span><span>+400bps worst</span></div>
-      <div class="calc-foot">That's recoverable margin — exactly the gap a proper read is built to find and close.</div>
-    </div>
-  </div></div>
-</div></section>
 
-<section class="blk" id="solution"><div class="wrap reveal">
-  <span class="seclabel">The fix</span>
-  <h2 class="sechead typeline"><span data-tw>What you actually get</span></h2>
-  <p style="font-size:17px;line-height:1.55;color:var(--inkSoft);max-width:60ch;margin-top:14px">No guesswork, no wasted weeks — a clear read on what you can raise and how to get it cheaper.</p>
-  <div class="sol">
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 13h14M6 13V8M10 13V4M14 13V10" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Know your number</h4>
-      <p>Get a clear read on how much you could realistically raise — so you stop guessing and stop chasing the wrong amount.</p>
-      <div class="stat">How much · in plain numbers</div>
+    <p class="note rev" style="--i:7;margin-top:26px">
+      If we do need something extra, you will hear it once, up front, rather than in a
+      drip of requests over a fortnight.
+    </p>
+  </div>
+</section>
+
+<!-- ===== 3b · WHAT WE COULDN'T SEE ===== -->
+<section class="sec sec--tall" id="unseen">
+  <div class="inner split">
+    <div>
+      <div class="eyebrow rev">Being straight with you</div>
+      <h2 class="rev" style="--i:1">We'll also tell you<br />what we <em>couldn't</em> see.</h2>
+      <p class="lede rev" style="--i:2;margin-top:20px">
+        Every funder has gaps in what they can check. Most price the risk in quietly and say
+        nothing about it. We show you the gaps, because they are usually the difference between
+        a no and a bigger yes.
+      </p>
+      <p class="rev" style="--i:3;margin-top:22px;font-weight:600;color:var(--ink)">
+        Nothing is auto-rejected. A no-for-now becomes a conversation.
+      </p>
     </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="6" r="3" stroke="#2F7D58" stroke-width="1.4"/><circle cx="14" cy="14" r="3" stroke="#2F7D58" stroke-width="1.4"/><path d="M16 4L4 16" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>The right type of funding</h4>
-      <p>Term loan, revenue-based, invoice finance, inventory — understand which funding type actually fits how your business works.</p>
-      <div class="stat">The right fit · not just any offer</div>
-    </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14a7 7 0 0114 0" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 14l4-3.5" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>A cheaper path to capital</h4>
-      <p>See which KPIs to move so you stand to qualify for better terms — the route to cheaper financing, and more of it to fuel growth.</p>
-      <div class="stat">200–400 bps · the prize</div>
-    </div>
-    <div class="solc">
-      <div class="ic"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#2F7D58" stroke-width="1.4"/><path d="M10 5.5V10l3 2" stroke="#2F7D58" stroke-width="1.4"/></svg></div>
-      <h4>Lender-ready, faster</h4>
-      <p>See what a lender sees before you ever apply, so you walk in prepared and save weeks of back-and-forth.</p>
-      <div class="stat">Weeks saved · before you apply</div>
+    <div class="card rev" style="--i:3">
+      <div class="cap" style="margin-bottom:14px">On a typical first look</div>
+      <div class="gaps">
+        <div class="gap" data-ok><b>9 checks ran</b><span>Company, bank, trading history, existing funding</span></div>
+        <div class="gap"><b>2 we couldn't run</b><span>You are too new for filed accounts, and your card provider is not connected yet</span></div>
+      </div>
+      <p class="note" style="margin-top:16px">
+        Both are fixable, and both would raise the number. We would tell you which to fix first.
+      </p>
     </div>
   </div>
-</div></section>
+</section>
 
-<section class="blk" id="how" style="background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap reveal">
-  <span class="seclabel">How it works</span>
-  <div class="sechead">An application, not a <span style="color:var(--accent)">sales call.</span></div>
-  <p style="font-size:16px;line-height:1.6;color:var(--inkSoft);max-width:60ch;margin-top:14px">We fund eCommerce and retail brands ourselves. A merchant cash advance is a purchase of a portion of your future receivables &mdash; not a loan, and not an introduction to somebody else&rsquo;s lender.</p>
-  <div class="steps">
-    <div class="step"><div class="n">01</div><h4>Apply</h4><p>A few minutes, no documents. Tell us about the business and what you&rsquo;re funding.</p><div class="price">Free</div></div>
-    <div class="step"><div class="n">02</div><h4>We check the basics</h4><p>Automatically, against the company register and your own website &mdash; that you&rsquo;re trading, solvent, and in an industry we fund.</p><div class="price">Usually minutes</div></div>
-    <div class="step"><div class="n">03</div><h4>Show us the money</h4><p>Connect your bank read-only in about a minute &mdash; we never see your login &mdash; or upload six months of statements.</p><div class="price">Read-only</div></div>
-    <div class="step"><div class="n">04</div><h4>Your funding range</h4><p>We read how your revenue actually arrives, and how reliably, then come back with an indicative amount and a structure that fits it.</p><div class="price">No obligation</div></div>
-    <div class="step"><div class="n">05</div><h4>Funded</h4><p>We advance the money ourselves and take an agreed share of your receipts until the purchased amount is delivered.</p><div class="price">Our own capital</div></div>
-  </div>
-</div></section>
 
-<section class="blk" id="why"><div class="wrap reveal">
-  <span class="seclabel">Why us, not a broker</span>
-  <div class="sechead">The difference is <span style="color:var(--accent)">whose money it is.</span></div>
-  <div class="vs">
-    <div class="vrow head"><div class="c"></div><div class="c them">A typical broker</div><div class="c us">MarginLabs</div></div>
-    <div class="vrow"><div class="vc k">Paid by</div><div class="vc them">The lender, on volume — the more you borrow, the more they earn.</div><div class="vc us">Nobody. We fund the advance from <b>our own capital.</b></div></div>
-    <div class="vrow"><div class="vc k">Reads your business</div><div class="vc them">No — they forward your docs to whoever bites.</div><div class="vc us">Properly, like an underwriter — because it is <b>our money at risk.</b></div></div>
-    <div class="vrow"><div class="vc k">Tells you "don't"</div><div class="vc them">Never — a declined deal is lost commission.</div><div class="vc us">Often. We pass on bad capital and <b>show you why.</b></div></div>
-    <div class="vrow"><div class="vc k">Commission</div><div class="vc them">Hidden in the rate you're quoted.</div><div class="vc us"><b>None.</b> We take no commission from any lender.</div></div>
-  </div>
-</div></section>
 
-<section class="blk" id="faq"><div class="wrap reveal">
-  <span class="seclabel">Questions founders ask</span>
-  <div class="sechead">Before you upload <span style="color:var(--accent)">a single file.</span></div>
-  <div class="faq">
-    <details class="qa" open><summary>Is it safe to share my bank statements and financials?<span class="pm">+</span></summary><div class="ans">Yes. Everything you upload is encrypted in transit and at rest, stored in a private EU-hosted folder, and visible only to your named analyst. You can ask us to permanently delete all of it at any time. See our <a href="privacy.html">Privacy Policy</a> and <a href="data-rights.html">Data Rights</a> page.</div></details>
-    <details class="qa"><summary>Do I have to pay to get started?<span class="pm">+</span></summary><div class="ans">No. Applying is free, and so is getting a decision. A merchant cash advance has no interest rate &mdash; you deliver an agreed total out of your receipts, and that total is written into your agreement, in cash, before you sign anything.</div></details>
-    <details class="qa"><summary>Do I need to give you access to my bank?<span class="pm">+</span></summary><div class="ans">Not to apply &mdash; the application form asks for no documents at all. To get a decision, yes: we underwrite on money that has actually moved, not on a form. Connecting is read-only and takes about a minute, and we never see your login. If you would rather not connect, upload six months of statements as PDF or CSV instead.</div></details>
-    <details class="qa"><summary>What makes you different from a finance broker?<span class="pm">+</span></summary><div class="ans">We are not one. A broker is paid by lenders to place you, so the incentive is the biggest deal rather than the right one. We are a principal funder: the money is our own, we take no commission from third-party lenders, and if an advance is the wrong answer for your business we will tell you so.</div></details>
-  </div>
-</div></section>
-
-<section class="blk"><div class="wrap reveal">
-  <div class="tph">
-    <div class="q">"This is where your first client's words will go — a real quote, once you've delivered your first Read."</div>
-    <div class="lab">Placeholder · add a real testimonial after client #1</div>
-  </div>
-</div></section>
-
-<div class="wrap reveal"><div class="final">
-  <div class="glow"></div>
-  <div class="wrapi">
-    <h2 class="typeline"><span data-tw>Find out what you'd </span><span data-tw class="g">really</span><span data-tw> qualify for.</span></h2>
-    <p>Apply in a few minutes — no documents to begin, and no obligation.</p>
-    <div class="cta"><a class="btn accent" href="/triage/">Apply for funding →</a><a class="btn ghost js-start" href="#">See how it works →</a></div>
-    <p style="font-size:13px;color:var(--mut);margin-top:16px;max-width:64ch">Applying is not a credit check. It does not access your credit file, leave a footprint, or appear on any formal credit report, and nothing here is a lending decision or an offer of finance.</p>
-  </div>
-</div></div>
-
-<section class="blk" id="contact" style="background:var(--bg2);border-top:1px solid var(--line)"><div class="wrap reveal">
-  <span class="seclabel">Get in touch</span>
-  <h2 class="sechead">Prefer to <span style="color:var(--accent)">talk first?</span></h2>
-  <p style="font-size:16px;line-height:1.6;color:var(--inkSoft);max-width:56ch;margin-top:14px">Not ready to apply? Send us a note and we'll come back to you.</p>
-  <form id="contactForm" class="cform" novalidate>
-    <div class="cgrid">
-      <label>Name<input name="name" type="text" autocomplete="name"></label>
-      <label>Work email<input name="email" type="email" required autocomplete="email"></label>
-      <label>Company<input name="company" type="text" autocomplete="organization"></label>
-      <label>Website<input name="website" type="text" placeholder="yourbrand.com"></label>
+<section class="sec sec--sunk sec--edge" id="register">
+  <div class="inner formwrap">
+    <div>
+      <div class="eyebrow rev">Register your interest</div>
+      <h2 class="rev" style="--i:1">Get in the queue.<br />Four fields.</h2>
+      <p class="lede rev" style="--i:2;margin-top:20px">We are opening up to US brands one group at a time. Put your name down now and you are near the front when we do.</p>
+      <p class="note rev" style="--i:3;margin-top:24px">
+        Just give us your website. We will find your company details ourselves, which is a fair
+        summary of what we do all day.
+      </p>
+      <div class="rev" style="--i:4;margin-top:26px">
+        <a class="btn btn--quiet" href="triage/" style="padding-left:0">Already trading and ready to fund? Apply now <span class="arrow">&rarr;</span></a>
+      </div>
     </div>
-    <label>How can we help?<textarea name="message" rows="4" placeholder="A line on what you're looking for…"></textarea></label>
-    <input type="text" name="company_url" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <div class="cform-foot">
-      <button class="btn accent" type="submit" id="cSubmit">Send enquiry →</button>
-      <span class="cstatus" id="cStatus" role="status" aria-live="polite"></span>
+    
+      <div class="card rev" style="--i:3">
+        <div class="formmsg" id="formmsg" role="status" aria-live="polite"></div>
+        <form id="wl" data-source="landing" novalidate>
+          <div class="grid2">
+            <div class="field"><label for="fn">First name</label>
+              <input id="fn" name="first_name" type="text" autocomplete="given-name" required placeholder="Jo" /></div>
+            <div class="field"><label for="ln">Last name</label>
+              <input id="ln" name="last_name" type="text" autocomplete="family-name" required placeholder="Kelly" /></div>
+          </div>
+          <div class="field"><label for="em">Work email</label>
+            <input id="em" name="email" type="email" autocomplete="email" required placeholder="jo@yourbrand.com" /></div>
+          <div class="field"><label for="ws">Company website</label>
+            <input id="ws" name="website" type="text" autocomplete="url" required placeholder="yourbrand.com" /></div>
+          <div class="optwrap">
+            <p>Optional. If you have them to hand they let us start the company check before we speak.</p>
+            <div class="field"><label for="legal">Legal entity name <em>optional</em></label>
+              <input id="legal" name="legal_name" type="text" autocomplete="organization" placeholder="Your Brand Holdings Ltd" /></div>
+            <div class="field" style="margin-bottom:0"><label for="cno">Company number <em>optional</em></label>
+              <input id="cno" name="company_number" type="text" placeholder="12345678" /></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-9999px">
+            <label for="hp">Do not fill this in</label>
+            <input id="hp" name="fax" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <button class="btn btn--primary" type="submit" id="submit" style="width:100%">Register your interest</button>
+          <p class="formfoot">No obligation, and no sales call unless you ask for one. We hold your
+            details under our <a href="privacy.html">privacy notice</a> and you can have them deleted at any time.</p>
+        </form>
+      </div>
+  </div>
+</section>
+
+
+<section class="sec sec--tall photo photo--cta" style="text-align:center;--img:url(assets/cta.jpg)">
+  <div class="inner" style="max-width:760px">
+    <h2 class="rev" style="color:#fff">Stop guessing what you'd get.</h2>
+    <p class="lede rev" style="--i:1;margin:18px auto 0;color:rgba(255,255,255,.8)">Trading business with real sales? Start here.</p>
+    <div class="rev" style="--i:2;margin-top:30px">
+      <a class="btn btn--light" href="#register">Register your interest</a>
     </div>
-  </form>
-</div></section>
+    <div class="chips rev" style="--i:3;margin-top:26px;justify-content:center"><span class="ochip">3-MIN APPLICATION</span><span class="ochip">NO OBLIGATION</span><span class="ochip">NO SALES CALL</span></div>
+  </div>
+</section>
 
-<footer><div class="wrap">
-  <a class="logo" href="#top"><span class="dotmark"><svg width="14" height="12" viewBox="0 0 280 240"><line x1="20" y1="220" x2="260" y2="220" stroke="#2F7D58" stroke-width="16"/><rect x="40" y="150" width="48" height="70" fill="#2F7D58"/><rect x="116" y="100" width="48" height="120" fill="#2F7D58"/><rect x="192" y="40" width="48" height="180" fill="var(--ml-mark)"/></svg></span>MarginLabs</a>
-  <div class="links"><a href="privacy.html">Privacy</a><a href="data-rights.html">Data rights</a><a href="terms.html">Terms</a></div>
-  <div class="meta">© MMXXVI MarginLabs · merchant cash advances for eCommerce &amp; retail · getmarginlabs.com</div>
-</div></footer>
+</main>
 
-<script>
-  (function(){var l=document.createElement('link');l.rel='stylesheet';
-  l.href='https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap';
-  document.head.appendChild(l);})();
-
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* nav shadow on scroll */
-  var nav = document.getElementById('nav');
-  addEventListener('scroll', function(){ nav.classList.toggle('scrolled', scrollY > 8); }, {passive:true});
-
-  /* scroll reveal */
-  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, {threshold:.12});
-  document.querySelectorAll('.reveal').forEach(function(el){ if(reduce){el.classList.add('in');} else io.observe(el); });
-
-  /* typewriter on scroll */
-  function typeLine(el){
-    var segs=[].slice.call(el.querySelectorAll('[data-tw]'));
-    var texts=segs.map(function(s){return s.textContent;});
-    segs.forEach(function(s){s.textContent='';});
-    var caret=document.createElement('span');caret.className='caret';
-    var i=0;
-    (function seg(){
-      if(i>=segs.length){ if(caret.parentNode)caret.parentNode.removeChild(caret); return; }
-      var s=segs[i],txt=texts[i],j=0;
-      s.parentNode.insertBefore(caret,s.nextSibling);
-      (function ch(){ if(j<=txt.length){s.textContent=txt.slice(0,j);j++;setTimeout(ch,28);} else {i++;seg();} })();
-    })();
-  }
-  var tio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){typeLine(e.target);tio.unobserve(e.target);}});},{threshold:.6});
-  document.querySelectorAll('.typeline').forEach(function(el){ tio.observe(el); });
-
-  /* count-up helper */
-  function countUp(el, to, pre, suf, dur, force){
-    if(reduce && !force){ el.textContent = (pre||'') + to + (suf||''); return; }
-    var start=null;
-    function step(t){ if(!start)start=t; var p=Math.min((t-start)/dur,1); var v=Math.round(to*(1-Math.pow(1-p,3))); el.textContent=(pre||'')+v+(suf||''); if(p<1)requestAnimationFrame(step); }
-    requestAnimationFrame(step);
-  }
-
-  /* Funding-range tile — cycles through three example reads so customers see what
-     they actually get back: the product their revenue fits, how much of that
-     revenue we could verify, and an indicative range. These mirror profiler.py's
-     real outputs (channel mix, payout cycle, product fit) rather than the
-     readiness score the form used to return and no longer does. */
-  (function(){
-    var card=document.getElementById('fcCard'); if(!card) return;
-    var pill=document.getElementById('fcPill'), scoreEl=document.getElementById('fcScore'),
-        metaEl=document.getElementById('fcMeta'), barEl=document.getElementById('fcBar'), rowsEl=document.getElementById('fcRows');
-    var S=[
-      {cls:'g',pill:'Merchant cash advance',score:94,meta:'Indicative £120k–£190k',
-        rows:[['ok','Direct to consumer 78% &mdash; card settlements','mix'],['ok','Settles every 2 days','cycle'],['ok','12 months of clean bank data','evidence']]},
-      {cls:'g',pill:'Advance on marketplace payouts',score:88,meta:'Indicative £60k–£95k',
-        rows:[['ok','Marketplace 71% &mdash; platform payouts','mix'],['ok','14-day payout cycle','cycle'],['fix','Platform holds the cash &mdash; sized on that','risk']]},
-      {cls:'a',pill:'Receivables finance',score:76,meta:'Indicative £150k–£240k',
-        rows:[['ok','Retail supply 64% &mdash; named chains','mix'],['ok','Buyers pay on about 60 days','cycle'],['fix','Term must span the buyer cycle','risk']]}
-    ];
-    function rowsHtml(rows){return rows.map(function(r){
-      var bg=r[0]==='ok'?'#E7F2EC':'var(--ml-warn-soft)', st=r[0]==='ok'?'#2F7D58':'var(--ml-warn)';
-      var svg=r[0]==='ok'
-        ? '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M2 5 L4 7 L8 3" stroke="'+st+'" stroke-width="1.6" fill="none"/></svg>'
-        : '<svg width="11" height="11" viewBox="0 0 10 10"><path d="M5 2v6M2 5h6" stroke="'+st+'" stroke-width="1.6"/></svg>';
-      return '<div class="frow"><span class="ic" style="background:'+bg+'">'+svg+'</span>'+r[1]+'<span class="lv">'+r[2]+'</span></div>';
-    }).join('');}
-    function paint(s,anim){
-      pill.textContent=s.pill; pill.className='pill '+s.cls;
-      scoreEl.className='num '+s.cls; metaEl.textContent=s.meta.replace(/[£€$]/g,(window.HEROCUR||'£'));
-      barEl.className=s.cls; barEl.style.width=s.score+'%';
-      rowsEl.innerHTML=rowsHtml(s.rows);
-      if(anim){ countUp(scoreEl,s.score,'','',1100,true); } else { scoreEl.textContent=s.score; }
-    }
-    var i=0, fade=[pill,scoreEl,metaEl,rowsEl];
-    setTimeout(function(){ paint(S[0],true); }, 450);
-    setInterval(function(){
-      i=(i+1)%S.length;
-      fade.forEach(function(el){el.style.opacity=0;});
-      setTimeout(function(){ paint(S[i],true); fade.forEach(function(el){el.style.opacity=1;}); }, 420);
-    }, 4200);
-  })();
-
-  /* hero currency auto-cycle — £ → € → $ (display only; numbers unchanged) */
-  (function(){
-    window.HEROCUR='£'; var HS=['£','€','$'], hci=0;
-    var metaEl=document.getElementById('fcMeta');
-    setInterval(function(){
-      hci=(hci+1)%HS.length; window.HEROCUR=HS[hci];
-      var spans=document.querySelectorAll('.hcur'); var fb=document.getElementById('finBadge');
-      spans.forEach(function(s){ s.style.opacity=0; }); if(fb) fb.style.opacity=0.4;
-      setTimeout(function(){
-        spans.forEach(function(s){ s.textContent=window.HEROCUR; s.style.opacity=1; });
-        if(metaEl) metaEl.textContent=metaEl.textContent.replace(/[£€$]/g,window.HEROCUR);
-        if(fb){ var tw=fb.querySelector('[data-tw]')||fb; tw.textContent=tw.textContent.replace(/[£€$]/g,window.HEROCUR); fb.style.opacity=1; }
-      }, 220);
-    }, 4200);
-  })();
-
-  /* trust stat count-ups on view */
-  var sio = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ var el=e.target; countUp(el, +el.dataset.count, el.dataset.pre||'', el.dataset.suf||'', 1200); sio.unobserve(el);} }); }, {threshold:.6});
-  document.querySelectorAll('[data-count]').forEach(function(el){ sio.observe(el); });
-
-  /* calculator with animated numbers */
-  (function(){
-    var term=1, cur={low:0,high:0}, SLIDERCUR='£';
-    var range=document.getElementById('range');
-    var amtEl=document.getElementById('amt'),lowEl=document.getElementById('low'),highEl=document.getElementById('high'),perEl=document.getElementById('per');
-    var chips=document.querySelectorAll('.chip'),termBtns=document.querySelectorAll('[data-term]');
-    function fmt(n){return SLIDERCUR+Math.round(n).toLocaleString('en-GB');}
-    function animVal(el,from,to,dur){ if(reduce){el.textContent=fmt(to);return;} var s=null; function st(t){if(!s)s=t;var p=Math.min((t-s)/dur,1);var v=from+(to-from)*(1-Math.pow(1-p,3));el.textContent=fmt(v);if(p<1)requestAnimationFrame(st);} requestAnimationFrame(st); }
-    function update(animate){
-      var amt=+range.value;
-      amtEl.textContent=fmt(amt);
-      var lo=amt*0.02*term, hi=amt*0.04*term;
-      if(animate){ animVal(lowEl,cur.low,lo,500); animVal(highEl,cur.high,hi,500); } else { lowEl.textContent=fmt(lo); highEl.textContent=fmt(hi); }
-      cur.low=lo; cur.high=hi;
-      perEl.textContent=(term===3?'over a 3-year facility':'per year')+", back in your account";
-      chips.forEach(function(c){c.classList.toggle('on',+c.dataset.amt===amt);});
-      var pct=(amt-range.min)/(range.max-range.min)*100;
-      range.style.background='linear-gradient(90deg,var(--accent) '+pct+'%,var(--track) '+pct+'%)';
-    }
-    range.addEventListener('input',function(){update(false);});
-    chips.forEach(function(c){c.addEventListener('click',function(){range.value=c.dataset.amt;update(true);});});
-    termBtns.forEach(function(b){b.addEventListener('click',function(){term=+b.dataset.term;termBtns.forEach(function(x){x.classList.toggle('on',x===b);});update(true);});});
-    /* user-controlled currency toggle for the cost calculator (no auto-cycle here) */
-    document.querySelectorAll('.curbtn').forEach(function(b){b.addEventListener('click',function(){
-      SLIDERCUR=b.dataset.cur;
-      document.querySelectorAll('.curbtn').forEach(function(x){x.classList.toggle('on',x===b);});
-      document.querySelectorAll('.scur').forEach(function(s){s.textContent=SLIDERCUR;});
-      update(false);
-    });});
-    update(false);
-  })();
-
-  /* CTAs → live portal */
-  document.querySelectorAll('.js-start').forEach(function(a){ a.setAttribute('href','https://intake.getmarginlabs.com/'); });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-/* contact enquiry → Supabase (public insert, same pattern as the triage form) */
-(function(){
-  var form=document.getElementById('contactForm');
-  if(!form||!window.supabase) return;
-  var sb=window.supabase.createClient('https://dyoltpiyswztqpkywxlv.supabase.co','sb_publishable_uuF9dA9DDxlHD38cq7BMPg_iQDZQdaG');
-  var statusEl=document.getElementById('cStatus'), btn=document.getElementById('cSubmit');
-  function set(msg,cls){ statusEl.textContent=msg; statusEl.className='cstatus'+(cls?' '+cls:''); }
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    var fd=new FormData(form);
-    if((fd.get('company_url')||'').trim()) return;            // honeypot tripped → silently ignore bots
-    var email=(fd.get('email')||'').trim();
-    if(!email){ set('Please add your email.','err'); return; }
-    btn.disabled=true; var old=btn.textContent; btn.textContent='Sending…'; set('');
-    try{
-      var res=await sb.from('contact_inquiries').insert({
-        name:(fd.get('name')||'').trim()||null,
-        email:email,
-        company:(fd.get('company')||'').trim()||null,
-        website:(fd.get('website')||'').trim()||null,
-        message:(fd.get('message')||'').trim()||null
-      });
-      if(res.error) throw res.error;
-      form.reset(); set("Thanks — we'll be in touch shortly.",'ok');
-    }catch(err){ set('Something went wrong — please try again in a moment.','err'); }
-    btn.disabled=false; btn.textContent=old;
-  });
-})();
-</script>
+<footer class="foot">
+  <div class="inner">
+    <div class="footgrid">
+      <div>
+        <a class="brand" href="./" style="margin-bottom:14px"><svg viewBox="0 0 280 240" aria-hidden="true"><line class="mk-ink" x1="20" y1="220" x2="260" y2="220" stroke="#10231A" stroke-width="16"/><rect class="mk-ink" x="40" y="150" width="48" height="62" fill="#10231A"/><rect class="mk-ink" x="116" y="100" width="48" height="112" fill="#10231A"/><rect x="192" y="40" width="48" height="172" fill="#2F7D58"/></svg><span>MarginLabs</span></a>
+        <p style="font-size:13.5px;max-width:30ch;color:var(--muted)">We fund growing US brands with our own money.</p>
+      </div>
+      <div><h2>Products</h2><a href="products/merchant-cash-advance">Merchant cash advance</a>
+<a href="products/extended-payment-terms">Extended payment terms</a>
+<a href="products/invoice-financing">Invoice financing</a>
+<a href="products/line-of-credit">Line of credit</a>
+<a href="products/long-term-loan">Long-term loan</a></div>
+      <div><h2>Company</h2>
+        <a href="company">About</a>
+        <a href="company#decide">How we decide</a>
+        <a href="faq">FAQ</a>
+        <a href="contact">Contact</a>
+      </div>
+      <div><h2>Legal</h2>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="data-rights.html">Data rights</a>
+      </div>
+    </div>
+    <div class="footlegal">
+      <b>MarginLabs is a trading name of [LEGAL ENTITY TBC]</b>, company number
+      [COMPANY NUMBER TBC]. A merchant cash advance is a purchase of a share of your future
+      sales, not a loan. Asking costs nothing and commits you to nothing.
+      Any advance depends on the checks we run and on our <a href="terms.html">terms</a>.
+      Figures and illustrations shown on this site are examples, not quotes or offers.
+      &copy; <span id="yr">2026</span> [LEGAL ENTITY TBC].
+    </div>
+  </div>
+</footer>
+<script src="site.js"></script>
 </body>
 </html>
