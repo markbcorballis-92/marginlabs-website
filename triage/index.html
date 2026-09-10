@@ -472,11 +472,11 @@ const STATES = ['Fundable Now', 'Fundable in 3–6 months', 'Fundable in 6+ mont
 const RAGS   = ['Green', 'Amber', 'Red'];
 const VERDICTS = [
   // Fundable Now
-  "On what you've told us, you're in fundable shape now — and not because you're big. What lenders actually underwrite is here: a real cash cushion, margins that can carry repayments, and either no existing debt or debt you're comfortably servicing. The job from here isn't whether you can raise — it's making sure you take the right facility at the right price, not the first one offered.",
+  "On what you have told us, this is a business we could fund now, and not because of its size. The things we look at are here: real cash in the account, margins that can carry repayments, and either no other funding running or an amount you are comfortably covering. The next step is not whether we can fund you. It is working out how much, and which of our products actually fits how you get paid.",
   // Fundable in 3–6 months
-  "You've got real foundations, and you're close. One or two of the things lenders lean on hardest — your cash buffer, how much existing finance you're carrying, or your margin headroom — would want firming up before a clean yes at the size you're after. They're specific and fixable: the kind of thing the next three to six months can move. You're nearly there, and now you know exactly where to aim.",
+  "The foundations are real and you are close. One or two of the things we weigh most, your cash buffer, how much other funding you are already repaying, or your margin, would want firming up before we could say yes at the size you are after. They are specific and fixable, and the next three to six months can move them. You are nearly there, and now you know where to aim.",
   // Fundable in 6+ months  (redline applied: ends at "brings the runway in.")
-  "You're fundable — on a longer runway than the brands a lender says yes to today, and that's a normal place to be, not a knock-back. It isn't about your size; it's that one or more of the fundamentals lenders rely on — a cash cushion, room to service debt, healthy margins, or not being stretched across too many existing facilities — isn't in place yet. Each one is something you can build deliberately, in a sensible order. Over the months ahead, the highest-value move isn't borrowing — it's strengthening those fundamentals first. That's exactly what brings the runway in.",
+  "We could fund you, on a longer timeline than the brands we can say yes to today. That is a normal place to be rather than a knock-back, and it is not about your size. One or more of the things we rely on is not in place yet: cash in the account, room to cover repayments, healthy margins, or not being stretched across too much funding already. Each is something you can build deliberately, in a sensible order. Over the months ahead the most valuable move is not borrowing. It is putting those in place first, which is what shortens the timeline.",
 ];
 
 function ragOf(pts) { return pts >= 70 ? 'Green' : pts >= 40 ? 'Amber' : 'Red'; }
@@ -504,7 +504,7 @@ function scoreTriage(a) {
   // ---- CASH (25) : cash relative to monthly revenue ----
   let cash;
   if (a.cash_band === 'Prefer not to say') {
-    cash = { rag:'Amber', reason:'Cash position not shared — we’ve treated it cautiously.' };
+    cash = { rag:'Amber', reason:'Cash position not shared, so we have treated it cautiously.' };
   } else {
     const mid = MID_CASH[a.cash_band];
     const months = mid / norm;
@@ -512,42 +512,42 @@ function scoreTriage(a) {
     if (mid < 10000 && rag === 'Green') rag = 'Amber';  // absolute-thinness guard
     cash = { rag, reason:
       rag === 'Green' ? 'A solid cash cushion relative to your monthly turnover.' :
-      rag === 'Amber' ? 'A workable cash buffer, but thinner than lenders prefer.' :
+      rag === 'Amber' ? 'A workable cash buffer, though thinner than we like to see.' :
                         'Cash buffer is thin against your monthly outgoings.' };
   }
 
   // ---- SERVICEABILITY (25) : debt repayment ÷ monthly revenue ----
   let serv;
   if (a.has_debt !== true) {
-    serv = { rag:'Green', reason:'No existing debt to service — full headroom for new finance.' };
+    serv = { rag:'Green', reason:'No other funding to cover, so there is full room to take some on.' };
   } else if (a.debt_monthly_band === 'Prefer not to say') {
-    serv = { rag:'Amber', reason:'Repayment level not shared — treated cautiously.' };
+    serv = { rag:'Amber', reason:'Repayment level not shared, so we have treated it cautiously.' };
   } else {
     const r = MID_DEBT[a.debt_monthly_band] / norm;
     const pct = Math.round(r * 100) + '%';
     const rag = r <= 0.15 ? 'Green' : r <= 0.25 ? 'Amber' : 'Red';
     serv = { rag, reason:
-      rag === 'Green' ? `Existing repayments are about ${pct} of revenue — comfortable headroom.` :
-      rag === 'Amber' ? `Existing repayments are about ${pct} of revenue — limited room for more.` :
-                        `Existing repayments are about ${pct} of revenue — already a heavy load.` };
+      rag === 'Green' ? `Existing repayments are about ${pct} of revenue, which leaves comfortable room.` :
+      rag === 'Amber' ? `Existing repayments are about ${pct} of revenue, which leaves limited room for more.` :
+                        `Existing repayments are about ${pct} of revenue, which is already a heavy load.` };
   }
 
   // ---- MARGIN (20) ----
   let margin, marginNotSure = false;
   const g = a.gross_margin_band;
-  if (g === '70%+' || g === '50–70%')      margin = { rag:'Green', reason:'Healthy gross margin — room to carry repayments.' };
+  if (g === '70%+' || g === '50–70%')      margin = { rag:'Green', reason:'Healthy margin, with room to carry repayments.' };
   else if (g === '30–50%')                 margin = { rag:'Amber', reason:'Workable margin, with limited room to service new debt.' };
   else if (g === '<30%')                   margin = { rag:'Red',   reason:'Thin margin makes affordable debt-service hard to evidence.' };
-  else { marginNotSure = true;             margin = { rag:'Amber', reason:'Margin not yet known — worth pinning down; treated neutrally.' }; }
+  else { marginNotSure = true;             margin = { rag:'Amber', reason:'Margin not yet known. Worth pinning down, and treated neutrally for now.' }; }
 
   // ---- DEBT LOAD (15) : none is best; stacking caps ----
   let debt, capMiddle = false, debtPts;
-  if (a.has_debt !== true) { debt = { rag:'Green', reason:'No external debt — maximum headroom.' }; debtPts = 100; }
-  else if (a.debt_providers === '1') { debt = { rag:'Green', reason:'A single facility — a normal, healthy debt position.' }; debtPts = 85; }
-  else if (a.debt_providers === '2') { debt = { rag:'Amber', reason:'Two facilities running — manageable, but a watch-item.' }; debtPts = 50; }
-  else if (a.debt_providers === '3') { debt = { rag:'Amber', reason:'Three facilities running — enough to make a new lender pause.' }; debtPts = 40; capMiddle = true; }
-  else if (a.debt_providers === '4+') { debt = { rag:'Red', reason:'Four or more facilities — reads as debt-stacking, a serious flag.' }; debtPts = 0; capMiddle = true; }
-  else { debt = { rag:'Amber', reason:'Existing finance noted — details light.' }; debtPts = 50; }
+  if (a.has_debt !== true) { debt = { rag:'Green', reason:'No other funding running, so there is maximum room.' }; debtPts = 100; }
+  else if (a.debt_providers === '1') { debt = { rag:'Green', reason:'One other funding line running, which is a normal, healthy position.' }; debtPts = 85; }
+  else if (a.debt_providers === '2') { debt = { rag:'Amber', reason:'Two other funding lines running. Manageable, but we would keep an eye on it.' }; debtPts = 50; }
+  else if (a.debt_providers === '3') { debt = { rag:'Amber', reason:'Three other funding lines running, which is enough to give us pause.' }; debtPts = 40; capMiddle = true; }
+  else if (a.debt_providers === '4+') { debt = { rag:'Red', reason:'Four or more running at once. That is a lot to carry, and we would want to talk it through before anything else.' }; debtPts = 0; capMiddle = true; }
+  else { debt = { rag:'Amber', reason:'Other funding noted, though the detail is light.' }; debtPts = 50; }
 
   // ---- GROWTH (7) : direction + repeat + trajectory ----
   const dirPts = { Growing:2, Flat:0, Declining:-2 }[a.revenue_direction];
@@ -555,7 +555,7 @@ function scoreTriage(a) {
   const gs = dirPts + repPts + trajPts;
   const growth = { rag: gs >= 2 ? 'Green' : gs <= -2 ? 'Red' : 'Amber', reason:
     gs >= 2 ? 'Demand is moving the right way, with repeat revenue underpinning it.' :
-    gs <= -2 ? 'Revenue is contracting — a lender will want it explained.' :
+    gs <= -2 ? 'Revenue is contracting, so we would want to understand why.' :
               'Growth is steady-to-mixed.' };
 
   // ---- CONCENTRATION (4) : SKU + markets ----
@@ -574,7 +574,7 @@ function scoreTriage(a) {
   const ts = yrPts + shPts + acPts + (marginNotSure ? -1 : 0);
   const track = { rag: ts >= 3 ? 'Green' : ts >= 1 ? 'Amber' : 'Red', reason:
     ts >= 3 ? 'Established trading history with clean, verifiable systems.' :
-    ts >= 1 ? 'Foundations forming — history or systems still maturing.' :
+    ts >= 1 ? 'Foundations still forming, with history or systems maturing.' :
              'Limited history or hard-to-verify books.' };
 
   // ---- assemble pillars + weighted score ----
@@ -658,11 +658,11 @@ const US_REG_LABEL = {
 };
 const REG_NO_BASE = {
   UK:      { label: 'Company number',  eg: 'e.g. 09876543',
-             hint: 'Eight digits from Companies House — on your certificate of incorporation.' },
+             hint: 'Eight digits from Companies House, on your certificate of incorporation.' },
   Ireland: { label: 'CRO number',      eg: 'e.g. 759409',
              hint: 'Your Companies Registration Office number, usually six digits.' },
   US:      { label: 'State filing number', eg: 'e.g. 1234567',
-             hint: 'The number your STATE issued when you registered — not your EIN. An EIN is a tax id and will not find you on the register.' },
+             hint: 'The number your STATE issued when you registered, not your EIN. An EIN is a tax id and will not find you on the register.' },
 };
 
 // Resolve the wording for the country, and for the STATE once we know it. Asked
@@ -679,7 +679,7 @@ function regNo(a) {
   // the state code back at them — it explains what the number is and, more
   // usefully, what it is NOT.
   return { label: named, eg: base.eg,
-           hint: 'That is what your state calls it — the number issued when you registered. Not your EIN: that is a federal tax id and will not find you on the register.' };
+           hint: 'That is what your state calls it: the number issued when you registered. Not your EIN, which is a federal tax id and will not find you on the register.' };
 }
 // The VALUE stays the two-letter code — company-register validates /^[A-Z]{2}$/
 // and builds the jurisdiction as `us_` + lowercase, so 'DE' is load-bearing.
@@ -769,7 +769,7 @@ function viewStep1() {
     ${q('How long has it been trading?', 'years_trading_band')}
     ${q('How many countries do you sell to?', 'markets_count')}
     ${q('Do you sell on Shopify?', 'uses_shopify')}
-    ${q('What do you keep the books in?', 'accounting_system', 'Helps us gauge how readily a lender can verify your numbers.')}
+    ${q('What do you keep the books in?', 'accounting_system', 'Helps us judge how quickly we can check your numbers.')}
     ${state.error ? `<div class="err">${state.error}</div>` : ''}
     <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
 }
@@ -779,9 +779,9 @@ function viewStep2() {
     <h1 class="title">Scale and <em>margins.</em></h1>
     <p class="lead">Rough bands are all we need — pick the closest one. Amounts are in ${sym()} (switch top-right).</p>
     ${q('Revenue over the last 12 months', 'revenue_band')}
-    ${q('Revenue in the last 3 months', 'revenue_3m_band', 'Your most recent run-rate — we read it against the annual band for trajectory.')}
+    ${q('Revenue in the last 3 months', 'revenue_3m_band', 'Your most recent run rate. We read it against the annual band to see the direction of travel.')}
     ${q('Average order value', 'aov_band')}
-    ${q('Gross margin', 'gross_margin_band', "Not sure? That's a fine answer — pick it and we'll note it.")}
+    ${q('Gross margin', 'gross_margin_band', "Not sure? That is a fine answer. Pick it and we will note it.")}
     ${state.error ? `<div class="err">${state.error}</div>` : ''}
     <div class="actions"><button class="btn ghost" id="back">← Back</button><button class="btn" id="next">Continue →</button></div>`;
 }
@@ -819,7 +819,7 @@ function viewFunding() {
     ['retail_financing','Stock or inventory funding','Retail financing'],
     ['enterprise_loc','A flexible credit line','Enterprise line of credit'],
     ['b2b_bnpl','Buy now, pay later for my customers','BNPL'],
-    ['not_sure','Not sure — help me choose',"We'll recommend"],
+    ['not_sure','Not sure, help me choose',"We'll recommend"],
   ];
   const sel = Array.isArray(a.product_preference) ? a.product_preference : [];
   return `${stepper()}
@@ -929,9 +929,9 @@ function viewVerdict() {
     </div>
     <div class="hookhead">What happens next</div>
     <div class="hooks">
-      ${step('01', 'We review what you\'ve told us', 'A first assessment against how we lend. Keep an eye on your inbox — it doesn\'t normally take long.')}
+      ${step('01', 'We review what you\'ve told us', 'A first look against how we fund. Keep an eye on your inbox, it does not normally take long.')}
       ${step('02', 'You connect your business bank account', 'Read-only, through our secure provider, and it takes about a minute. This is the step that lets us give you a real answer instead of an estimate.')}
-      ${step('03', 'We come back with what\'s actually available', 'The funding range we can support and the type of facility that suits how your business trades — based on your real numbers, not the bands you just picked.')}
+      ${step('03', 'We come back with what\'s actually available', 'How much we could fund and which of our products suits how you get paid, based on your real numbers rather than the bands you just picked.')}
     </div>
     <div class="caveat">Submitting an application is not an application for credit in itself, and nothing here is an offer of finance. Reference · ${state.ref}</div>
   </div>`;
@@ -1001,7 +1001,7 @@ function wire() {
       if (!answered('funding_intent')) { state.error = "Let us know what you're hoping to do."; return render(); }
       if (!a.country_of_registration) { state.error = 'Please choose the country your business is registered in.'; return render(); }
       if (a.country_of_registration === 'US' && !a.us_state) { state.error = 'Please choose the state your business is registered in \u2014 US companies are registered by state, not federally.'; return render(); }
-      if (!a.company_number) { state.error = 'Please add your ' + regNo(a).label.toLowerCase() + " — we hold applications that arrive without one, so it's quicker to give it now."; return render(); }
+      if (!a.company_number) { state.error = 'Please add your ' + regNo(a).label.toLowerCase() + ". We hold applications that arrive without one, so it is quicker to give it now."; return render(); }
       if (!a.consent) { state.error = "Please tick the box to confirm you're authorised and accept the terms."; return render(); }
       state.error = ''; state.step++; render();
     };
@@ -1009,7 +1009,7 @@ function wire() {
   if (next && state.step >= 2 && state.step <= 5) {   // Business · Scale · Growth · Position
     next.onclick = () => {
       const missing = requiredFor(state.step).find(k => !answered(k));
-      if (missing) { state.error = 'Just need one more — please pick an option for every question above.'; return render(); }
+      if (missing) { state.error = 'Just one more thing: please pick an option for every question above.'; return render(); }
       state.error = ''; state.step++; render();
     };
   }
@@ -1135,13 +1135,13 @@ async function doSubmit() {
   try {
     await loadSDK();
     const client = ensureClient();
-    if (!client) { state.error = 'Secure connection is still loading — give it a second and try again.'; submit.textContent = 'Submit my application →'; submit.disabled = false; return render(); }
+    if (!client) { state.error = 'Secure connection is still loading. Give it a second and try again.'; submit.textContent = 'Submit my application →'; submit.disabled = false; return render(); }
     // No .select() — anon has INSERT but no READ on triage.
     const { error } = await client.from('triage').insert(row);
     if (error) throw error;
     state.step = 7; render();
   } catch (e) {
-    state.error = 'Something went wrong submitting that: ' + (e.message || e) + '. Your answers are still here — please try again.';
+    state.error = 'Something went wrong submitting that: ' + (e.message || e) + '. Your answers are still here, so please try again.';
     submit.textContent = 'Submit my application →'; submit.disabled = false; render();
   }
 }
