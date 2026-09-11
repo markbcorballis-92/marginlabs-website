@@ -477,7 +477,7 @@
   <div class="inner formwrap">
     <div>
       <div class="eyebrow rev">Register your interest</div>
-      <h2 class="rev" style="--i:1">Get in the queue.<br />Four fields.</h2>
+      <h2 class="rev" style="--i:1">Get in the queue.<br />Five fields.</h2>
       <p class="lede rev" style="--i:2;margin-top:20px">We are opening up to US brands one group at a time. Put your name down now and you are near the front when we do.</p>
       <p class="note rev" style="--i:3;margin-top:24px">
         Just give us your website. We will find your company details ourselves, which is a fair
@@ -501,6 +501,12 @@
             <input id="em" name="email" type="email" autocomplete="email" required placeholder="jo@yourbrand.com" /></div>
           <div class="field"><label for="ws">Company website</label>
             <input id="ws" name="website" type="text" autocomplete="url" required placeholder="yourbrand.com" /></div>
+          <div class="field"><label for="prod">What are you after?</label>
+            <select id="prod" name="product_interest" required>
+              <option value="" disabled selected>Choose one</option>
+              <option value="merchant-cash-advance">Merchant cash advance</option><option value="extended-payment-terms">Extended payment terms</option><option value="invoice-financing">Invoice financing</option><option value="line-of-credit">Line of credit</option><option value="long-term-loan">Long-term loan</option>
+              <option value="not-sure">Not sure yet, help me work it out</option>
+            </select></div>
           <div class="optwrap">
             <p>Optional. If you have them to hand they let us start the company check before we speak.</p>
             <div class="field"><label for="legal">Legal entity name <em>optional</em></label>

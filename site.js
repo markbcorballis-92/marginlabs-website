@@ -222,6 +222,7 @@
         last_name: document.getElementById("ln").value.trim(),
         email: document.getElementById("em").value.trim(),
         website: normUrl(document.getElementById("ws").value),
+        product_interest: document.getElementById("prod").value,
         legal_name: document.getElementById("legal").value.trim() || null,
         company_number: document.getElementById("cno").value.trim() || null,
         source: form.dataset.source || "landing",
@@ -231,6 +232,7 @@
       if (!data.first_name || !data.last_name) return say("err", "Please give us a first and last name.");
       if (!/^[^@\s]+@[^@\s.]+\.[^@\s]{2,}$/.test(data.email)) return say("err", "That email address doesn't look right.");
       if (!/^https:\/\/[^\s.]+\.[^\s]{2,}$/.test(data.website)) return say("err", "Please give us your company website, e.g. yourbrand.com");
+      if (!data.product_interest) return say("err", "Please tell us which product you are after.");
 
       submit.disabled = true;
       submit.textContent = "Registering\u2026";
