@@ -371,6 +371,10 @@ p{margin:0; color:var(--body)}
 .tfacts dd{margin:0; font-size:13.5px; line-height:1.45; color:var(--ink)}
 html.snapping #products .tile{padding:16px 18px; gap:7px}
 html.snapping .tfacts{padding-top:9px; gap:5px}
+/* In snap mode the products frame has to fit one screen or it cannot
+   snap. The whole card is already the link, so the "Read more" row goes. */
+html.snapping #products .tile .go{display:none}
+html.snapping #products .lede{margin-top:14px!important}
 .tile .go{margin-top:auto; padding-top:12px; font-size:13px; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px}
 
 /* =====================================================================
@@ -1173,6 +1177,9 @@ html.snapping .eligstrip{padding:16px 20px}
    Off entirely for reduced-motion and short viewports.
    ===================================================================== */
 html.snapping{scroll-snap-type:y mandatory}
+/* set by site.js when any frame is too tall to snap: mandatory snapping would
+   skip that frame entirely, proximity never skips (see site.js) */
+html.snapping.snap-soft{scroll-snap-type:y proximity}
 html.snapping .sec,
 html.snapping .seqstop,
 html.snapping .foot{scroll-snap-align:start; scroll-snap-stop:always}
@@ -1202,6 +1209,9 @@ html.snapping .tstrip{margin-top:clamp(20px,3vh,44px)}
 html.snapping .herofoot{margin-top:clamp(18px,2.6vh,34px); padding-top:16px}
 html.snapping .herocta{margin-top:clamp(18px,2.6vh,30px)}
 html.snapping .use{padding:16px 18px 14px; gap:8px}
+html.snapping .uses{gap:12px}
+html.snapping #usefor .lede{margin-top:12px!important}
+html.snapping .use h3{font-size:17px; margin-top:2px}
 html.snapping .use-ic{width:34px; height:34px}
 html.snapping .use-fit{padding-top:10px}
 html.snapping .growth{margin-top:20px; padding:16px 18px 14px}

@@ -370,10 +370,20 @@
       var fits = vh >= 700 && vw >= 900;
       root.classList.toggle("snapping", !!(okMotion && fits));
       if (!fits) return;
+      var anyTall = false;
       $$("main > section").forEach(function (sec) {
         /* 8px of slack, so a section a hair over the viewport still snaps */
-        sec.toggleAttribute("data-nosnap", sec.offsetHeight > vh + 8);
+        var tall = sec.offsetHeight > vh + 8;
+        sec.toggleAttribute("data-nosnap", tall);
+        /* the pinned step sequence is tall on purpose and carries its own stops */
+        if (tall && !sec.classList.contains("seqsec")) anyTall = true;
       });
+      /* A section with no snap point, sitting between two mandatory ones, is
+         skipped outright: the browser snaps from the frame before it straight
+         to the frame after. So once any frame is too tall to snap, the page
+         relaxes to proximity snapping. It still settles on frame edges, but it
+         never jumps over content to get there. */
+      root.classList.toggle("snap-soft", anyTall);
     };
 
     apply();
