@@ -799,6 +799,48 @@ button[disabled]{opacity:.55; cursor:progress}
 @media (max-width:640px){.photoband{aspect-ratio:16/10}}
 
 /* =====================================================================
+   GROWTH CHART — under the estimator copy. Twelve months climbing: neutral
+   bars, the latest month in signal green (the leading-bar rule), an ink
+   trend line. Draws in once when the figure reveals. Illustrative, no axis
+   numbers, and the caption says so.
+   ===================================================================== */
+.growth{margin:30px 0 0; max-width:460px}
+.growth-hd{display:flex; justify-content:space-between; margin-bottom:12px}
+.growth-plot{position:relative; height:clamp(140px,19vh,190px); border-bottom:1px solid var(--line-strong)}
+.growth-bars{position:absolute; inset:0; display:flex; align-items:flex-end}
+.growth-bars i{position:relative; flex:1; height:var(--h)}
+.growth-bars i::before{
+  content:""; position:absolute; inset:0 3px; border-radius:3px 3px 0 0;
+  background:var(--line-strong);
+  transform-origin:bottom; transform:scaleY(0);
+  transition:transform .7s var(--ease); transition-delay:calc(var(--d) * 55ms + 150ms);
+}
+.growth-bars i.lead::before{background:var(--signal)}
+.growth.in .growth-bars i::before{transform:none}
+.growth-line{
+  position:absolute; inset:0; width:100%; height:100%; overflow:visible;
+  clip-path:inset(0 100% 0 0); transition:clip-path 1.3s var(--ease) .55s;
+}
+.growth-line polyline{
+  fill:none; stroke:var(--ink); stroke-width:1.5;
+  vector-effect:non-scaling-stroke; stroke-linejoin:round; stroke-linecap:round;
+}
+.growth.in .growth-line{clip-path:inset(-10px -10px -10px -10px)}
+.growth-dot{
+  position:absolute; width:10px; height:10px; margin:0 0 -5px -5px; border-radius:50%;
+  background:var(--signal); box-shadow:0 0 0 4px var(--signal-line);
+  opacity:0; transform:scale(.4); transition:opacity .3s ease 1.75s, transform .4s var(--ease) 1.75s;
+}
+.growth.in .growth-dot{opacity:1; transform:none}
+.growth figcaption{margin-top:12px}
+@media (max-width:940px){.growth{max-width:none}}
+@media (prefers-reduced-motion:reduce){
+  .growth-bars i::before,.growth-line,.growth-dot{transition:none}
+  .growth-bars i::before,.growth-dot{transform:none; opacity:1}
+  .growth-line{clip-path:none}
+}
+
+/* =====================================================================
    HERO TESTIMONIAL RAIL
    Fills the lower third of the hero, which was dead space. Two identical
    runs of the same cards slide past; the second is aria-hidden so a screen
