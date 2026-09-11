@@ -786,8 +786,8 @@ button[disabled]{opacity:.55; cursor:progress}
 
 /* =====================================================================
    PHOTOGRAPHY BAND
-   One image inside "Who we fund" — stacked stock in a warehouse, the
-   inventory the money is for. (Moved down from the hero: too dark to open on.)
+   One image inside "Who we fund" — a founder actually packing an order,
+   which is the whole customer in one frame.
    ===================================================================== */
 .photoband{
   margin-top:clamp(28px,4vh,44px);
