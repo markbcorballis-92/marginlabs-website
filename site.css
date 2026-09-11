@@ -361,6 +361,16 @@ p{margin:0; color:var(--body)}
 .tile:hover{border-color:var(--line-strong); transform:translateY(-3px); box-shadow:0 14px 34px -22px rgba(10,10,10,.26)}
 .tile .top{display:flex; align-items:center; justify-content:space-between; gap:10px}
 .tile p{font-size:13.5px; line-height:1.45; color:var(--muted)}
+/* Landing product cards: every card says the same three things in the same
+   order, so a founder can compare them: what it is, who it suits, how it
+   is paid back. */
+.tile .tlede{font-size:14.5px; line-height:1.45; color:var(--body)}
+.tfacts{margin:4px 0 0; padding-top:12px; border-top:1px solid var(--line-soft); display:grid; gap:8px}
+.tfacts div{display:grid; grid-template-columns:104px 1fr; gap:10px; align-items:baseline}
+.tfacts dt{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.tfacts dd{margin:0; font-size:13.5px; line-height:1.45; color:var(--ink)}
+html.snapping #products .tile{padding:16px 18px; gap:7px}
+html.snapping .tfacts{padding-top:9px; gap:5px}
 .tile .go{margin-top:auto; padding-top:12px; font-size:13px; font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px}
 
 /* =====================================================================
@@ -468,6 +478,9 @@ p{margin:0; color:var(--body)}
 .door p{font-size:13px; line-height:1.45; color:var(--muted)}
 .door .fit{margin-top:auto; padding-top:11px; border-top:1px solid var(--line-soft);
            font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--signal)}
+/* Full product names wrap to two lines on some cards. Reserve two lines on
+   every card in the four-across row so their dividers line up. */
+@media (min-width:900px){.door .fit{line-height:1.5; min-height:calc(3em + 12px)}}
 
 /* =====================================================================
    STEP SEQUENCE — image card with a glass overlay, plus a dot rail
