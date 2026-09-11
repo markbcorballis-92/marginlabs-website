@@ -428,6 +428,16 @@ html.snapping .tfacts{padding-top:9px; gap:5px}
 .herofoot .stat b .cur{font:inherit; color:inherit; letter-spacing:inherit; text-transform:none}
 /* the currency cycles; a fixed width stops the line jiggling as it swaps */
 .cur{display:inline-block; min-width:.62em; text-align:left}
+/* Three plain reasons we're different, next to the amount. White on the
+   photo, each with the same signal tick used in "What you keep". */
+/* Stacked, not in a row: a row runs out over the bright half of the photo. */
+.heropoints{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; align-items:flex-start; gap:9px}
+.heropoints li{display:flex; align-items:center; gap:10px; font-size:clamp(14.5px,1.3vw,16.5px); font-weight:500; color:rgba(255,255,255,.92); white-space:nowrap}
+.heropoints li::before{
+  content:""; flex:none; width:18px; height:18px; border-radius:50%;
+  background:var(--signal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.3l2.2 2.2 4.6-4.8' fill='none' stroke='white' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/11px no-repeat;
+}
+@media (max-width:560px){.heropoints li{white-space:normal}}
 .heroline{font-size:clamp(15px,1.4vw,17.5px); line-height:1.45; color:rgba(255,255,255,.86);
           max-width:26ch; font-weight:500}
 
