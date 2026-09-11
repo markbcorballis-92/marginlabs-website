@@ -799,45 +799,71 @@ button[disabled]{opacity:.55; cursor:progress}
 @media (max-width:640px){.photoband{aspect-ratio:16/10}}
 
 /* =====================================================================
-   GROWTH CHART — under the estimator copy. Twelve months climbing: neutral
-   bars, the latest month in signal green (the leading-bar rule), an ink
-   trend line. Draws in once when the figure reveals. Illustrative, no axis
-   numbers, and the caption says so.
+   GROWTH CHART — frame 4, under the estimator copy. A card that matches the
+   estimator beside it: this year as a smooth signal-green line over a soft
+   fill, last year dashed behind it, hairline grid, month axis. Draws in
+   left to right once on reveal. Illustrative, no axis numbers, and the
+   caption says so.
    ===================================================================== */
-.growth{margin:30px 0 0; max-width:460px}
-.growth-hd{display:flex; justify-content:space-between; margin-bottom:12px}
-.growth-plot{position:relative; height:clamp(140px,19vh,190px); border-bottom:1px solid var(--line-strong)}
-.growth-bars{position:absolute; inset:0; display:flex; align-items:flex-end}
-.growth-bars i{position:relative; flex:1; height:var(--h)}
-.growth-bars i::before{
-  content:""; position:absolute; inset:0 3px; border-radius:3px 3px 0 0;
-  background:var(--line-strong);
-  transform-origin:bottom; transform:scaleY(0);
-  transition:transform .7s var(--ease); transition-delay:calc(var(--d) * 55ms + 150ms);
+.growth{
+  margin:30px 0 0; padding:20px 22px 18px; background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--r-lg);
+  box-shadow:0 24px 60px -44px rgba(10,10,10,.28);
 }
-.growth-bars i.lead::before{background:var(--signal)}
-.growth.in .growth-bars i::before{transform:none}
-.growth-line{
+.growth-hd{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px}
+.growth-title{display:flex; flex-direction:column; align-items:flex-start; gap:8px}
+.growth-tag{
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--signal); background:var(--signal-soft); border:1px solid var(--signal-line);
+  padding:4px 10px 4px 9px; border-radius:var(--pill);
+}
+.growth-tag::before{content:""; border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:6px solid currentColor}
+.growth-key{display:flex; gap:16px; padding-top:1px; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; color:var(--muted)}
+.growth-key span{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
+.growth-key span::before{content:""; width:16px; border-top:2px solid var(--signal)}
+.growth-key .k-last::before{border-top:2px dashed var(--faint)}
+.growth-plot{
+  position:relative; height:clamp(150px,20vh,196px);
+  background:repeating-linear-gradient(to top, var(--line-soft) 0 1px, transparent 1px 25%);
+  border-bottom:1px solid var(--line-strong);
+}
+.growth-svg{
   position:absolute; inset:0; width:100%; height:100%; overflow:visible;
-  clip-path:inset(0 100% 0 0); transition:clip-path 1.3s var(--ease) .55s;
+  clip-path:inset(-14px 100% -14px -14px); transition:clip-path 1.5s var(--ease) .35s;
 }
-.growth-line polyline{
-  fill:none; stroke:var(--ink); stroke-width:1.5;
-  vector-effect:non-scaling-stroke; stroke-linejoin:round; stroke-linecap:round;
-}
-.growth.in .growth-line{clip-path:inset(-10px -10px -10px -10px)}
+.growth.in .growth-svg{clip-path:inset(-14px -14px -14px -14px)}
+.g-area{fill:url(#growth-fill)}
+.g-this,.g-last{fill:none; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-linejoin:round}
+.g-this{stroke:var(--signal); stroke-width:2.25}
+.g-last{stroke:var(--faint); stroke-width:1.5; stroke-dasharray:4 5}
 .growth-dot{
-  position:absolute; width:10px; height:10px; margin:0 0 -5px -5px; border-radius:50%;
-  background:var(--signal); box-shadow:0 0 0 4px var(--signal-line);
-  opacity:0; transform:scale(.4); transition:opacity .3s ease 1.75s, transform .4s var(--ease) 1.75s;
+  position:absolute; right:0; width:12px; height:12px; margin:0 -6px -6px 0; border-radius:50%;
+  background:var(--signal); border:2px solid var(--surface);
+  box-shadow:0 0 0 1px var(--signal-line), 0 4px 10px -2px rgba(47,125,88,.45);
+  opacity:0; transform:scale(.3); transition:opacity .3s ease 1.8s, transform .45s var(--ease) 1.8s;
 }
+.growth-dot::after{content:""; position:absolute; inset:-8px; border-radius:50%; border:1px solid var(--signal); opacity:0}
 .growth.in .growth-dot{opacity:1; transform:none}
-.growth figcaption{margin-top:12px}
-@media (max-width:940px){.growth{max-width:none}}
+.growth.in .growth-dot::after{animation:gpulse 2.6s ease-out 2.4s infinite}
+@keyframes gpulse{0%{transform:scale(.5); opacity:.55} 100%{transform:scale(1.7); opacity:0}}
+.growth-now{
+  position:absolute; right:18px; transform:translateY(50%);
+  font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap;
+  color:#fff; background:var(--ink); padding:4px 8px; border-radius:var(--r-sm);
+  opacity:0; transition:opacity .35s ease 2s;
+}
+.growth.in .growth-now{opacity:1}
+.growth-x{display:flex; justify-content:space-between; margin-top:10px}
+.growth-x span{width:0; display:flex; justify-content:center; font-family:var(--mono); font-size:10px; color:var(--faint)}
+.growth figcaption{margin-top:16px}
+@media (max-width:480px){.growth-key{flex-direction:column; gap:5px; align-items:flex-end}}
 @media (prefers-reduced-motion:reduce){
-  .growth-bars i::before,.growth-line,.growth-dot{transition:none}
-  .growth-bars i::before,.growth-dot{transform:none; opacity:1}
-  .growth-line{clip-path:none}
+  .growth-svg,.growth-dot,.growth-now{transition:none}
+  .growth-svg{clip-path:none}
+  .growth-dot,.growth-now{opacity:1; transform:none}
+  .growth-now{transform:translateY(50%)}
+  .growth.in .growth-dot::after{animation:none}
 }
 
 /* =====================================================================
@@ -954,13 +980,51 @@ button[disabled]{opacity:.55; cursor:progress}
 /* =====================================================================
    WHAT YOU CAN USE IT FOR
    ===================================================================== */
-.uses{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line);
-      border:1px solid var(--line)}
-@media (max-width:860px){.uses{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.uses{grid-template-columns:1fr}}
-.use{background:var(--surface); padding:22px 20px}
-.use b{display:block; font-size:16.5px; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px}
-.use span{display:block; font-size:13.5px; line-height:1.5; color:var(--muted)}
+/* Six moments, each a card: an icon, when it happens, what it is, and the
+   product that usually fits (linked). The header carries a "what you keep"
+   panel on the right, so the frame reads as a fair trade, not a pitch. */
+.usehead{display:grid; grid-template-columns:1.45fr .8fr; gap:clamp(28px,5vw,72px); align-items:end}
+@media (max-width:860px){.usehead{grid-template-columns:1fr; gap:26px}}
+.keeps{padding:18px 20px 20px; border:1px solid var(--signal-line); background:var(--signal-soft); border-radius:var(--r-lg)}
+.keeps ul{list-style:none; margin:14px 0 0; padding:0; display:grid; gap:10px}
+.keeps li{display:flex; align-items:center; gap:11px; font-size:14.5px; font-weight:500; color:var(--ink)}
+.keeps li::before{
+  content:""; flex:none; width:18px; height:18px; border-radius:50%;
+  background:var(--signal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.3l2.2 2.2 4.6-4.8' fill='none' stroke='white' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/11px no-repeat;
+}
+
+.uses{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media (max-width:900px){.uses{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.uses{grid-template-columns:1fr}}
+/* .use is also a .rev: its transition list has to carry the reveal's
+   opacity/transform (with the stagger delay) as well as the hover. */
+.use{
+  display:flex; flex-direction:column; gap:10px; padding:22px 22px 18px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
+  transition:
+    opacity .62s cubic-bezier(.2,.6,.2,1) calc(var(--i,0) * 70ms),
+    transform .62s cubic-bezier(.2,.6,.2,1) calc(var(--i,0) * 70ms),
+    border-color .24s ease 0s, box-shadow .24s ease 0s;
+}
+.use:hover{border-color:var(--line-strong); box-shadow:0 18px 40px -26px rgba(10,10,10,.28)}
+.use-top{display:flex; align-items:center; justify-content:space-between; gap:12px}
+.use-ic{
+  display:grid; place-items:center; flex:none; width:40px; height:40px; border-radius:11px;
+  background:var(--signal-soft); color:var(--signal); border:1px solid var(--signal-line);
+}
+.use-ic svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+.use-when{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-align:right}
+.use h3{margin:6px 0 0; font-family:var(--sans); font-size:18px; font-weight:600; letter-spacing:-0.02em; line-height:1.25; color:var(--ink)}
+.use p{margin:0; font-size:14px; line-height:1.55; color:var(--body)}
+.use-fit{
+  margin-top:auto; padding-top:14px; border-top:1px solid var(--line-soft);
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; font-size:13px;
+}
+/* the label takes its own line, so two long product names never wrap
+   raggedly beside it in the three-column grid */
+.use-fit .cap{flex-basis:100%}
+.use-fit a{color:var(--ink); font-weight:500; text-decoration:none; border-bottom:1px solid var(--line-strong); transition:color .18s ease, border-color .18s ease}
+.use-fit a:hover{color:var(--signal); border-color:var(--signal)}
 
 .nots{display:flex; flex-wrap:wrap; gap:9px; margin-top:26px}
 .nots span{
@@ -1099,7 +1163,10 @@ html.snapping .mt-lg{margin-top:clamp(18px,2.6vh,34px)}
 html.snapping .tstrip{margin-top:clamp(20px,3vh,44px)}
 html.snapping .herofoot{margin-top:clamp(18px,2.6vh,34px); padding-top:16px}
 html.snapping .herocta{margin-top:clamp(18px,2.6vh,30px)}
-html.snapping .uses .use{padding:16px 18px}
+html.snapping .use{padding:16px 18px 14px; gap:8px}
+html.snapping .use-ic{width:34px; height:34px}
+html.snapping .use-fit{padding-top:10px}
+html.snapping .growth{margin-top:20px; padding:16px 18px 14px}
 html.snapping .need{padding:14px 0}
 html.snapping .seqsticky{padding-block:calc(var(--nav-h) + 22px) 34px}
 /* the two densest frames need a little more taken out to fit one screen */

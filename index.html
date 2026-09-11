@@ -166,14 +166,26 @@
         We price it once we have seen your bank, not before.
       </p>
       <figure class="growth rev" style="--i:4">
-        <div class="growth-hd"><span class="cap">Monthly sales</span><span class="cap">12 months</span></div>
-        <div class="growth-plot" aria-hidden="true">
-          <div class="growth-bars"><i style="--h:24%;--d:0"></i><i style="--h:28%;--d:1"></i><i style="--h:26%;--d:2"></i><i style="--h:33%;--d:3"></i><i style="--h:37%;--d:4"></i><i style="--h:35%;--d:5"></i><i style="--h:44%;--d:6"></i><i style="--h:49%;--d:7"></i><i style="--h:47%;--d:8"></i><i style="--h:58%;--d:9"></i><i style="--h:66%;--d:10"></i><i style="--h:80%;--d:11" class=lead></i></div>
-          <svg class="growth-line" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="4.17,71 12.50,67 20.83,69 29.17,62 37.50,58 45.83,60 54.17,51 62.50,46 70.83,48 79.17,37 87.50,29 95.83,15" /></svg>
-          <b class="growth-dot" style="left:95.83%;bottom:85%"></b>
+        <div class="growth-hd">
+          <div class="growth-title"><span class="cap">Monthly sales</span><b class="growth-tag">Trending up</b></div>
+          <div class="growth-key"><span class="k-this">This year</span><span class="k-last">Last year</span></div>
         </div>
-        <figcaption class="note">Illustrative: a brand's sales, month by month. We size against
-          your real months, read from your bank.</figcaption>
+        <div class="growth-plot" aria-hidden="true">
+          <svg class="growth-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs><linearGradient id="growth-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2F7D58" stop-opacity=".20" />
+              <stop offset="1" stop-color="#2F7D58" stop-opacity="0" />
+            </linearGradient></defs>
+            <path class="g-area" d="M0.00,66.00 C1.52,65.50 6.06,63.17 9.09,63.00 C12.12,62.83 15.15,65.67 18.18,65.00 C21.21,64.33 24.24,60.83 27.27,59.00 C30.30,57.17 33.33,54.50 36.36,54.00 C39.39,53.50 42.42,57.00 45.45,56.00 C48.48,55.00 51.52,50.33 54.55,48.00 C57.58,45.67 60.61,42.67 63.64,42.00 C66.67,41.33 69.70,45.33 72.73,44.00 C75.76,42.67 78.79,37.17 81.82,34.00 C84.85,30.83 87.88,28.67 90.91,25.00 C93.94,21.33 98.48,14.17 100.00,12.00 L100,100 L0,100 Z" />
+            <path class="g-last" d="M0.00,76.00 C1.52,75.67 6.06,74.17 9.09,74.00 C12.12,73.83 15.15,75.33 18.18,75.00 C21.21,74.67 24.24,73.00 27.27,72.00 C30.30,71.00 33.33,69.33 36.36,69.00 C39.39,68.67 42.42,70.67 45.45,70.00 C48.48,69.33 51.52,66.33 54.55,65.00 C57.58,63.67 60.61,62.33 63.64,62.00 C66.67,61.67 69.70,63.67 72.73,63.00 C75.76,62.33 78.79,59.67 81.82,58.00 C84.85,56.33 87.88,55.17 90.91,53.00 C93.94,50.83 98.48,46.33 100.00,45.00" />
+            <path class="g-this" d="M0.00,66.00 C1.52,65.50 6.06,63.17 9.09,63.00 C12.12,62.83 15.15,65.67 18.18,65.00 C21.21,64.33 24.24,60.83 27.27,59.00 C30.30,57.17 33.33,54.50 36.36,54.00 C39.39,53.50 42.42,57.00 45.45,56.00 C48.48,55.00 51.52,50.33 54.55,48.00 C57.58,45.67 60.61,42.67 63.64,42.00 C66.67,41.33 69.70,45.33 72.73,44.00 C75.76,42.67 78.79,37.17 81.82,34.00 C84.85,30.83 87.88,28.67 90.91,25.00 C93.94,21.33 98.48,14.17 100.00,12.00" />
+          </svg>
+          <span class="growth-dot" style="bottom:88%"></span>
+          <span class="growth-now" style="bottom:88%">This month</span>
+        </div>
+        <div class="growth-x" aria-hidden="true"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+        <figcaption class="note">Illustrative: a brand's monthly sales against the year before.
+          We size against your real months, read from your bank.</figcaption>
       </figure>
     </div>
 
@@ -306,21 +318,79 @@
 <!-- ===== 6 · WHAT YOU CAN USE IT FOR ===== -->
 <section class="sec sec--tall" id="usefor">
   <div class="inner">
-    <div class="eyebrow rev">What it is for</div>
-    <h2 class="rev" style="--i:1">Spend it on whatever<br />the business needs.</h2>
-    <p class="lede rev" style="--i:2;margin-top:20px">
-      We do not tell you where the money goes. Most brands use it for one of these.
-    </p>
-    <div class="uses mt-lg">
-      <div class="use rev" style="--i:3"><b>Stock</b><span>Buy the season before the season pays for itself.</span></div>
-      <div class="use rev" style="--i:4"><b>Ads</b><span>Push spend when the return is there, without waiting for cash to catch up.</span></div>
-      <div class="use rev" style="--i:5"><b>A big order</b><span>Say yes to the retailer whose order is larger than your bank balance.</span></div>
-      <div class="use rev" style="--i:6"><b>A slow month</b><span>Cover payroll and suppliers through the quiet part of your year.</span></div>
-      <div class="use rev" style="--i:7"><b>Hiring</b><span>Bring someone in before the revenue that justifies them arrives.</span></div>
-      <div class="use rev" style="--i:8"><b>A new line</b><span>Fund the launch without pulling cash out of the thing that works.</span></div>
+    <div class="usehead">
+      <div>
+        <div class="eyebrow rev">What it is for</div>
+        <h2 class="rev" style="--i:1">Put it where it<br />earns the most.</h2>
+        <p class="lede rev" style="--i:2;margin-top:20px">
+          We do not tell you how to spend it. These are the six moments founders most often
+          come to us, and the product that usually fits each one.
+        </p>
+      </div>
+      <div class="keeps rev" style="--i:3">
+        <span class="cap">What you keep</span>
+        <ul>
+          <li>All of your equity</li>
+          <li>Your board, as it is</li>
+          <li>Every spending decision</li>
+        </ul>
+      </div>
     </div>
-    <div class="nots rev" style="--i:9">
-      <span>No equity</span><span>No dilution</span><span>No board seat</span><span>No spending rules</span>
+    <div class="uses mt-lg">
+      <article class="use rev" style="--i:3">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5L12 3.5l8.5 4v9L12 20.5l-8.5-4z" /><path d="M3.5 7.5L12 11.5l8.5-4M12 11.5v9" /></svg></span>
+          <span class="use-when">Before your busy season</span>
+        </div>
+        <h3>Stock</h3>
+        <p>Order the season before it pays for itself. Sell it through, then settle.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/extended-payment-terms">Extended payment terms</a><a href="products/merchant-cash-advance">Cash advance</a></div>
+      </article>
+      <article class="use rev" style="--i:4">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r=".6" /></svg></span>
+          <span class="use-when">When the numbers work</span>
+        </div>
+        <h3>Ads</h3>
+        <p>Scale the campaigns that are already paying back, instead of waiting for last month's cash to land.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/merchant-cash-advance">Cash advance</a><a href="products/line-of-credit">Line of credit</a></div>
+      </article>
+      <article class="use rev" style="--i:5">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5h6v2.5H9z" /><path d="M8.5 5.5H6v15h12v-15h-2.5" /><path d="M9 13.5l2 2 4-4.2" /></svg></span>
+          <span class="use-when">When a retailer says yes</span>
+        </div>
+        <h3>A big order</h3>
+        <p>Take the order that is bigger than your bank balance, and sit out their 60-day terms comfortably.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/invoice-financing">Invoice financing</a><a href="products/extended-payment-terms">Extended payment terms</a></div>
+      </article>
+      <article class="use rev" style="--i:6">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="6" width="15" height="13.5" rx="2" /><path d="M4.5 10h15M8.5 4v4M15.5 4v4" /></svg></span>
+          <span class="use-when">Between the peaks</span>
+        </div>
+        <h3>A quiet month</h3>
+        <p>Keep payroll and suppliers paid through the slow part of the year, without cutting what works.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/line-of-credit">Line of credit</a></div>
+      </article>
+      <article class="use rev" style="--i:7">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5" /><path d="M3.5 20a6.5 6.5 0 0113 0M18.5 8v6M15.5 11h6" /></svg></span>
+          <span class="use-when">Ahead of the growth</span>
+        </div>
+        <h3>Hiring</h3>
+        <p>Bring in the person you need before the revenue that pays for them arrives.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/merchant-cash-advance">Cash advance</a><a href="products/line-of-credit">Line of credit</a></div>
+      </article>
+      <article class="use rev" style="--i:8">
+        <div class="use-top">
+          <span class="use-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z" /></svg></span>
+          <span class="use-when">When you launch</span>
+        </div>
+        <h3>A new line</h3>
+        <p>Fund the launch without draining cash from the products that already sell.</p>
+        <div class="use-fit"><span class="cap">Usually fits</span><a href="products/merchant-cash-advance">Cash advance</a><a href="products/extended-payment-terms">Extended payment terms</a></div>
+      </article>
     </div>
   </div>
 </section>
