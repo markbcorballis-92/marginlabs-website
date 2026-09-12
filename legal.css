@@ -20,7 +20,7 @@ nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.85);backdrop-f
 nav .wrap{max-width:860px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
 nav .logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;letter-spacing:-0.02em;color:var(--ink)}
 nav .logo em{font-style:normal;color:var(--accent)}
-nav .back{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--inkSoft);white-space:nowrap}
+nav .back{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--inkSoft);white-space:nowrap;display:inline-block;padding:12px 0}
 
 /* doc layout */
 .doc{max-width:860px;margin:0 auto;padding:64px 28px 100px}
@@ -74,7 +74,7 @@ footer .wrap{max-width:860px;margin:0 auto;padding:0 28px;display:flex;justify-c
 footer .logo{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:700;color:#fff}
 footer .logo em{font-style:normal;color:var(--accent2)}
 footer .links{display:flex;gap:20px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
-footer .links a{color:rgba(255,255,255,.6)}
+footer .links a{color:rgba(255,255,255,.6);display:inline-block;padding:10px 0}
 footer .links a:hover{color:#fff;text-decoration:none}
 
 @media(max-width:620px){.doc h1{font-size:38px}.contact .row{grid-template-columns:1fr}}

@@ -1067,6 +1067,10 @@ html.snapping .eligstrip{padding:16px 20px}
 .use-fit .cap{flex-basis:100%}
 .use-fit a{color:var(--ink); font-weight:500; text-decoration:none; border-bottom:1px solid var(--line-strong); transition:color .18s ease, border-color .18s ease}
 .use-fit a:hover{color:var(--signal); border-color:var(--signal)}
+/* phone tap targets: small standalone links get enough height to hit */
+.use-fit a{display:inline-block; padding-block:4px}
+.nav .brand{padding-block:6px}
+.eyebrow a{display:inline-block; padding-block:5px}
 
 .nots{display:flex; flex-wrap:wrap; gap:9px; margin-top:26px}
 .nots span{
